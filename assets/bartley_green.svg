@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="100%" height="100%">
+  <defs>
+    <linearGradient id="brickGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d99b5a"/>
+      <stop offset="50%" stop-color="#c48344"/>
+      <stop offset="100%" stop-color="#9e622d"/>
+    </linearGradient>
+    <linearGradient id="doorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a9d8f"/>
+      <stop offset="100%" stop-color="#1b6d63"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Arch Building Facade -->
+  <path d="M 40 200 L 40 85 L 100 45 L 160 85 L 160 200 Z" fill="url(#brickGrad)" stroke="#5c3818" stroke-width="3"/>
+  <path d="M 30 85 L 100 35 L 170 85 L 155 95 L 100 55 L 45 95 Z" fill="#b07238" stroke="#5c3818" stroke-width="2"/>
+  
+  <!-- Brick Line Textures -->
+  <line x1="40" y1="120" x2="65" y2="120" stroke="#5c3818" stroke-width="1.5" opacity="0.6"/>
+  <line x1="135" y1="120" x2="160" y2="120" stroke="#5c3818" stroke-width="1.5" opacity="0.6"/>
+  <line x1="40" y1="150" x2="65" y2="150" stroke="#5c3818" stroke-width="1.5" opacity="0.6"/>
+  <line x1="135" y1="150" x2="160" y2="150" stroke="#5c3818" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Keystone & Arch Stone Blocks -->
+  <path d="M 65 200 L 65 115 A 35 35 0 0 1 135 115 L 135 200 Z" fill="#e9c496" stroke="#5c3818" stroke-width="2.5"/>
+  <path d="M 92 65 L 108 65 L 105 82 L 95 82 Z" fill="#d49b5a" stroke="#5c3818" stroke-width="1.5"/>
+
+  <!-- Green Door -->
+  <path d="M 72 200 L 72 120 A 28 28 0 0 1 128 120 L 128 200 Z" fill="url(#doorGrad)" stroke="#134e48" stroke-width="2"/>
+  <line x1="100" y1="92" x2="100" y2="200" stroke="#134e48" stroke-width="1.5"/>
+  
+  <!-- Arched Text on Facade -->
+  <path id="textArch" d="M 50 115 A 50 45 0 0 1 150 115" fill="none"/>
+  <text font-family="'Outfit', sans-serif" font-weight="900" font-size="14" fill="#2d1b0c" letter-spacing="2">
+    <textPath href="#textArch" startOffset="50%" text-anchor="middle">
+      FRIENDS OF
+    </textPath>
+  </text>
+  
+  <!-- Bottom Text -->
+  <text x="100" y="218" font-family="'Outfit', sans-serif" font-weight="800" font-size="11" fill="#f3f0f7" text-anchor="middle" letter-spacing="1">
+    BARTLEY GREEN
+  </text>
+  <text x="100" y="232" font-family="'Outfit', sans-serif" font-weight="800" font-size="11" fill="#00f0ff" text-anchor="middle" letter-spacing="1.5">
+    LIBRARY
+  </text>
+</svg>

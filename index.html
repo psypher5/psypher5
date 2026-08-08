@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tom Woodward | psypher5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="has-hero">
+    <canvas id="starfield"></canvas>
+    <div class="nebula-container">
+        <div class="nebula-cloud cloud-purple"></div>
+        <div class="nebula-cloud cloud-cyan"></div>
+        <div class="nebula-cloud cloud-magenta"></div>
+    </div>
+    <div id="app-container">
+        <header id="site-header">
+            <img src="assets/logo-p5.png" alt="psypher5 Logo" class="logo" onclick="goHome()">
+        </header>
+        <main>
+            <section id="hero">
+                <div class="hero-content">
+                    <img src="assets/psypher53-2-WE5f5c30150a (1).png" alt="PSYPHER5 Logo" class="hero-logo">
+                </div>
+            </section>
+
+            <div id="content-container">
+
+                <!-- ══════════════════════════════════════════ -->
+                <!-- SUBPAGE 1: ABOUT (Open Flow)              -->
+                <!-- ══════════════════════════════════════════ -->
+                <div id="subpage-about" class="subpage glass-panel">
+                    <div class="open-flow-stream">
+
+                        <!-- PROFILE HERO -->
+                        <div class="profile-hero-open">
+                            <div class="profile-hero-top-grid">
+                                <div class="profile-avatar-container" title="Howdo!">
+                                    <img src="assets/avatar.png" alt="Tom Woodward" class="profile-avatar">
+                                </div>
+                                <div class="profile-hero-text">
+                                    <h1 class="profile-name">Tom Woodward</h1>
+                                    <div class="role-subtitle">Staff R&amp;D Quality Engineer | Dad | Gamer</div>
+                                    <div class="bio-pill-tags">
+                                        <span class="bio-pill">MEng Games Design &amp; 3D Modelling</span>
+                                        <span class="bio-pill">12+ Yrs Systems &amp; QA</span>
+                                    </div>
+                                    <div class="bio-narrative-box">
+                                        <p>I'm an <strong>SDET who doesn't mind diving into a bit of chaos to bring order to the system</strong>. With a Master's degree in Game Development &amp; 3D Modelling and over a decade of experience in software and distributed systems, I specialise in designing, implementing, and maintaining the rigorous automation and test foundations that keep complex engineering workflows reliable.</p>
+                                        <p>With experience across <strong>desktop, mobile, and web</strong> through a wide range of industries including <strong>Games, Hospitality, Insurance, Finance, HPC, and Digital Twins</strong>, I bring a user-centric, holistic approach to testing. Whether architecting end-to-end automation frameworks or conducting deep exploratory quality passes, I ensure systems are robust, performant, and delightful to use.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Full-Width Family Narrative Box -->
+                            <div class="bio-family-fullwidth">
+                                <p>Outside of work, I'm grounded by my family and two children, who remind me that the best systems, technical or otherwise, rely on empathy, clarity, and balance.</p>
+                            </div>
+                        </div>
+
+                        <!-- ═══ SECTION: INTERESTS (3 Interactive Expanding Blocks) ═══ -->
+                        <div class="open-section">
+                            <h2 class="open-section-label">Interests</h2>
+                            <div class="interests-blocks-row" id="interests-blocks">
+
+                                <!-- Block 1: Hobby Game Dev -->
+                                <div class="interest-block active" data-interest="0" onclick="selectInterest(0)">
+                                    <div class="interest-block-compact">
+                                        <span class="interest-block-num">01</span>
+                                        <span class="interest-block-icon">🛸</span>
+                                        <h3 class="interest-block-title">Hobby Game Dev</h3>
+                                        <span class="interest-block-badge">Godot 4 // C#</span>
+                                    </div>
+                                    <div class="interest-block-expanded centered-exp">
+                                        <div class="interest-exp-header">
+                                            <span class="interest-exp-tag">INDIE DEVELOPMENT</span>
+                                            <span class="interest-exp-num">01</span>
+                                        </div>
+                                        <h4>Hobby Game Dev</h4>
+                                        <p class="interest-main-desc">Keeping my passion for game-dev alive with a few projects!</p>
+                                        <button class="btn-interest-project-link" onclick="switchTab('projects'); event.stopPropagation();">
+                                            Explore Projects ↗
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Block 2: Bartley Green Library (Volunteering) -->
+                                <div class="interest-block" data-interest="1" onclick="selectInterest(1)">
+                                    <div class="interest-block-compact">
+                                        <span class="interest-block-num">02</span>
+                                        <div class="interest-block-img-icon">
+                                            <img src="assets/bartley_green.svg" alt="Library" class="mini-library-icon">
+                                        </div>
+                                        <h3 class="interest-block-title">Bartley Green Library</h3>
+                                        <span class="interest-block-badge">Volunteering</span>
+                                    </div>
+                                    <div class="interest-block-expanded centered-exp">
+                                        <div class="interest-exp-header">
+                                            <span class="interest-exp-tag highlight-blue">COMMUNITY &amp; VOLUNTEERING</span>
+                                            <span class="interest-exp-num">02</span>
+                                        </div>
+                                        <h4>Friends of Bartley Green Library</h4>
+                                        <p class="interest-main-desc">A volunteer group supporting keeping the library open with community events. Initiatives include launching a community gardening club, hosting tech support drop-in sessions, and regular neighbourhood litterpicking.</p>
+                                        <a href="https://www.facebook.com/p/Friends-of-Bartley-Green-Library-61578889163994/" target="_blank" class="facebook-link-btn" onclick="event.stopPropagation()">
+                                            <svg viewBox="0 0 24 24" class="fb-icon"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                            Facebook Page
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Block 3: Homelab -->
+                                <div class="interest-block" data-interest="2" onclick="selectInterest(2)">
+                                    <div class="interest-block-compact">
+                                        <span class="interest-block-num">03</span>
+                                        <span class="interest-block-icon">⚡</span>
+                                        <h3 class="interest-block-title">Homelab &amp; Systems</h3>
+                                        <span class="interest-block-badge">Proxmox // HA</span>
+                                    </div>
+                                    <div class="interest-block-expanded centered-exp">
+                                        <div class="interest-exp-header">
+                                            <span class="interest-exp-tag">INFRASTRUCTURE &amp; IOT</span>
+                                            <span class="interest-exp-num">03</span>
+                                        </div>
+                                        <h4>Homelab &amp; Smart Systems</h4>
+                                        <p class="interest-main-desc">Proxmox VE hypervisor hosting VMs and LXC containers. Home Assistant automations driving Zigbee2MQTT mesh networks. Frigate NVR with local Coral TPU AI object detection, and smart energy pipelines.</p>
+                                        <div class="interest-pills centered-pills">
+                                            <span>Proxmox VE</span>
+                                            <span>Home Assistant</span>
+                                            <span>Frigate Coral AI</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- ═══ SECTION: CAREER (With Holographic CV Sticker) ═══ -->
+                        <div class="open-section">
+                            <div class="career-section-header-wrap">
+                                <h2 class="open-section-label">Career</h2>
+                                <a href="assets/Tom_Woodward_CV.pdf" download class="holo-cv-sticker" title="Download CV (PDF)">
+                                    <div class="holo-foil-layer"></div>
+                                    <span class="holo-text">CV</span>
+                                    <span class="holo-sub">PDF</span>
+                                    <div class="holo-curl-corner"></div>
+                                </a>
+                            </div>
+
+                            <div class="career-unified-wrapper">
+                                <!-- Animated Wave Track with Milestone Nodes -->
+                                <div class="career-wave-track-box">
+                                    <svg class="career-wave-svg" viewBox="0 0 1000 80" preserveAspectRatio="none" aria-hidden="true">
+                                        <path class="wave-path-glow" d="M 0,40 Q 125,5 250,40 T 500,40 T 750,40 T 1000,40" fill="none"/>
+                                        <path class="wave-path-main" d="M 0,40 Q 125,5 250,40 T 500,40 T 750,40 T 1000,40" fill="none"/>
+                                    </svg>
+                                    <div class="wave-milestone-nodes" id="wave-milestone-nodes">
+                                        <!-- JS generates 11 clickable dots along the wave -->
+                                    </div>
+                                </div>
+
+                                <!-- Single Stable Center Card with Stationary Arrow Buttons -->
+                                <div class="career-stable-viewer">
+                                    <button class="career-arrow-btn" id="career-prev" onclick="stepCareer(-1)" aria-label="Previous milestone">&#8592;</button>
+
+                                    <!-- Single Central Fixed-Height Card -->
+                                    <div class="career-single-card glass-panel" id="career-single-card" onclick="openActiveMilestoneModal()">
+                                        <div class="career-card-topbar">
+                                            <span class="career-card-date" id="panel-date">Feb 2023 — Present</span>
+                                            <span class="career-card-index" id="panel-index">01 / 11</span>
+                                        </div>
+                                        <h3 class="career-card-role" id="panel-role">Staff R&amp;D Engineer / Tech Architect</h3>
+                                        <div class="career-card-company" id="panel-company">Synopsys &amp; Ansys</div>
+                                        <div class="career-card-tags" id="panel-tags">
+                                            <span class="q-tag">HPC Cloud</span>
+                                            <span class="q-tag">Agentic AI</span>
+                                            <span class="q-tag">Playwright</span>
+                                        </div>
+                                        <div class="career-card-inspect-hint">
+                                            <span>Click card to examine full role scope ↗</span>
+                                        </div>
+                                    </div>
+
+                                    <button class="career-arrow-btn" id="career-next" onclick="stepCareer(1)" aria-label="Next milestone">&#8594;</button>
+                                </div>
+
+                                <!-- Progress Dots Strip -->
+                                <div class="career-dots-strip" id="career-dots"></div>
+                            </div>
+                        </div>
+
+                        <!-- ═══ SECTION: COMMERCIAL TITLES ═══ -->
+                        <div class="open-section">
+                            <h2 class="open-section-label">Commercial Titles</h2>
+                            <p class="section-sub-label">Tap an app icon to inspect the QA &amp; engineering scope</p>
+                            <div class="phone-and-dossier-layout">
+                                <div class="device-phone-wrapper">
+                                    <div class="smartphone-frame">
+                                        <div class="phone-speaker-notch"></div>
+                                        <div class="phone-dynamic-island"></div>
+                                        <div class="phone-screen-glass">
+                                            <div class="phone-status-bar">
+                                                <span class="time-readout">9:41</span>
+                                                <span class="carrier-readout">PSYPHER-5G</span>
+                                                <span class="battery-icon">100%</span>
+                                            </div>
+                                            <div class="phone-scroll-content">
+                                                <!-- SECTION 1: SEGA HARDLIGHT -->
+                                                <div class="phone-studio-header">SEGA HARDLIGHT</div>
+                                                <div class="phone-app-grid">
+                                                    <div class="app-icon-item" onclick="selectApp('sonicforces')">
+                                                        <div class="app-squircle app-sonic">🦔</div>
+                                                        <span class="app-name">Sonic Forces</span>
+                                                    </div>
+                                                    <div class="app-icon-item" onclick="selectApp('sonicdash2')">
+                                                        <div class="app-squircle app-sonicdash">⚡</div>
+                                                        <span class="app-name">Sonic Boom</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- SECTION 2: ZYNGA / NATURALMOTION -->
+                                                <div class="phone-studio-header">ZYNGA / NATURALMOTION</div>
+                                                <div class="phone-app-grid">
+                                                    <div class="app-icon-item active" onclick="selectApp('csr')">
+                                                        <div class="app-squircle app-csr">🏎️</div>
+                                                        <span class="app-name">CSR Racing</span>
+                                                    </div>
+                                                    <div class="app-icon-item" onclick="selectApp('csr2')">
+                                                        <div class="app-squircle app-csr2">🏁</div>
+                                                        <span class="app-name">CSR 2</span>
+                                                    </div>
+                                                    <div class="app-icon-item" onclick="selectApp('csrclassics')">
+                                                        <div class="app-squircle app-csrclassics">🚘</div>
+                                                        <span class="app-name">CSR Classics</span>
+                                                    </div>
+                                                    <div class="app-icon-item" onclick="selectApp('titans')">
+                                                        <div class="app-squircle app-titans">⚔️</div>
+                                                        <span class="app-name">Dawn of Titans</span>
+                                                    </div>
+                                                    <div class="app-icon-item" onclick="selectApp('ninja')">
+                                                        <div class="app-squircle app-ninja">🥋</div>
+                                                        <span class="app-name">Clumsy Ninja</span>
+                                                    </div>
+                                                    <div class="app-icon-item" onclick="selectApp('farmville')">
+                                                        <div class="app-squircle app-farmville">🚜</div>
+                                                        <span class="app-name">FarmVille 2</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- SECTION 3: COMMERCIAL & ENTERPRISE -->
+                                                <div class="phone-studio-header">COMMERCIAL &amp; ENTERPRISE</div>
+                                                <div class="phone-app-grid">
+                                                    <div class="app-icon-item" onclick="selectApp('pizzahut')">
+                                                        <div class="app-squircle app-pizzahut">🍕</div>
+                                                        <span class="app-name">Pizza Hut</span>
+                                                    </div>
+                                                    <div class="app-icon-item" onclick="selectApp('skyscrappers')">
+                                                        <div class="app-squircle app-skyscrappers">🥊</div>
+                                                        <span class="app-name">SkyScrappers</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="device-dossier-panel" id="device-dossier-panel">
+                                    <div class="dossier-header-row">
+                                        <span id="dossier-studio" class="dossier-studio-tag">Zynga / NaturalMotion</span>
+                                        <span id="dossier-platform" class="dossier-platform-tag">iOS / Android / Kindle</span>
+                                    </div>
+                                    <h3 id="dossier-title">CSR Racing</h3>
+                                    <div id="dossier-tagline" class="project-card-tagline">Physics simulation &amp; global live-ops test automation</div>
+                                    <p id="dossier-desc" class="project-card-desc">Conducted precision physics simulation QA, telemetry benchmarking, and cross-platform multi-device validation for one of mobile gaming's premier racing franchises.</p>
+                                    <div class="dossier-bullet-wrap">
+                                        <h4>Key Test Engineering Areas</h4>
+                                        <ul id="dossier-bullet-list">
+                                            <li>Vehicle suspension tuning, drag physics curves, and gearbox ratio verification.</li>
+                                            <li>Live-ops backend synchronisation, cloud saves, and multiplayer latency resilience.</li>
+                                            <li>Memory profiling and asset streaming optimisation across low-end Android chipsets.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="project-card-tech" id="dossier-tech-tags">
+                                        <span class="tech-tag">Euphoria Physics</span>
+                                        <span class="tech-tag">iOS / Android</span>
+                                        <span class="tech-tag">Device Lab</span>
+                                        <span class="tech-tag">Memory Profiling</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════════════════════ -->
+                <!-- SUBPAGE 2: PROJECTS & ART                 -->
+                <!-- ══════════════════════════════════════════ -->
+                <div id="subpage-projects" class="subpage glass-panel">
+                    <h1 class="section-title">Projects &amp; Art</h1>
+                    <div class="projects-subnav">
+                        <button class="proj-tab-btn active" onclick="switchProjectCategory('indie')">Personal Indie Games (3D Shelf)</button>
+                        <button class="proj-tab-btn" onclick="switchProjectCategory('art')">Art, Drawings &amp; Photography (Mosaic)</button>
+                    </div>
+
+                    <div id="proj-view-indie" class="project-category-view active">
+                        <div class="game-shelf-stage">
+                            <div class="shelf-lighting-glow"></div>
+                            <div class="game-boxes-rack">
+                                <div class="game-box-3d active" data-box="ewefo" onclick="selectIndieBox('ewefo')">
+                                    <div class="box-face box-front box-ewefo">
+                                        <div class="box-front-header"><span class="box-platform-badge">GODOT 4</span><span class="box-rating">E</span></div>
+                                        <div class="box-front-center"><div class="box-logo-art">&#x1F6F8;&#x1F411;</div><h3>ewe-FO</h3><div class="box-subtitle">Abduct. Automate. Ascend.</div></div>
+                                        <div class="box-front-footer"><span>2.5D DIORAMA // C#</span></div>
+                                    </div>
+                                    <div class="box-face box-spine"><span>ewe-FO // GODOT 4</span></div>
+                                    <div class="box-face box-top"></div>
+                                    <div class="box-shadow"></div>
+                                </div>
+                                <div class="game-box-3d" data-box="voidwarden" onclick="selectIndieBox('voidwarden')">
+                                    <div class="box-face box-front box-voidwarden">
+                                        <div class="box-front-header"><span class="box-platform-badge">UNITY C#</span><span class="box-rating">T</span></div>
+                                        <div class="box-front-center"><div class="box-logo-art">&#x1F6E1;&#xFE0F;&#x1F6F0;&#xFE0F;</div><h3>Void Warden</h3><div class="box-subtitle">Sector Status: Locked Down</div></div>
+                                        <div class="box-front-footer"><span>TACTICAL ORBITAL DEFENSE</span></div>
+                                    </div>
+                                    <div class="box-face box-spine"><span>VOID WARDEN // UNITY</span></div>
+                                    <div class="box-face box-top"></div>
+                                    <div class="box-shadow"></div>
+                                </div>
+                                <div class="game-box-3d" data-box="wick" onclick="selectIndieBox('wick')">
+                                    <div class="box-face box-front box-wick">
+                                        <div class="box-front-header"><span class="box-platform-badge">CUSTOM C++</span><span class="box-rating">E</span></div>
+                                        <div class="box-front-center"><div class="box-logo-art">&#x1F56F;&#xFE0F;&#x1F332;</div><h3>Adventures of Wick</h3><div class="box-subtitle">Keep the Flame Alive</div></div>
+                                        <div class="box-front-footer"><span>SDL2 // OPENGL SHADOWS</span></div>
+                                    </div>
+                                    <div class="box-face box-spine"><span>WICK // C++ ENGINE</span></div>
+                                    <div class="box-face box-top"></div>
+                                    <div class="box-shadow"></div>
+                                </div>
+                            </div>
+                            <div class="physical-shelf-ledge">
+                                <div class="shelf-top-surface"></div>
+                                <div class="shelf-front-bevel"></div>
+                                <div class="shelf-neon-strip"></div>
+                            </div>
+                        </div>
+                        <div class="indie-detail-dossier" id="indie-detail-dossier">
+                            <div class="indie-dossier-grid">
+                                <div class="indie-dossier-main">
+                                    <div class="indie-badge-row">
+                                        <span id="indie-status" class="status-tag status-in-dev">Evolving Prototype</span>
+                                        <span id="indie-engine" class="dossier-platform-tag">Godot 4.3 (C# &amp; GDScript)</span>
+                                    </div>
+                                    <h3 id="indie-title">ewe-FO</h3>
+                                    <div id="indie-tagline" class="project-card-tagline">Abduct. Automate. Ascend.</div>
+                                    <p id="indie-desc" class="project-card-desc">An arcade physics-based abduction game set across a diorama-styled British countryside. Pilot a tractor-beam equipped UFO by night to herd and harvest livestock, while building automated conveyor networks, energy condensors, and processing pipelines by day.</p>
+                                </div>
+                                <div class="indie-dossier-sidebar">
+                                    <h4>Core Pillars &amp; Mechanics</h4>
+                                    <ul id="indie-pillars-list">
+                                        <li>Dynamic tractor-beam spring physics &amp; multi-body rope constraints.</li>
+                                        <li>2.5D tilt-shift camera shader with day/night atmospheric transitions.</li>
+                                        <li>Factory-style automation loops: wool spin, raw milk refining, and alien tech trees.</li>
+                                    </ul>
+                                    <div class="project-card-tech" id="indie-tech-pills">
+                                        <span class="tech-tag">Godot 4</span>
+                                        <span class="tech-tag">C# / GDScript</span>
+                                        <span class="tech-tag">Custom Physics</span>
+                                        <span class="tech-tag">Automation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /proj-view-indie -->
+
+                    <div id="proj-view-art" class="project-category-view">
+                        <div class="mosaic-filter-bar">
+                            <button class="filter-pill active" onclick="filterMosaic('all')">All Works</button>
+                            <button class="filter-pill" onclick="filterMosaic('illustrated')">Illustrated</button>
+                            <button class="filter-pill" onclick="filterMosaic('sketch')">Pencil Sketches</button>
+                            <button class="filter-pill" onclick="filterMosaic('sketchbook')">Sketchbook 2015</button>
+                            <button class="filter-pill" onclick="filterMosaic('digital')">Digital / Generative</button>
+                        </div>
+
+                        <div class="mosaic-wall-grid" id="mosaic-grid">
+                            <div class="mosaic-item mosaic-wide" data-cat="illustrated">
+                                <div class="mosaic-img-box mosaic-concept-box concept-1">
+                                    <div class="concept-icon">🎨</div>
+                                    <div class="mosaic-overlay">
+                                        <div class="mosaic-overlay-content">
+                                            <span class="mosaic-tag">ILLUSTRATED</span>
+                                            <h4>Biomechanical Studies</h4>
+                                            <p>Fluid mixed-media &amp; ink explorations.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mosaic-item mosaic-tall" data-cat="sketch">
+                                <div class="mosaic-img-box mosaic-concept-box concept-2">
+                                    <div class="concept-icon">✏️</div>
+                                    <div class="mosaic-overlay">
+                                        <div class="mosaic-overlay-content">
+                                            <span class="mosaic-tag">PENCIL SKETCH</span>
+                                            <h4>Morphological Forms</h4>
+                                            <p>Crosshatching and dynamic anatomy studies.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mosaic-item" data-cat="sketchbook">
+                                <div class="mosaic-img-box mosaic-concept-box concept-3">
+                                    <div class="concept-icon">📖</div>
+                                    <div class="mosaic-overlay">
+                                        <div class="mosaic-overlay-content">
+                                            <span class="mosaic-tag">SKETCHBOOK 2015</span>
+                                            <h4>Floating Island Concept</h4>
+                                            <p>Environmental concepts and landscape framing.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mosaic-item" data-cat="digital">
+                                <div class="mosaic-img-box mosaic-concept-box concept-4">
+                                    <div class="concept-icon">🌌</div>
+                                    <div class="mosaic-overlay">
+                                        <div class="mosaic-overlay-content">
+                                            <span class="mosaic-tag">DIGITAL / GENERATIVE</span>
+                                            <h4>Pentagonal Recursion</h4>
+                                            <p>Procedural gradient mapping and spatial render.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mosaic-item mosaic-wide" data-cat="digital">
+                                <div class="mosaic-img-box mosaic-concept-box concept-5">
+                                    <div class="concept-icon">🔮</div>
+                                    <div class="mosaic-overlay">
+                                        <div class="mosaic-overlay-content">
+                                            <span class="mosaic-tag">DIGITAL / GENERATIVE</span>
+                                            <h4>Network Topology Mesh</h4>
+                                            <p>Aesthetic node networks &amp; shader studies.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /mosaic-wall-grid -->
+                    </div><!-- /proj-view-art -->
+                </div><!-- /subpage-projects -->
+
+                <!-- SUBPAGE 3: CONTACT -->
+                <div id="subpage-contact" class="subpage glass-panel">
+                    <div class="contact-page-container">
+                        <h1 class="section-title">Get In Touch</h1>
+                        <p class="contact-intro-text">Have an interesting engineering challenge, or want to connect about game development and systems architecture? Drop a message below or reach out on social.</p>
+                        <form class="contact-email-form" id="contact-form" onsubmit="handleContactSubmit(event)">
+                            <div class="form-row-2">
+                                <div class="form-group"><label for="form-name">Name</label><input type="text" id="form-name" placeholder="Your name" required></div>
+                                <div class="form-group"><label for="form-email">Email</label><input type="email" id="form-email" placeholder="Your email address" required></div>
+                            </div>
+                            <div class="form-group"><label for="form-subject">Subject</label><input type="text" id="form-subject" placeholder="What would you like to discuss?" required></div>
+                            <div class="form-group"><label for="form-message">Message</label><textarea id="form-message" rows="5" placeholder="Your message..." required></textarea></div>
+                            <div class="form-submit-row">
+                                <button type="submit" class="btn contact-submit-btn">Send Message</button>
+                                <span id="form-status-msg" class="form-status-msg"></span>
+                            </div>
+                        </form>
+                        <div class="socials-container">
+                            <a href="https://x.com/psypher5" target="_blank" class="social-icon-btn" data-label="x.com" title="Follow on X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                            <a href="https://www.linkedin.com/in/psypher5" target="_blank" class="social-icon-btn" data-label="linkedin" title="Connect on LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg></a>
+                            <a href="https://github.com/psypher5" target="_blank" class="social-icon-btn" data-label="github" title="Explore GitHub"><svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg></a>
+                            <a href="https://www.twitch.tv/psypher5" target="_blank" class="social-icon-btn" data-label="twitch" title="Twitch Streams"><svg viewBox="0 0 24 24"><path d="M11.64 5.93h1.43v4.28h-1.43m3.93-4.28H17v4.28h-1.43M5.93 2.36L3.07 5.21v13.57h4.29V23.1l2.85-2.86h3.58l5.71-5.71V2.36H5.93m11.43 10.71l-2.86 2.86h-3.57l-2.86 2.86v-2.86H5.21V3.79h12.15v9.28z"/></svg></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Nav Dock -->
+            <nav id="bottom-nav">
+                <button class="nav-dock-btn" data-tab="about" data-tooltip="Dashboard" onclick="switchTab('about')">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </button>
+                <button class="nav-dock-btn" data-tab="projects" data-tooltip="Projects &amp; Art" onclick="switchTab('projects')">
+                    <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                </button>
+                <button class="nav-dock-btn" data-tab="contact" data-tooltip="Contact" onclick="switchTab('contact')">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </button>
+            </nav>
+        </main>
+    </div>
+
+    <!-- Art Lightbox Modal -->
+    <div id="art-lightbox" class="modal-overlay" onclick="closeArtLightboxOnOutsideClick(event)">
+        <div class="lightbox-wrapper glass-panel">
+            <span class="modal-close" onclick="closeArtLightbox()">&times;</span>
+            <div class="lightbox-image-container"><img id="lightbox-img" src="" alt="Enlarged Artwork" class="lightbox-img"></div>
+            <div class="lightbox-caption">
+                <span id="lightbox-tag" class="mosaic-tag">3D DIORAMA</span>
+                <h3 id="lightbox-title">Artwork Title</h3>
+                <p id="lightbox-desc">Artwork description.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experience Modal -->
+    <div id="experience-modal" class="modal-overlay" onclick="closeModalOnOutsideClick(event)">
+        <div class="modal-wrapper glass-panel">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modal-content-area">
+                <h2 id="modal-title">Role Title</h2>
+                <div id="modal-company-meta" class="company-meta">Company Name &amp; Date</div>
+                <div id="modal-desc" class="job-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/starfield.js"></script>
+    <script src="scripts/app.js"></script>
+</body>
+</html>

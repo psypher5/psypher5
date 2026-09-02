@@ -16,7 +16,10 @@
     </div>
     <div id="app-container">
         <header id="site-header">
-            <img src="assets/logo-p5.png" alt="psypher5 Logo" class="logo" onclick="goHome()">
+            <div class="header-brand" onclick="goHome()" title="Return to Home">
+                <img src="assets/logo-p5.png" alt="psypher5 Logo" class="logo">
+                <span class="header-brand-name">psypher5</span>
+            </div>
         </header>
         <main>
             <section id="hero">
@@ -48,11 +51,12 @@
                                     </div>
                                     <div class="bio-narrative-box">
                                         <p>I'm an <strong>SDET who doesn't mind diving into a bit of chaos to bring order to the system</strong>. With a Master's degree in Game Development &amp; 3D Modelling and over a decade of experience in software and distributed systems, I specialise in designing, implementing, and maintaining the rigorous automation and test foundations that keep complex engineering workflows reliable.</p>
-                                        <p>With experience across <strong>desktop, mobile, and web</strong> through a wide range of industries including <strong>Games, Hospitality, Insurance, Finance, HPC, and Digital Twins</strong>, I bring a user-centric, holistic approach to testing. Whether architecting end-to-end automation frameworks or conducting deep exploratory quality passes, I ensure systems are robust, performant, and delightful to use.</p>
+                                        <p>With experience across <strong>desktop, mobile, and web</strong> through a wide range of industries including <strong>Games, Defence, Hospitality, Insurance, Finance, HPC, and Digital Twins</strong>,</p>
+                                        <p>I bring a user-centric, holistic approach to testing. Whether architecting end-to-end automation frameworks or conducting deep exploratory quality passes, I ensure systems are robust, performant, and delightful to use.</p>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Full-Width Family Narrative Box -->
+                            <!-- Full-Width Family Narrative Box (Centered) -->
                             <div class="bio-family-fullwidth">
                                 <p>Outside of work, I'm grounded by my family and two children, who remind me that the best systems, technical or otherwise, rely on empathy, clarity, and balance.</p>
                             </div>
@@ -69,7 +73,7 @@
                                         <span class="interest-block-num">01</span>
                                         <span class="interest-block-icon">🛸</span>
                                         <h3 class="interest-block-title">Hobby Game Dev</h3>
-                                        <span class="interest-block-badge">Godot 4 // C#</span>
+                                        <span class="interest-block-badge">Godot 4 // Three.js</span>
                                     </div>
                                     <div class="interest-block-expanded centered-exp">
                                         <div class="interest-exp-header">
@@ -77,9 +81,9 @@
                                             <span class="interest-exp-num">01</span>
                                         </div>
                                         <h4>Hobby Game Dev</h4>
-                                        <p class="interest-main-desc">Keeping my passion for game-dev alive with a few projects!</p>
+                                        <p class="interest-main-desc">Keeping my passion for game-dev alive with personal projects, diorama physics prototypes, and interactive 3D web experiments!</p>
                                         <button class="btn-interest-project-link" onclick="switchTab('projects'); event.stopPropagation();">
-                                            Explore Projects ↗
+                                            Explore Games ↗
                                         </button>
                                     </div>
                                 </div>
@@ -154,7 +158,7 @@
                                         <path class="wave-path-main" d="M 0,40 Q 125,5 250,40 T 500,40 T 750,40 T 1000,40" fill="none"/>
                                     </svg>
                                     <div class="wave-milestone-nodes" id="wave-milestone-nodes">
-                                        <!-- JS generates 11 clickable dots along the wave -->
+                                        <!-- JS generates 12 clickable dots along the wave -->
                                     </div>
                                 </div>
 
@@ -165,16 +169,12 @@
                                     <!-- Single Central Fixed-Height Card -->
                                     <div class="career-single-card glass-panel" id="career-single-card" onclick="openActiveMilestoneModal()">
                                         <div class="career-card-topbar">
-                                            <span class="career-card-date" id="panel-date">Feb 2023 — Present</span>
-                                            <span class="career-card-index" id="panel-index">01 / 11</span>
+                                            <span class="career-card-date" id="panel-date">Present</span>
+                                            <span class="career-card-index" id="panel-index">01 / 12</span>
                                         </div>
-                                        <h3 class="career-card-role" id="panel-role">Staff R&amp;D Engineer / Tech Architect</h3>
-                                        <div class="career-card-company" id="panel-company">Synopsys &amp; Ansys</div>
-                                        <div class="career-card-tags" id="panel-tags">
-                                            <span class="q-tag">HPC Cloud</span>
-                                            <span class="q-tag">Agentic AI</span>
-                                            <span class="q-tag">Playwright</span>
-                                        </div>
+                                        <h3 class="career-card-role" id="panel-role">Senior Engineer - Software Engineering (Assurance)</h3>
+                                        <div class="career-card-company" id="panel-company">[CLASSIFIED]</div>
+                                        <div class="career-card-tags" id="panel-tags"></div>
                                         <div class="career-card-inspect-hint">
                                             <span>Click card to examine full role scope ↗</span>
                                         </div>
@@ -191,7 +191,7 @@
                         <!-- ═══ SECTION: COMMERCIAL TITLES ═══ -->
                         <div class="open-section">
                             <h2 class="open-section-label">Commercial Titles</h2>
-                            <p class="section-sub-label">Tap an app icon to inspect the QA &amp; engineering scope</p>
+                            <p class="section-sub-label">Tap an app to inspect verified QA &amp; engineering scope across major releases</p>
                             <div class="phone-and-dossier-layout">
                                 <div class="device-phone-wrapper">
                                     <div class="smartphone-frame">
@@ -203,9 +203,10 @@
                                                 <span class="carrier-readout">PSYPHER-5G</span>
                                                 <span class="battery-icon">100%</span>
                                             </div>
+
                                             <div class="phone-scroll-content">
-                                                <!-- SECTION 1: SEGA HARDLIGHT -->
-                                                <div class="phone-studio-header">SEGA HARDLIGHT</div>
+                                                <!-- SECTION 1: SEGA -->
+                                                <div class="phone-studio-header">SEGA</div>
                                                 <div class="phone-app-grid">
                                                     <div class="app-icon-item" onclick="selectApp('sonicforces')">
                                                         <div class="app-squircle app-sonic">🦔</div>
@@ -214,6 +215,10 @@
                                                     <div class="app-icon-item" onclick="selectApp('sonicdash2')">
                                                         <div class="app-squircle app-sonicdash">⚡</div>
                                                         <span class="app-name">Sonic Boom</span>
+                                                    </div>
+                                                    <div class="app-icon-item" onclick="selectApp('valkyria')">
+                                                        <div class="app-squircle app-valkyria">🛡️</div>
+                                                        <span class="app-name">Valkyria 4</span>
                                                     </div>
                                                 </div>
 
@@ -264,25 +269,32 @@
                                 </div>
                                 <div class="device-dossier-panel" id="device-dossier-panel">
                                     <div class="dossier-header-row">
-                                        <span id="dossier-studio" class="dossier-studio-tag">Zynga / NaturalMotion</span>
-                                        <span id="dossier-platform" class="dossier-platform-tag">iOS / Android / Kindle</span>
+                                        <div class="dossier-meta-group">
+                                            <span id="dossier-studio" class="dossier-studio-tag">Zynga / NaturalMotion</span>
+                                            <span id="dossier-platform" class="dossier-platform-tag">iOS / Android / Kindle</span>
+                                        </div>
+                                        <a id="dossier-studio-link" href="https://www.naturalmotion.com/" target="_blank" rel="noopener noreferrer" class="btn-studio-visit">
+                                            Studio Website ↗
+                                        </a>
                                     </div>
                                     <h3 id="dossier-title">CSR Racing</h3>
-                                    <div id="dossier-tagline" class="project-card-tagline">Physics simulation &amp; global live-ops test automation</div>
-                                    <p id="dossier-desc" class="project-card-desc">Conducted precision physics simulation QA, telemetry benchmarking, and cross-platform multi-device validation for one of mobile gaming's premier racing franchises.</p>
+                                    <div id="dossier-tagline" class="project-card-tagline">130M+ Downloads // Drag Racing Phenomenon</div>
+                                    <p id="dossier-desc" class="project-card-desc">Conducted exploratory testing of new vehicle upgrade mechanics, drafted comprehensive JIRA bug reports with reproducible hardware steps, and authored Release Candidate (RC) submission test cases across iOS, Android, and Kindle hardware matrices.</p>
                                     <div class="dossier-bullet-wrap">
                                         <h4>Key Test Engineering Areas</h4>
                                         <ul id="dossier-bullet-list">
                                             <li>Vehicle suspension tuning, drag physics curves, and gearbox ratio verification.</li>
-                                            <li>Live-ops backend synchronisation, cloud saves, and multiplayer latency resilience.</li>
-                                            <li>Memory profiling and asset streaming optimisation across low-end Android chipsets.</li>
+                                            <li>Log and crash dump analysis using ADB, Android Monitor, Charles Proxy, and Xcode Instruments.</li>
+                                            <li>Memory profiling and asset streaming optimisation across low-end ARM chipsets.</li>
                                         </ul>
                                     </div>
-                                    <div class="project-card-tech" id="dossier-tech-tags">
-                                        <span class="tech-tag">Euphoria Physics</span>
-                                        <span class="tech-tag">iOS / Android</span>
-                                        <span class="tech-tag">Device Lab</span>
-                                        <span class="tech-tag">Memory Profiling</span>
+                                    <div class="dossier-action-row">
+                                        <div class="project-card-tech" id="dossier-tech-tags">
+                                            <span class="tech-tag">iOS / Android</span>
+                                            <span class="tech-tag">ADB Logcat</span>
+                                            <span class="tech-tag">Charles Proxy</span>
+                                            <span class="tech-tag">Xcode</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -292,191 +304,365 @@
                 </div>
 
                 <!-- ══════════════════════════════════════════ -->
-                <!-- SUBPAGE 2: PROJECTS & ART                 -->
+                <!-- SUBPAGE 2: PROJECTS & GAMES (Wooden Shelf) -->
                 <!-- ══════════════════════════════════════════ -->
                 <div id="subpage-projects" class="subpage glass-panel">
-                    <h1 class="section-title">Projects &amp; Art</h1>
-                    <div class="projects-subnav">
-                        <button class="proj-tab-btn active" onclick="switchProjectCategory('indie')">Personal Indie Games (3D Shelf)</button>
-                        <button class="proj-tab-btn" onclick="switchProjectCategory('art')">Art, Drawings &amp; Photography (Mosaic)</button>
+                    <h1 class="section-title">Projects &amp; Games</h1>
+                    <p class="section-sub-label centered-sub">Personal indie games, prototypes, and playable 3D browser builds</p>
+
+                    <!-- Tactile Wooden Shelf Alcove -->
+                    <div class="wooden-shelf-alcove">
+                        <div class="alcove-backboard">
+                            <div class="alcove-spotlight spot-1"></div>
+                            <div class="alcove-spotlight spot-2"></div>
+                            <div class="alcove-spotlight spot-3"></div>
+                            <div class="alcove-spotlight spot-4"></div>
+                        </div>
+
+                        <div class="game-boxes-rack">
+                            <!-- Box 1: ewe-FO (Mega Drive Clamshell Case) -->
+                            <div class="retro-console-box active" data-box="ewefo" onclick="selectIndieBox('ewefo')">
+                                <div class="box-shadow"></div>
+                                
+                                <!-- Clamshell Tray (Inner base holding the cartridge) -->
+                                <div class="case-body">
+                                    <div class="case-spine">
+                                        <div class="spine-grid-decal"></div>
+                                        <span class="spine-system">MEGA DRIVE</span>
+                                        <span class="spine-title">ewe-FO</span>
+                                        <span class="spine-code">P5-001</span>
+                                    </div>
+                                    <div class="case-interior">
+                                        <div class="cartridge-unit cartridge-megadrive">
+                                            <div class="cart-ribs"></div>
+                                            <div class="cart-label box-ewefo">
+                                                <div class="cart-top-bar">16-BIT CARTRIDGE</div>
+                                                <div class="cart-title">ewe-FO</div>
+                                                <div class="cart-sub">Abduct. Automate.</div>
+                                            </div>
+                                            <div class="cart-arrow">&#x25BC; INSERT INTO CONSOLE</div>
+                                            <button type="button" class="btn-cart-play" onclick="launchActiveGame(); event.stopPropagation();">
+                                                &#x25B6; PLAY CARTRIDGE
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Clamshell Front Lid (Opens in 3D) -->
+                                <div class="case-lid">
+                                    <div class="lid-face lid-front box-ewefo">
+                                        <div class="box-front-header">
+                                            <span class="box-platform-badge">MEGA DRIVE // WEB</span>
+                                            <span class="box-rating">E</span>
+                                        </div>
+                                        <div class="box-front-center">
+                                            <div class="box-logo-art">&#x1F6F8;&#x1F411;</div>
+                                            <h3>ewe-FO</h3>
+                                            <div class="box-subtitle">Abduct. Automate. Ascend.</div>
+                                        </div>
+                                        <div class="box-front-footer">
+                                            <span class="box-playable-badge">&#x25B6; PLAYABLE IN BROWSER</span>
+                                        </div>
+                                        <div class="case-latch"></div>
+                                    </div>
+                                    <div class="lid-face lid-inside">
+                                        <div class="manual-booklet">
+                                            <div class="manual-header">INSTRUCTION MANUAL</div>
+                                            <div class="manual-title">ewe-FO</div>
+                                            <p class="manual-desc">Diorama Abduction Edition</p>
+                                            <div class="manual-controls">
+                                                <span>WASD / Arrows: Steer</span>
+                                                <span>SPACE: Tractor Beam</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Box 2: Moments (PlayStation 1 Jewel Case) -->
+                            <div class="retro-console-box" data-box="moments" onclick="selectIndieBox('moments')">
+                                <div class="box-shadow"></div>
+                                
+                                <div class="case-body">
+                                    <div class="case-spine">
+                                        <div class="spine-grid-decal ps-decal"></div>
+                                        <span class="spine-system">PS1 CD-ROM</span>
+                                        <span class="spine-title">Moments</span>
+                                        <span class="spine-code">SLES-0994</span>
+                                    </div>
+                                    <div class="case-interior ps-interior">
+                                        <div class="cd-spindle">
+                                            <div class="cd-disc cd-moments">
+                                                <div class="cd-hole"></div>
+                                                <div class="cd-label">
+                                                    <span class="cd-title">Moments</span>
+                                                    <span class="cd-sub">Memories of Merlin</span>
+                                                </div>
+                                                <button type="button" class="btn-cd-play" onclick="launchActiveGame(); event.stopPropagation();">
+                                                    &#x25B6; BOOT DISC
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="case-lid">
+                                    <div class="lid-face lid-front box-moments">
+                                        <div class="box-front-header">
+                                            <span class="box-platform-badge">PS1 // WEBGL</span>
+                                            <span class="box-rating">E</span>
+                                        </div>
+                                        <div class="box-front-center">
+                                            <div class="box-logo-art">&#x1F43E;&#x1F308;</div>
+                                            <h3>Moments</h3>
+                                            <div class="box-subtitle">Memories of Merlin</div>
+                                        </div>
+                                        <div class="box-front-footer">
+                                            <span class="box-playable-badge">&#x25B6; PLAYABLE IN BROWSER</span>
+                                        </div>
+                                        <div class="case-latch"></div>
+                                    </div>
+                                    <div class="lid-face lid-inside">
+                                        <div class="manual-booklet manual-moments">
+                                            <div class="manual-header">MEMORIAL EDITION</div>
+                                            <div class="manual-title">Moments</div>
+                                            <p class="manual-desc">For Merlin the Miniature Dachshund</p>
+                                            <div class="manual-controls">
+                                                <span>A/D: Steer &bull; Space: Jump</span>
+                                                <span>E: Bark &bull; S: Slide</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Box 3: Adventures of Wick (Custom Engine Case) -->
+                            <div class="retro-console-box" data-box="wick" onclick="selectIndieBox('wick')">
+                                <div class="box-shadow"></div>
+                                
+                                <div class="case-body">
+                                    <div class="case-spine">
+                                        <div class="spine-grid-decal wick-decal"></div>
+                                        <span class="spine-system">CUSTOM C++</span>
+                                        <span class="spine-title">Adventures of Wick</span>
+                                        <span class="spine-code">WCK-003</span>
+                                    </div>
+                                    <div class="case-interior">
+                                        <div class="cartridge-unit cartridge-wick">
+                                            <div class="cart-ribs"></div>
+                                            <div class="cart-label box-wick">
+                                                <div class="cart-top-bar">C++ ENGINE ROM</div>
+                                                <div class="cart-title">Wick</div>
+                                                <div class="cart-sub">Keep the Flame Alive</div>
+                                            </div>
+                                            <div class="cart-arrow">&#x25BC; INSERT INTO CONSOLE</div>
+                                            <div class="cart-concept-badge">ENGINE CONCEPT</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="case-lid">
+                                    <div class="lid-face lid-front box-wick">
+                                        <div class="box-front-header">
+                                            <span class="box-platform-badge">CUSTOM C++</span>
+                                            <span class="box-rating">E</span>
+                                        </div>
+                                        <div class="box-front-center">
+                                            <div class="box-logo-art">&#x1F56F;&#xFE0F;&#x1F332;</div>
+                                            <h3>Adventures of Wick</h3>
+                                            <div class="box-subtitle">Keep the Flame Alive</div>
+                                        </div>
+                                        <div class="box-front-footer">
+                                            <span>SDL2 // 2D LIGHT RAYMARCHING</span>
+                                        </div>
+                                        <div class="case-latch"></div>
+                                    </div>
+                                    <div class="lid-face lid-inside">
+                                        <div class="manual-booklet">
+                                            <div class="manual-header">DESIGN DOCUMENT</div>
+                                            <div class="manual-title">Wick</div>
+                                            <p class="manual-desc">Dynamic 2D shadow raymarching and melting wax mechanics</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Box 4: Void Warden (Tactical Sci-Fi Module) -->
+                            <div class="retro-console-box" data-box="voidwarden" onclick="selectIndieBox('voidwarden')">
+                                <div class="box-shadow"></div>
+                                
+                                <div class="case-body">
+                                    <div class="case-spine">
+                                        <div class="spine-grid-decal void-decal"></div>
+                                        <span class="spine-system">UNITY C#</span>
+                                        <span class="spine-title">Void Warden</span>
+                                        <span class="spine-code">VWD-004</span>
+                                    </div>
+                                    <div class="case-interior">
+                                        <div class="cartridge-unit cartridge-void">
+                                            <div class="cart-ribs"></div>
+                                            <div class="cart-label box-voidwarden">
+                                                <div class="cart-top-bar">ORBITAL DEFENSE ROM</div>
+                                                <div class="cart-title">Void Warden</div>
+                                                <div class="cart-sub">Sector: Locked Down</div>
+                                            </div>
+                                            <div class="cart-arrow">&#x25BC; INSERT INTO CONSOLE</div>
+                                            <div class="cart-concept-badge">ORBIT PROTOTYPE</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="case-lid">
+                                    <div class="lid-face lid-front box-voidwarden">
+                                        <div class="box-front-header">
+                                            <span class="box-platform-badge">UNITY C#</span>
+                                            <span class="box-rating">T</span>
+                                        </div>
+                                        <div class="box-front-center">
+                                            <div class="box-logo-art">&#x1F6E1;&#xFE0F;&#x1F6F0;&#xFE0F;</div>
+                                            <h3>Void Warden</h3>
+                                            <div class="box-subtitle">Sector Status: Locked Down</div>
+                                        </div>
+                                        <div class="box-front-footer">
+                                            <span>TACTICAL ORBITAL DEFENSE</span>
+                                        </div>
+                                        <div class="case-latch"></div>
+                                    </div>
+                                    <div class="lid-face lid-inside">
+                                        <div class="manual-booklet">
+                                            <div class="manual-header">TACTICAL BRIEFING</div>
+                                            <div class="manual-title">Void Warden</div>
+                                            <p class="manual-desc">Automated point-defense grids and shield vector modulation</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Solid Wood Shelf Ledge with Depth -->
+                        <div class="wooden-shelf-ledge">
+                            <div class="shelf-wood-surface"></div>
+                            <div class="shelf-wood-bevel"></div>
+                            <div class="shelf-wood-shadow"></div>
+                        </div>
                     </div>
 
-                    <div id="proj-view-indie" class="project-category-view active">
-                        <div class="game-shelf-stage">
-                            <div class="shelf-lighting-glow"></div>
-                            <div class="game-boxes-rack">
-                                <div class="game-box-3d active" data-box="ewefo" onclick="selectIndieBox('ewefo')">
-                                    <div class="box-face box-front box-ewefo">
-                                        <div class="box-front-header"><span class="box-platform-badge">GODOT 4</span><span class="box-rating">E</span></div>
-                                        <div class="box-front-center"><div class="box-logo-art">&#x1F6F8;&#x1F411;</div><h3>ewe-FO</h3><div class="box-subtitle">Abduct. Automate. Ascend.</div></div>
-                                        <div class="box-front-footer"><span>2.5D DIORAMA // C#</span></div>
-                                    </div>
-                                    <div class="box-face box-spine"><span>ewe-FO // GODOT 4</span></div>
-                                    <div class="box-face box-top"></div>
-                                    <div class="box-shadow"></div>
+                    <!-- Selected Game Dossier Panel -->
+                    <div class="indie-detail-dossier" id="indie-detail-dossier">
+                        <div class="indie-dossier-grid">
+                            <div class="indie-dossier-main">
+                                <div class="indie-badge-row">
+                                    <span id="indie-status" class="status-tag status-in-dev">Playable Prototype</span>
+                                    <span id="indie-engine" class="dossier-platform-tag">Three.js / WebGL</span>
                                 </div>
-                                <div class="game-box-3d" data-box="voidwarden" onclick="selectIndieBox('voidwarden')">
-                                    <div class="box-face box-front box-voidwarden">
-                                        <div class="box-front-header"><span class="box-platform-badge">UNITY C#</span><span class="box-rating">T</span></div>
-                                        <div class="box-front-center"><div class="box-logo-art">&#x1F6E1;&#xFE0F;&#x1F6F0;&#xFE0F;</div><h3>Void Warden</h3><div class="box-subtitle">Sector Status: Locked Down</div></div>
-                                        <div class="box-front-footer"><span>TACTICAL ORBITAL DEFENSE</span></div>
-                                    </div>
-                                    <div class="box-face box-spine"><span>VOID WARDEN // UNITY</span></div>
-                                    <div class="box-face box-top"></div>
-                                    <div class="box-shadow"></div>
-                                </div>
-                                <div class="game-box-3d" data-box="wick" onclick="selectIndieBox('wick')">
-                                    <div class="box-face box-front box-wick">
-                                        <div class="box-front-header"><span class="box-platform-badge">CUSTOM C++</span><span class="box-rating">E</span></div>
-                                        <div class="box-front-center"><div class="box-logo-art">&#x1F56F;&#xFE0F;&#x1F332;</div><h3>Adventures of Wick</h3><div class="box-subtitle">Keep the Flame Alive</div></div>
-                                        <div class="box-front-footer"><span>SDL2 // OPENGL SHADOWS</span></div>
-                                    </div>
-                                    <div class="box-face box-spine"><span>WICK // C++ ENGINE</span></div>
-                                    <div class="box-face box-top"></div>
-                                    <div class="box-shadow"></div>
+                                <h3 id="indie-title">ewe-FO</h3>
+                                <div id="indie-tagline" class="project-card-tagline">Abduct. Automate. Ascend.</div>
+                                <p id="indie-desc" class="project-card-desc">An arcade physics-based abduction game set across a diorama-styled British countryside. Pilot a tractor-beam equipped UFO by night to herd and harvest livestock, while building automated conveyor networks and energy condensers by day.</p>
+                                
+                                <!-- Play In Browser Action Button -->
+                                <div class="play-action-container" id="play-action-container">
+                                    <button class="btn-play-game" id="btn-play-game" onclick="launchActiveGame()">
+                                        <span class="play-icon">&#x25B6;</span> Play in Browser
+                                    </button>
+                                    <span class="play-note">Instant 3D WebGL • Keyboard &amp; Mouse / Touch</span>
                                 </div>
                             </div>
-                            <div class="physical-shelf-ledge">
-                                <div class="shelf-top-surface"></div>
-                                <div class="shelf-front-bevel"></div>
-                                <div class="shelf-neon-strip"></div>
-                            </div>
-                        </div>
-                        <div class="indie-detail-dossier" id="indie-detail-dossier">
-                            <div class="indie-dossier-grid">
-                                <div class="indie-dossier-main">
-                                    <div class="indie-badge-row">
-                                        <span id="indie-status" class="status-tag status-in-dev">Evolving Prototype</span>
-                                        <span id="indie-engine" class="dossier-platform-tag">Godot 4.3 (C# &amp; GDScript)</span>
-                                    </div>
-                                    <h3 id="indie-title">ewe-FO</h3>
-                                    <div id="indie-tagline" class="project-card-tagline">Abduct. Automate. Ascend.</div>
-                                    <p id="indie-desc" class="project-card-desc">An arcade physics-based abduction game set across a diorama-styled British countryside. Pilot a tractor-beam equipped UFO by night to herd and harvest livestock, while building automated conveyor networks, energy condensors, and processing pipelines by day.</p>
-                                </div>
-                                <div class="indie-dossier-sidebar">
-                                    <h4>Core Pillars &amp; Mechanics</h4>
-                                    <ul id="indie-pillars-list">
-                                        <li>Dynamic tractor-beam spring physics &amp; multi-body rope constraints.</li>
-                                        <li>2.5D tilt-shift camera shader with day/night atmospheric transitions.</li>
-                                        <li>Factory-style automation loops: wool spin, raw milk refining, and alien tech trees.</li>
-                                    </ul>
-                                    <div class="project-card-tech" id="indie-tech-pills">
-                                        <span class="tech-tag">Godot 4</span>
-                                        <span class="tech-tag">C# / GDScript</span>
-                                        <span class="tech-tag">Custom Physics</span>
-                                        <span class="tech-tag">Automation</span>
-                                    </div>
+                            <div class="indie-dossier-sidebar">
+                                <h4>Core Pillars &amp; Mechanics</h4>
+                                <ul id="indie-pillars-list">
+                                    <li>Dynamic tractor-beam spring physics &amp; multi-body rope constraints.</li>
+                                    <li>2.5D tilt-shift camera shader with day/night atmospheric transitions.</li>
+                                    <li>Factory-style automation loops: wool spin, raw milk refining, and alien tech trees.</li>
+                                </ul>
+                                <div class="project-card-tech" id="indie-tech-pills">
+                                    <span class="tech-tag">Three.js</span>
+                                    <span class="tech-tag">WebGL</span>
+                                    <span class="tech-tag">Custom Physics</span>
+                                    <span class="tech-tag">Automation</span>
                                 </div>
                             </div>
                         </div>
-                    </div><!-- /proj-view-indie -->
-
-                    <div id="proj-view-art" class="project-category-view">
-                        <div class="mosaic-filter-bar">
-                            <button class="filter-pill active" onclick="filterMosaic('all')">All Works</button>
-                            <button class="filter-pill" onclick="filterMosaic('illustrated')">Illustrated</button>
-                            <button class="filter-pill" onclick="filterMosaic('sketch')">Pencil Sketches</button>
-                            <button class="filter-pill" onclick="filterMosaic('sketchbook')">Sketchbook 2015</button>
-                            <button class="filter-pill" onclick="filterMosaic('digital')">Digital / Generative</button>
+                        <!-- Concept Art Strip -->
+                        <div class="indie-concept-section" id="indie-concept-section">
+                            <div class="indie-concept-header">
+                                <h4>Visual Development &amp; Assets</h4>
+                                <span class="concept-hint-tag">Tap thumbnail to inspect full resolution ↗</span>
+                            </div>
+                            <div class="indie-concept-gallery" id="indie-concept-gallery">
+                                <!-- Populated dynamically by JS -->
+                            </div>
                         </div>
-
-                        <div class="mosaic-wall-grid" id="mosaic-grid">
-                            <div class="mosaic-item mosaic-wide" data-cat="illustrated">
-                                <div class="mosaic-img-box mosaic-concept-box concept-1">
-                                    <div class="concept-icon">🎨</div>
-                                    <div class="mosaic-overlay">
-                                        <div class="mosaic-overlay-content">
-                                            <span class="mosaic-tag">ILLUSTRATED</span>
-                                            <h4>Biomechanical Studies</h4>
-                                            <p>Fluid mixed-media &amp; ink explorations.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mosaic-item mosaic-tall" data-cat="sketch">
-                                <div class="mosaic-img-box mosaic-concept-box concept-2">
-                                    <div class="concept-icon">✏️</div>
-                                    <div class="mosaic-overlay">
-                                        <div class="mosaic-overlay-content">
-                                            <span class="mosaic-tag">PENCIL SKETCH</span>
-                                            <h4>Morphological Forms</h4>
-                                            <p>Crosshatching and dynamic anatomy studies.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mosaic-item" data-cat="sketchbook">
-                                <div class="mosaic-img-box mosaic-concept-box concept-3">
-                                    <div class="concept-icon">📖</div>
-                                    <div class="mosaic-overlay">
-                                        <div class="mosaic-overlay-content">
-                                            <span class="mosaic-tag">SKETCHBOOK 2015</span>
-                                            <h4>Floating Island Concept</h4>
-                                            <p>Environmental concepts and landscape framing.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mosaic-item" data-cat="digital">
-                                <div class="mosaic-img-box mosaic-concept-box concept-4">
-                                    <div class="concept-icon">🌌</div>
-                                    <div class="mosaic-overlay">
-                                        <div class="mosaic-overlay-content">
-                                            <span class="mosaic-tag">DIGITAL / GENERATIVE</span>
-                                            <h4>Pentagonal Recursion</h4>
-                                            <p>Procedural gradient mapping and spatial render.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mosaic-item mosaic-wide" data-cat="digital">
-                                <div class="mosaic-img-box mosaic-concept-box concept-5">
-                                    <div class="concept-icon">🔮</div>
-                                    <div class="mosaic-overlay">
-                                        <div class="mosaic-overlay-content">
-                                            <span class="mosaic-tag">DIGITAL / GENERATIVE</span>
-                                            <h4>Network Topology Mesh</h4>
-                                            <p>Aesthetic node networks &amp; shader studies.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /mosaic-wall-grid -->
-                    </div><!-- /proj-view-art -->
+                    </div>
                 </div><!-- /subpage-projects -->
 
                 <!-- SUBPAGE 3: CONTACT -->
                 <div id="subpage-contact" class="subpage glass-panel">
                     <div class="contact-page-container">
                         <h1 class="section-title">Get In Touch</h1>
-                        <p class="contact-intro-text">Have an interesting engineering challenge, or want to connect about game development and systems architecture? Drop a message below or reach out directly.</p>
+                        <p class="contact-intro-text">Open to exciting engineering challenges, game development collaborations, or simply connecting about distributed systems and testing architectures.</p>
                         
-                        <form class="contact-email-form" id="contact-form" onsubmit="handleContactSubmit(event)">
-                            <div class="form-row-2">
-                                <div class="form-group"><label for="form-name">Name</label><input type="text" id="form-name" placeholder="Your name" required></div>
-                                <div class="form-group"><label for="form-email">Email</label><input type="email" id="form-email" placeholder="Your email address" required></div>
-                            </div>
-                            <div class="form-group"><label for="form-subject">Subject</label><input type="text" id="form-subject" placeholder="What would you like to discuss?" required></div>
-                            <div class="form-group"><label for="form-message">Message</label><textarea id="form-message" rows="4" placeholder="Your message..." required></textarea></div>
-                            <div class="form-submit-row">
-                                <button type="submit" class="btn contact-submit-btn">Send Message</button>
-                                <span id="form-status-msg" class="form-status-msg"></span>
-                            </div>
-                        </form>
+                        <!-- Centerpiece: Copy Email Button & Direct Email CTA -->
+                        <div class="contact-email-actions">
+                            <button type="button" class="btn-copy-email" onclick="copyEmailToClipboard(event)">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                <span>Copy Email: tom@psypher5.co.uk</span>
+                            </button>
+                            <a href="mailto:tom@psypher5.co.uk" class="btn-direct-email">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                <span>Send Direct Email ↗</span>
+                            </a>
+                            <span id="copy-email-toast" class="copy-email-toast"></span>
+                        </div>
 
-                        <div class="contact-social-section">
-                            <div class="social-section-title">Or Connect Directly:</div>
-                            <div class="socials-container">
-                                <a href="https://x.com/psypher5" target="_blank" rel="noopener noreferrer" class="social-icon-btn" data-label="x.com" title="Follow on X / Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-                                <a href="https://www.linkedin.com/in/psypher5" target="_blank" rel="noopener noreferrer" class="social-icon-btn" data-label="linkedin" title="Connect on LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg></a>
-                                <a href="https://github.com/psypher5" target="_blank" rel="noopener noreferrer" class="social-icon-btn" data-label="github" title="Explore GitHub"><svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg></a>
-                                <a href="https://www.twitch.tv/psypher5" target="_blank" rel="noopener noreferrer" class="social-icon-btn" data-label="twitch" title="Twitch Streams"><svg viewBox="0 0 24 24"><path d="M11.64 5.93h1.43v4.28h-1.43m3.93-4.28H17v4.28h-1.43M5.93 2.36L3.07 5.21v13.57h4.29V23.1l2.85-2.86h3.58l5.71-5.71V2.36H5.93m11.43 10.71l-2.86 2.86h-3.57l-2.86 2.86v-2.86H5.21V3.79h12.15v9.28z"/></svg></a>
-                                <a href="mailto:tom@psypher5.co.uk" class="social-icon-btn" data-label="email" title="Direct Email"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
-                            </div>
+                        <!-- Front-and-Center Social Links Showcase -->
+                        <div class="social-showcase-grid">
+                            <a href="https://www.linkedin.com/in/psypher5" target="_blank" rel="noopener noreferrer" class="social-card social-linkedin">
+                                <div class="social-card-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                                </div>
+                                <div class="social-card-info">
+                                    <span class="social-network">LinkedIn</span>
+                                    <span class="social-handle">in/psypher5</span>
+                                    <span class="social-desc">Professional background &amp; recommendations</span>
+                                </div>
+                                <span class="social-card-arrow">↗</span>
+                            </a>
+
+                            <a href="https://github.com/psypher5" target="_blank" rel="noopener noreferrer" class="social-card social-github">
+                                <div class="social-card-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                                </div>
+                                <div class="social-card-info">
+                                    <span class="social-network">GitHub</span>
+                                    <span class="social-handle">@psypher5</span>
+                                    <span class="social-desc">Open source tools, shaders &amp; game repos</span>
+                                </div>
+                                <span class="social-card-arrow">↗</span>
+                            </a>
+
+                            <a href="https://x.com/psypher5" target="_blank" rel="noopener noreferrer" class="social-card social-x">
+                                <div class="social-card-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                </div>
+                                <div class="social-card-info">
+                                    <span class="social-network">X / Twitter</span>
+                                    <span class="social-handle">@psypher5</span>
+                                    <span class="social-desc">Tech musings, game dev updates &amp; thoughts</span>
+                                </div>
+                                <span class="social-card-arrow">↗</span>
+                            </a>
+
+                            <a href="https://www.twitch.tv/psypher5" target="_blank" rel="noopener noreferrer" class="social-card social-twitch">
+                                <div class="social-card-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M11.64 5.93h1.43v4.28h-1.43m3.93-4.28H17v4.28h-1.43M5.93 2.36L3.07 5.21v13.57h4.29V23.1l2.85-2.86h3.58l5.71-5.71V2.36H5.93m11.43 10.71l-2.86 2.86h-3.57l-2.86 2.86v-2.86H5.21V3.79h12.15v9.28z"/></svg>
+                                </div>
+                                <div class="social-card-info">
+                                    <span class="social-network">Twitch</span>
+                                    <span class="social-handle">twitch.tv/psypher5</span>
+                                    <span class="social-desc">Live coding sessions &amp; gaming streams</span>
+                                </div>
+                                <span class="social-card-arrow">↗</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -485,28 +671,59 @@
 
             <!-- Bottom Nav Dock -->
             <nav id="bottom-nav">
-                <button class="nav-dock-btn" data-tab="about" data-tooltip="Dashboard" onclick="switchTab('about')">
+                <button class="nav-dock-btn" data-tab="about" data-tooltip="Dashboard" aria-label="Dashboard" onclick="switchTab('about')">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </button>
-                <button class="nav-dock-btn" data-tab="projects" data-tooltip="Projects &amp; Art" onclick="switchTab('projects')">
-                    <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                <button class="nav-dock-btn" data-tab="projects" data-tooltip="Projects &amp; Games" aria-label="Projects and Games" onclick="switchTab('projects')">
+                    <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                 </button>
-                <button class="nav-dock-btn" data-tab="contact" data-tooltip="Contact" onclick="switchTab('contact')">
+                <button class="nav-dock-btn" data-tab="contact" data-tooltip="Contact" aria-label="Contact" onclick="switchTab('contact')">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 </button>
             </nav>
         </main>
     </div>
 
-    <!-- Art Lightbox Modal -->
+    <!-- Playable Game Theater Modal -->
+    <div id="game-theater-modal" class="modal-overlay" onclick="closeGameTheaterOnOutsideClick(event)">
+        <div class="theater-wrapper glass-panel">
+            <div class="theater-header">
+                <div class="theater-title-group">
+                    <span class="theater-badge">LIVE PLAYABLE</span>
+                    <h3 id="theater-title">Game Title</h3>
+                </div>
+                <div class="theater-actions">
+                    <button class="theater-btn" onclick="toggleTheaterFullscreen()" title="Toggle Fullscreen">&#x26F6; Fullscreen</button>
+                    <button class="theater-btn theater-close" onclick="closeGameTheater()" title="Close Game">&times; Close</button>
+                </div>
+            </div>
+            <div class="theater-viewport">
+                <iframe id="theater-iframe" src="" allow="autoplay; fullscreen; gamepad" frameborder="0"></iframe>
+            </div>
+            <div class="theater-footer">
+                <span id="theater-hint" class="theater-hint">Use Keyboard &amp; Mouse / Touch to play &bull; Press ESC to close</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Art Lightbox Modal (with Stack Navigation & Dot Strip) -->
     <div id="art-lightbox" class="modal-overlay" onclick="closeArtLightboxOnOutsideClick(event)">
         <div class="lightbox-wrapper glass-panel">
             <span class="modal-close" onclick="closeArtLightbox()">&times;</span>
-            <div class="lightbox-image-container"><img id="lightbox-img" src="" alt="Enlarged Artwork" class="lightbox-img"></div>
+            <div class="lightbox-image-container">
+                <button class="lightbox-nav-btn lightbox-prev" id="lightbox-prev" onclick="stepLightboxImage(-1, event)" aria-label="Previous image">&#8592;</button>
+                <img id="lightbox-img" src="" alt="Enlarged Artwork" class="lightbox-img">
+                <button class="lightbox-nav-btn lightbox-next" id="lightbox-next" onclick="stepLightboxImage(1, event)" aria-label="Next image">&#8594;</button>
+                <div class="lightbox-counter" id="lightbox-counter">1 / 1</div>
+            </div>
             <div class="lightbox-caption">
-                <span id="lightbox-tag" class="mosaic-tag">3D DIORAMA</span>
+                <div class="lightbox-top-meta">
+                    <span id="lightbox-tag" class="mosaic-tag">3D DIORAMA</span>
+                    <span id="lightbox-badge" class="stack-count-badge">STACK (1/1)</span>
+                </div>
                 <h3 id="lightbox-title">Artwork Title</h3>
                 <p id="lightbox-desc">Artwork description.</p>
+                <div class="lightbox-dots-strip" id="lightbox-dots"></div>
             </div>
         </div>
     </div>

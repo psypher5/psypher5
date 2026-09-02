@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Moments — An emotional 3D memorial journey for Merlin the miniature dachshund across rainbow bridges and enchanted meadows." />
+  <title>Moments — A Journey for Merlin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="./assets/index-DubMtkpk.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CSb6qItX.css">
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+
+  <!-- Cinematic Vignette & Tilt Shift Overlays -->
+  <div class="tilt-shift-layer"></div>
+  <div class="vignette-layer"></div>
+
+  <!-- Audio Toggle Button -->
+  <button id="audio-toggle" class="audio-btn" aria-label="Toggle Sound" title="Toggle Sound">
+    <span id="audio-icon">🔊</span>
+  </button>
+
+  <!-- Title Screen Overlay -->
+  <div id="title-screen" class="ui-overlay">
+    <div class="title-content">
+      <!-- Top Header -->
+      <div class="title-header">
+        <h1 class="title-text">Moments</h1>
+      </div>
+
+      <!-- Bottom Section (Positioned underneath Merlin) -->
+      <div class="title-footer">
+        <p class="title-subtitle">Memories of Merlin</p>
+        <div class="title-prompt-container">
+          <p class="title-prompt">Press Space, Click, or Tap to Begin</p>
+        </div>
+        <div class="title-controls-tip">
+          <span><kbd>A</kbd><kbd>D</kbd> Steer</span>
+          <span><kbd>Space</kbd> Jump</span>
+          <span><kbd>E</kbd> Bark</span>
+          <span><kbd>S</kbd> Dig / Slide</span>
+          <span><kbd>Q</kbd> Sniff</span>
+          <span><kbd>1</kbd>-<kbd>5</kbd> Gems</span>
+          <span><kbd>Esc</kbd> Goodbye Menu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Game HUD -->
+  <div id="hud" class="ui-overlay" style="display: none;">
+    <!-- Memory Prism Gems Belt (Chaos Emeralds) -->
+    <div id="hud-gems-belt" class="hud-gems-belt">
+      <button class="gem-slot" data-gem="0" id="gem-btn-0" title="Sunstone: Sunburst Dash [1]" aria-label="Sunburst Dash">
+        <span class="gem-icon">🟡</span>
+        <span class="gem-key">1</span>
+      </button>
+      <button class="gem-slot" data-gem="1" id="gem-btn-1" title="Blossom Quartz: Petal Shield [2]" aria-label="Petal Shield">
+        <span class="gem-icon">🌸</span>
+        <span class="gem-key">2</span>
+      </button>
+      <button class="gem-slot" data-gem="2" id="gem-btn-2" title="Amethyst: Dragon's Roar [3]" aria-label="Dragon's Roar">
+        <span class="gem-icon">🟣</span>
+        <span class="gem-key">3</span>
+      </button>
+      <button class="gem-slot" data-gem="3" id="gem-btn-3" title="Starlight Diamond: Time Freeze [4]" aria-label="Time Freeze">
+        <span class="gem-icon">❄️</span>
+        <span class="gem-key">4</span>
+      </button>
+      <button class="gem-slot" data-gem="4" id="gem-btn-4" title="Rainbow Opal: Super Merlin [5]" aria-label="Super Merlin">
+        <span class="gem-icon">🌈</span>
+        <span class="gem-key">5</span>
+      </button>
+    </div>
+
+    <!-- Active Gem Power Notification Banner -->
+    <div id="gem-power-banner" class="gem-power-banner" style="display: none;">
+      <span id="gem-power-text">✨ SUNBURST DASH ACTIVE! ✨</span>
+    </div>
+    <!-- Journey Progress & Distance -->
+    <div class="hud-top-left">
+      <div id="zone-indicator" class="hud-zone">
+        <span id="zone-icon" class="zone-icon">🌻</span>
+        <div class="zone-text-group">
+          <span id="zone-name" class="zone-name">Golden Sunflower Meadow</span>
+          <span id="zone-sub" class="zone-sub">Where we chased the light</span>
+        </div>
+      </div>
+
+      <!-- Zoomies Energy Gauge -->
+      <div id="zoomies-hud" class="hud-zoomies">
+        <span class="zoomies-label">⚡ ZOOMIES</span>
+        <div class="zoomies-bar">
+          <div id="zoomies-fill" class="zoomies-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hud-top-right">
+      <div class="hud-distance-card">
+        <span class="hud-distance-label">JOURNEY</span>
+        <div class="hud-distance-val">
+          <span id="distance-counter">0</span><span class="hud-unit">m</span>
+        </div>
+        <div class="hud-progress-bar">
+          <div id="progress-fill" class="hud-progress-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boost Flame Banner -->
+    <div id="boost-hud" class="hud-boost" style="display: none;">
+      <span>⚡ SUNBEAM SPEED! ⚡</span>
+    </div>
+
+    <!-- Boss Battle Health Meter on Rainbow Bridge -->
+    <div id="boss-hud" class="hud-boss" style="display: none;">
+      <span class="boss-name">✨ Playful Rainbow Dragon ✨</span>
+      <div id="boss-hearts" class="boss-hearts">❤️❤️❤️</div>
+    </div>
+
+    <!-- Memory Vignette Notification Card -->
+    <div id="memory-card" class="memory-card" style="display: none;">
+      <div class="memory-card-glow"></div>
+      <div id="memory-icon" class="memory-icon">🌻</div>
+      <h3 id="memory-title" class="memory-title">The First Sunbeam</h3>
+      <p id="memory-quote" class="memory-quote">"Warm summer grass under stubby paws. You chased every golden ray."</p>
+    </div>
+
+    <!-- Mobile / On-Screen Touch Controls -->
+    <div id="touch-controls" class="touch-controls">
+      <div class="touch-left">
+        <button id="touch-left-btn" class="touch-btn touch-steer" aria-label="Steer Left">◀</button>
+        <button id="touch-right-btn" class="touch-btn touch-steer" aria-label="Steer Right">▶</button>
+      </div>
+      <div class="touch-right">
+        <button id="touch-sniff-btn" class="touch-btn touch-action touch-sniff" aria-label="Sniff">👃 SNIFF</button>
+        <button id="touch-dig-btn" class="touch-btn touch-action touch-dig" aria-label="Dig">⬇️ DIG</button>
+        <button id="touch-bark-btn" class="touch-btn touch-action touch-bark" aria-label="Bark">⚡ BARK</button>
+        <button id="touch-jump-btn" class="touch-btn touch-action touch-jump" aria-label="Jump">🐾 JUMP</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedication Memorial Screen / Esc Menu -->
+  <div id="dedication-screen" class="ui-overlay" style="display: none;">
+    <div class="dedication-content">
+      <div class="dedication-halo">
+        <img src="./assets/merlin_portrait.jpg" alt="Merlin" class="dedication-portrait" />
+        <div class="halo-sparkle"></div>
+      </div>
+      <h2 class="dedication-name">Merlin</h2>
+      <p class="dedication-text">
+        The bravest dragon hunter.<br>
+        The fastest meadow runner.<br>
+        The very best boy.<br>
+        <span class="dedication-sub">Forever running free across the Rainbow Bridge.</span>
+      </p>
+
+      <div class="dedication-stats">
+        <div class="stat-box">
+          <span class="stat-num" id="stat-dist">1,200m</span>
+          <span class="stat-lbl">Journey Traveled</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="stat-memories">5 / 5</span>
+          <span class="stat-lbl">Memories Cherished</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="stat-dragons">0</span>
+          <span class="stat-lbl">Dragons Befriended</span>
+        </div>
+      </div>
+
+      <div class="dedication-actions">
+        <button id="resume-btn" class="dedication-btn resume-btn" style="display: none;">🏃 Resume Run</button>
+        <button id="pet-merlin-btn" class="dedication-btn pet-btn">🐾 Pet Merlin</button>
+        <button id="replay-btn" class="dedication-btn primary-btn">🕊️ Say Goodbye (Return to Title)</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

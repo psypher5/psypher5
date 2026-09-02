@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Ewe-FO — A modern 3D tilt-shift miniature farm arcade game. Pilot your saucer, abduct sheep, automate wool, and baffle the British authorities!" />
+  <title>🛸 Ewe-FO — Abduct. Automate. Ascend.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="./assets/index-Dr3YQlJb.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-hh0fZFoc.css">
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Visual Polish: Lens Flare & Tilt-Shift Edge Blur Mask -->
+    <div class="tilt-shift-lens"></div>
+    <div class="cinematic-vignette"></div>
+
+    <!-- Diegetic Floating Ticker (Top or Bottom) -->
+    <div id="news-ticker-container" class="news-ticker-container">
+      <div class="ticker-badge">🔴 BBC SHIRE BREAKING</div>
+      <div class="ticker-marquee-wrapper">
+        <div id="ticker-text" class="ticker-marquee">
+          WELCOME TO LITTLE DRIFFIELD • FARMER GILES REPORTS ALL PRIZE SHEEP ARE PRESENT AND ACCOUNTED FOR • LOCAL MARROW REACHES RECORD 4 FEET • NO UNIDENTIFIED FLYING DISCS REPORTED TODAY
+        </div>
+      </div>
+    </div>
+
+    <!-- In-Game HUD -->
+    <div id="hud" class="hud-overlay" style="display: none;">
+      <!-- Top Left Stats Panel -->
+      <div class="hud-panel hud-top-left">
+        <div class="stat-badge wool-badge">
+          <span class="stat-icon">🧶</span>
+          <div class="stat-meta">
+            <span class="stat-label">WOOL HARVEST</span>
+            <span id="stat-wool" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <div class="stat-badge score-badge">
+          <span class="stat-icon">⭐</span>
+          <div class="stat-meta">
+            <span class="stat-label">SCORE</span>
+            <span id="stat-score" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <div class="stat-badge night-badge">
+          <span class="stat-icon">🌙</span>
+          <div class="stat-meta">
+            <span id="night-title" class="stat-label">NIGHT 1</span>
+            <span id="stat-timer" class="stat-value timer-value">60s</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Right Threat & Distraction Panel -->
+      <div class="hud-panel hud-top-right">
+        <div class="security-card">
+          <div class="security-header">
+            <span class="sec-label">CONSPIRACY SUSPICION</span>
+            <span id="sec-percent" class="sec-percent">0%</span>
+          </div>
+          <div class="security-bar-bg">
+            <div id="security-bar-fill" class="security-bar-fill"></div>
+          </div>
+          <button id="btn-distract" class="btn-distract" title="Spend 10 Wool to plant a boring news story and reduce suspicion!">
+            <span class="distract-icon">📰</span>
+            <span class="distract-text">Plant Boring News (-20% Suspicion)</span>
+            <span class="distract-cost">10 🧶</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Center Combo Banner -->
+      <div id="combo-container" class="combo-container">
+        <div id="combo-multiplier" class="combo-multiplier">2x COMBO!</div>
+        <div id="combo-text" class="combo-text">DOUBLE SLURP!</div>
+      </div>
+
+      <!-- Bottom UFO Cockpit Lights & Cargo Bay -->
+      <div class="hud-bottom-center">
+        <div class="cockpit-pod-housing">
+          <div class="pod-label">UFO CARGO BAYS</div>
+          <div id="pod-slots" class="pod-slots">
+            <div class="pod-slot empty" id="pod-0"><span class="pod-icon">🐑</span></div>
+            <div class="pod-slot empty" id="pod-1"><span class="pod-icon">🐑</span></div>
+            <div class="pod-slot empty" id="pod-2"><span class="pod-icon">🐑</span></div>
+          </div>
+          <div class="pod-tip">DROP IN BARN ROOF FUNNEL ⬇️</div>
+        </div>
+      </div>
+
+      <!-- Bottom Audio & Settings -->
+      <div class="hud-bottom-right">
+        <button id="btn-mute" class="hud-icon-btn" aria-label="Toggle Sound" title="Sound Mute/Unmute">
+          <span id="audio-status-icon">🔊</span>
+        </button>
+        <button id="btn-fullscreen" class="hud-icon-btn" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+          <span>⛶</span>
+        </button>
+      </div>
+
+      <!-- Mobile Touch Controls -->
+      <div id="touch-controls" class="touch-controls">
+        <div id="touch-stick-zone" class="touch-stick-zone">
+          <div id="touch-stick-knob" class="touch-stick-knob"></div>
+        </div>
+        <button id="touch-beam-btn" class="touch-beam-btn">
+          <span>BEAM</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Title / Main Menu Screen -->
+    <div id="title-screen" class="modal-overlay">
+      <div class="title-card glassmorphism">
+        <div class="title-ufo-badge">🛸 MINIATURE DIORAMA EDITION</div>
+        <h1 class="game-logo">Ewe-FO</h1>
+        <p class="tagline">Abduct. Automate. Ascend.</p>
+
+        <div class="game-instructions">
+          <div class="instruction-step">
+            <span class="step-num">1</span>
+            <span class="step-desc"><strong>FLY & BEAM:</strong> Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or Arrows to steer. Hold <kbd>SPACE</kbd> to activate the tractor beam!</span>
+          </div>
+          <div class="instruction-step">
+            <span class="step-num">2</span>
+            <span class="step-desc"><strong>CAROUSEL HARVEST:</strong> Lift sheep into your orbiting cargo ring (holds up to 3).</span>
+          </div>
+          <div class="instruction-step">
+            <span class="step-num">3</span>
+            <span class="step-desc"><strong>THE BARN FUNNEL:</strong> Fly over the roof chute to shear sheep and eject wool bales!</span>
+          </div>
+          <div class="instruction-step">
+            <span class="step-num">4</span>
+            <span class="step-desc"><strong>EVADE FARMER GILES:</strong> Avoid his flashlight cone, and deploy boring news before dawn!</span>
+          </div>
+        </div>
+
+        <button id="btn-start-game" class="btn-primary-action">
+          <span>LAUNCH NIGHT SHIFT</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mothership Bazaar (Upgrade Shop Modal) -->
+    <div id="bazaar-modal" class="modal-overlay" style="display: none;">
+      <div class="bazaar-card glassmorphism">
+        <div class="bazaar-header">
+          <div class="bazaar-title-group">
+            <span class="bazaar-subtitle">THE MOTHERSHIP ATRIUM</span>
+            <h2 class="bazaar-title">🛸 Galactic Wool Bazaar</h2>
+          </div>
+          <div class="bazaar-wallet">
+            <span class="wallet-icon">🧶</span>
+            <span id="bazaar-wool-count" class="wallet-amount">0</span>
+            <span class="wallet-label">Available Wool</span>
+          </div>
+        </div>
+
+        <p class="bazaar-flavor">
+          "Right then, captain! Trade that fine British wool for extraterrestrial upgrades before the next night shift begins."
+        </p>
+
+        <div class="upgrade-grid">
+          <!-- Upgrade 1: Beam Power -->
+          <div class="upgrade-card" id="card-up-beam">
+            <div class="up-icon">⚡</div>
+            <div class="up-details">
+              <div class="up-title">Tractor Beam Magnetron</div>
+              <div class="up-desc">Increases lift speed and tractor magnetic suction range.</div>
+              <div class="up-tier" id="tier-beam">Level 1 / 4</div>
+            </div>
+            <button class="btn-buy-upgrade" id="btn-up-beam" data-upgrade="beam">
+              <span class="cost-val" id="cost-beam">25</span> 🧶
+            </button>
+          </div>
+
+          <!-- Upgrade 2: Cargo Capacity -->
+          <div class="upgrade-card" id="card-up-cargo">
+            <div class="up-icon">🪐</div>
+            <div class="up-details">
+              <div class="up-title">Cargo Carousel Pods</div>
+              <div class="up-desc">Adds an extra orbiting sheep holding bay (up to 5 sheep!).</div>
+              <div class="up-tier" id="tier-cargo">3 Pods</div>
+            </div>
+            <button class="btn-buy-upgrade" id="btn-up-cargo" data-upgrade="cargo">
+              <span class="cost-val" id="cost-cargo">40</span> 🧶
+            </button>
+          </div>
+
+          <!-- Upgrade 3: Engine Thruster -->
+          <div class="upgrade-card" id="card-up-speed">
+            <div class="up-icon">🚀</div>
+            <div class="up-details">
+              <div class="up-title">Anti-Grav Hyper Thrusters</div>
+              <div class="up-desc">Boosts top speed, banking responsiveness, and acceleration.</div>
+              <div class="up-tier" id="tier-speed">Level 1 / 3</div>
+            </div>
+            <button class="btn-buy-upgrade" id="btn-up-speed" data-upgrade="speed">
+              <span class="cost-val" id="cost-speed">30</span> 🧶
+            </button>
+          </div>
+
+          <!-- Upgrade 4: Holo-Cloak -->
+          <div class="upgrade-card" id="card-up-cloak">
+            <div class="up-icon">✨</div>
+            <div class="up-details">
+              <div class="up-title">Holo-Camouflage Matrix</div>
+              <div class="up-desc">Slows down Farmer Giles's suspicion detection by 40%.</div>
+              <div class="up-tier" id="tier-cloak">Level 0 / 2</div>
+            </div>
+            <button class="btn-buy-upgrade" id="btn-up-cloak" data-upgrade="cloak">
+              <span class="cost-val" id="cost-cloak">50</span> 🧶
+            </button>
+          </div>
+        </div>
+
+        <div class="bazaar-actions">
+          <button id="btn-next-night" class="btn-primary-action">
+            <span>BEGIN NEXT NIGHT SHIFT</span>
+            <span class="btn-arrow">🌙 →</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over / Night Completed Screen -->
+    <div id="end-screen" class="modal-overlay" style="display: none;">
+      <div class="end-card glassmorphism">
+        <div id="end-icon" class="end-status-icon">🎉</div>
+        <h2 id="end-title" class="end-title">NIGHT SHIFT COMPLETE!</h2>
+        <p id="end-subtitle" class="end-subtitle">The dawn chorus begins. Farmer Giles is utterly bamboozled.</p>
+
+        <div class="end-stats-grid">
+          <div class="end-stat-box">
+            <span class="stat-box-label">SHEEP RESCUED</span>
+            <span id="end-sheep" class="stat-box-value">0</span>
+          </div>
+          <div class="end-stat-box">
+            <span class="stat-box-label">WOOL HARVESTED</span>
+            <span id="end-wool" class="stat-box-value">0</span>
+          </div>
+          <div class="end-stat-box">
+            <span class="stat-box-label">TOTAL SCORE</span>
+            <span id="end-score" class="stat-box-value">0</span>
+          </div>
+          <div class="end-stat-box">
+            <span class="stat-box-label">PRESTIGE RANK</span>
+            <span id="end-rank" class="stat-box-value highlight-rank">CROP CIRCLE ADEPT</span>
+          </div>
+        </div>
+
+        <div class="end-actions">
+          <button id="btn-visit-bazaar" class="btn-primary-action">
+            <span>VISIT MOTHERSHIP BAZAAR</span>
+            <span>🛍️</span>
+          </button>
+          <button id="btn-restart-game" class="btn-secondary-action">
+            <span>RESTART GAME</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

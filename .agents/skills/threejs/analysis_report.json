@@ -1,0 +1,451 @@
+{
+  "total_videos": 20,
+  "theme_prevalence": {
+    "WebGPU & TSL": {
+      "video_count": 14,
+      "percentage": 70.0,
+      "total_mentions": 184
+    },
+    "Performance & Optimization": {
+      "video_count": 9,
+      "percentage": 45.0,
+      "total_mentions": 29
+    },
+    "Asset Pipeline & Blender Workflow": {
+      "video_count": 13,
+      "percentage": 65.0,
+      "total_mentions": 487
+    },
+    "Lighting, Environment & Shadows": {
+      "video_count": 8,
+      "percentage": 40.0,
+      "total_mentions": 86
+    },
+    "Animation & Web Integration": {
+      "video_count": 5,
+      "percentage": 25.0,
+      "total_mentions": 89
+    },
+    "Post-Processing & Visual Effects": {
+      "video_count": 10,
+      "percentage": 50.0,
+      "total_mentions": 278
+    },
+    "React Three Fiber (R3F) Ecosystem": {
+      "video_count": 10,
+      "percentage": 50.0,
+      "total_mentions": 90
+    }
+  },
+  "top_keywords": [
+    {
+      "keyword": "pass",
+      "total_mentions": 202,
+      "video_count": 13
+    },
+    {
+      "keyword": "blender",
+      "total_mentions": 188,
+      "video_count": 9
+    },
+    {
+      "keyword": "tsl",
+      "total_mentions": 124,
+      "video_count": 12
+    },
+    {
+      "keyword": "bake",
+      "total_mentions": 107,
+      "video_count": 5
+    },
+    {
+      "keyword": "canvas",
+      "total_mentions": 86,
+      "video_count": 9
+    },
+    {
+      "keyword": "uv",
+      "total_mentions": 71,
+      "video_count": 9
+    },
+    {
+      "keyword": "bloom",
+      "total_mentions": 52,
+      "video_count": 4
+    },
+    {
+      "keyword": "environment",
+      "total_mentions": 45,
+      "video_count": 6
+    },
+    {
+      "keyword": "webgpu",
+      "total_mentions": 44,
+      "video_count": 14
+    },
+    {
+      "keyword": "gltf",
+      "total_mentions": 41,
+      "video_count": 6
+    },
+    {
+      "keyword": "baking",
+      "total_mentions": 39,
+      "video_count": 5
+    },
+    {
+      "keyword": "raycaster",
+      "total_mentions": 34,
+      "video_count": 2
+    },
+    {
+      "keyword": "gsap",
+      "total_mentions": 27,
+      "video_count": 3
+    },
+    {
+      "keyword": "particles",
+      "total_mentions": 22,
+      "video_count": 4
+    },
+    {
+      "keyword": "performance",
+      "total_mentions": 21,
+      "video_count": 9
+    },
+    {
+      "keyword": "resize",
+      "total_mentions": 20,
+      "video_count": 2
+    },
+    {
+      "keyword": "ambient occlusion",
+      "total_mentions": 18,
+      "video_count": 2
+    },
+    {
+      "keyword": "ambient light",
+      "total_mentions": 17,
+      "video_count": 3
+    },
+    {
+      "keyword": "draco",
+      "total_mentions": 15,
+      "video_count": 2
+    },
+    {
+      "keyword": "node material",
+      "total_mentions": 10,
+      "video_count": 5
+    },
+    {
+      "keyword": "hdr",
+      "total_mentions": 9,
+      "video_count": 3
+    },
+    {
+      "keyword": "glb",
+      "total_mentions": 8,
+      "video_count": 5
+    },
+    {
+      "keyword": "wgsl",
+      "total_mentions": 6,
+      "video_count": 3
+    },
+    {
+      "keyword": "srgb",
+      "total_mentions": 6,
+      "video_count": 2
+    },
+    {
+      "keyword": "delta",
+      "total_mentions": 6,
+      "video_count": 1
+    },
+    {
+      "keyword": "fps",
+      "total_mentions": 5,
+      "video_count": 4
+    },
+    {
+      "keyword": "bias",
+      "total_mentions": 4,
+      "video_count": 2
+    },
+    {
+      "keyword": "directional light",
+      "total_mentions": 4,
+      "video_count": 3
+    },
+    {
+      "keyword": "r3f",
+      "total_mentions": 3,
+      "video_count": 3
+    },
+    {
+      "keyword": "vfx",
+      "total_mentions": 2,
+      "video_count": 3
+    },
+    {
+      "keyword": "draw calls",
+      "total_mentions": 2,
+      "video_count": 1
+    },
+    {
+      "keyword": "react three fiber",
+      "total_mentions": 1,
+      "video_count": 3
+    },
+    {
+      "keyword": "tone mapping",
+      "total_mentions": 1,
+      "video_count": 1
+    },
+    {
+      "keyword": "lerp",
+      "total_mentions": 1,
+      "video_count": 4
+    },
+    {
+      "keyword": "damping",
+      "total_mentions": 1,
+      "video_count": 1
+    },
+    {
+      "keyword": "lag",
+      "total_mentions": 1,
+      "video_count": 4
+    }
+  ],
+  "videos": [
+    {
+      "filename": "01_8HeNnp9sdm4_WebGPU___TSL_in_Three_js___The_new_course.json",
+      "title": "WebGPU & TSL in Three.js \u2014 The new course",
+      "channel": "Bruno Simon",
+      "word_count": 970,
+      "themes": [
+        "WebGPU & TSL",
+        "Performance & Optimization",
+        "Asset Pipeline & Blender Workflow",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "02_R7l4uVMWRF0_Build_an_Ecommerce_Keyboard_Website_with_Three_js_.json",
+      "title": "Build an Ecommerce Keyboard Website with Three.js, Next.js 15, GSAP, and Prismic - Full Course 2025",
+      "channel": "Prismic",
+      "word_count": 85927,
+      "themes": [
+        "Performance & Optimization",
+        "Asset Pipeline & Blender Workflow",
+        "Lighting, Environment & Shadows",
+        "Animation & Web Integration",
+        "Post-Processing & Visual Effects",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "03_ifKnOtWOW0w_ThreeJS___WebGPU.json",
+      "title": "ThreeJS & WebGPU",
+      "channel": "Tom Delalande",
+      "word_count": 748,
+      "themes": []
+    },
+    {
+      "filename": "04_dlrVCxsq1tE_Intro_to_Three_js_Shading_Language__TSL____WebGPU_.json",
+      "title": "Intro to Three.js Shading Language (TSL) \u2013 WebGPU shaders without GLSL",
+      "channel": "Alvaro Dev Labs",
+      "word_count": 2718,
+      "themes": [
+        "WebGPU & TSL",
+        "Asset Pipeline & Blender Workflow",
+        "Post-Processing & Visual Effects",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "05_-O1TxAtMpG4_What_is_three_js_TSL__and_why_use_it_.json",
+      "title": "What is three.js TSL, and why use it?",
+      "channel": "goodTSL",
+      "word_count": 665,
+      "themes": [
+        "WebGPU & TSL",
+        "Performance & Optimization"
+      ]
+    },
+    {
+      "filename": "06_6NYtMRXgCjk_Intro_to_Technical_Art_for_the_Web__Creating_Shade.json",
+      "title": "Intro to Technical Art for the Web: Creating Shaders with Three.js, TSL, and Blender",
+      "channel": "Andrew Woan",
+      "word_count": 19290,
+      "themes": [
+        "WebGPU & TSL",
+        "Asset Pipeline & Blender Workflow",
+        "Lighting, Environment & Shadows",
+        "Post-Processing & Visual Effects"
+      ]
+    },
+    {
+      "filename": "07_5OYkDfm-cUY_Procedural_Hex_Grid_for_My_Game__Three_js__TSL__Re.json",
+      "title": "Procedural Hex Grid for My Game (Three.js, TSL, React Three Fiber)",
+      "channel": "Yoa 3D",
+      "word_count": 1594,
+      "themes": [
+        "WebGPU & TSL",
+        "Performance & Optimization",
+        "Asset Pipeline & Blender Workflow"
+      ]
+    },
+    {
+      "filename": "08_7oLgEV9ih1M_How_to_Fix_the_Bloom_in_Three_js_Using_TSL_and_R3F.json",
+      "title": "How to Fix the Bloom in Three.js Using TSL and R3F",
+      "channel": "Yoa 3D",
+      "word_count": 1570,
+      "themes": [
+        "WebGPU & TSL",
+        "Lighting, Environment & Shadows",
+        "Post-Processing & Visual Effects",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "09_vA4O6n9UUl8_Convert_Blender_Shader___Geometry_Nodes_to_TSL_Thr.json",
+      "title": "Convert Blender Shader & Geometry Nodes to TSL/Three.js with Blender MCP",
+      "channel": "Andrew Woan",
+      "word_count": 3387,
+      "themes": [
+        "WebGPU & TSL",
+        "Asset Pipeline & Blender Workflow"
+      ]
+    },
+    {
+      "filename": "10_G-F5Qvy-7KM_How_I_Build_Insane_Three_js_Websites_With_Claude_O.json",
+      "title": "How I Build Insane Three.js Websites With Claude Opus 5",
+      "channel": "DesignCode",
+      "word_count": 6117,
+      "themes": [
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "11_iO-P2gEuOUc_Making_60_000_Particles_Feel_Alive__TSL___WebGPU_.json",
+      "title": "Making 60,000 Particles Feel Alive (TSL + WebGPU)",
+      "channel": "Cortiz Dev",
+      "word_count": 1463,
+      "themes": [
+        "WebGPU & TSL",
+        "Performance & Optimization",
+        "Asset Pipeline & Blender Workflow",
+        "Animation & Web Integration",
+        "Post-Processing & Visual Effects"
+      ]
+    },
+    {
+      "filename": "12_PxEK-k6Efi0_From_Pictures_of_Objects_to_3D_Three_js_in_MINUTES.json",
+      "title": "From Pictures of Objects to 3D Three.js in MINUTES",
+      "channel": "DesignCourse",
+      "word_count": 954,
+      "themes": []
+    },
+    {
+      "filename": "13_rrUqNAjmwCY_The_Rise_of_Three_js.json",
+      "title": "The Rise of Three.js",
+      "channel": "Robot Bobby",
+      "word_count": 851,
+      "themes": [
+        "WebGPU & TSL"
+      ]
+    },
+    {
+      "filename": "14_fBH8SYA1aTI_From_Blender_to_Three_js__The_Complete_Baking_Guid.json",
+      "title": "From Blender to Three.js: The Complete Baking Guide (AO, PBR, High\u2192Low Poly)",
+      "channel": "Wawa Sensei",
+      "word_count": 4707,
+      "themes": [
+        "Asset Pipeline & Blender Workflow",
+        "Lighting, Environment & Shadows",
+        "Animation & Web Integration",
+        "Post-Processing & Visual Effects"
+      ]
+    },
+    {
+      "filename": "15_g80mQtoB05s_Converting_a_Blender_tutorial_into_a_3D_website_wi.json",
+      "title": "Converting a Blender tutorial into a 3D website with three.js [Speedrun]",
+      "channel": "Andrew Woan",
+      "word_count": 3094,
+      "themes": [
+        "Performance & Optimization",
+        "Asset Pipeline & Blender Workflow",
+        "Animation & Web Integration"
+      ]
+    },
+    {
+      "filename": "16_3hgt_GrkAm0_Let_s_Code_a_3D_Globe__Three_js__TSL__React_Three_.json",
+      "title": "Let's Code a 3D Globe (Three.js, TSL, React Three Fiber)",
+      "channel": "Yoa 3D",
+      "word_count": 1772,
+      "themes": [
+        "WebGPU & TSL",
+        "Lighting, Environment & Shadows",
+        "Post-Processing & Visual Effects",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "17_GVBO8i7oR9A_Mastering_Three_js_WebGPU__Create_TSL_Volumetric_C.json",
+      "title": "Mastering Three.js WebGPU: Create TSL Volumetric Clouds using Raymarching",
+      "channel": "goodTSL",
+      "word_count": 1500,
+      "themes": [
+        "WebGPU & TSL",
+        "Performance & Optimization",
+        "Asset Pipeline & Blender Workflow",
+        "Lighting, Environment & Shadows",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "18_oQZt-N5mNW0_Create_Interactive_VFX_with_Three_js_WebGPU___TSL.json",
+      "title": "Create Interactive VFX with Three.js WebGPU & TSL",
+      "channel": "goodTSL",
+      "word_count": 1366,
+      "themes": [
+        "WebGPU & TSL",
+        "Performance & Optimization",
+        "Asset Pipeline & Blender Workflow",
+        "Lighting, Environment & Shadows",
+        "Post-Processing & Visual Effects",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "19_zbxruD0zUnw_Getting_Started_with_Three_js.json",
+      "title": "Getting Started with Three.js",
+      "channel": "Robot Bobby",
+      "word_count": 758,
+      "themes": [
+        "WebGPU & TSL",
+        "Asset Pipeline & Blender Workflow",
+        "Post-Processing & Visual Effects",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    },
+    {
+      "filename": "20_ozWrlHQGuvI_3D_Web_Development_with_Blender_and_Three_js___Cre.json",
+      "title": "3D Web Development with Blender and Three.js \u2013 Create a Cozy Caf\u00e9 Portfolio",
+      "channel": "freeCodeCamp.org",
+      "word_count": 67899,
+      "themes": [
+        "WebGPU & TSL",
+        "Performance & Optimization",
+        "Asset Pipeline & Blender Workflow",
+        "Lighting, Environment & Shadows",
+        "Animation & Web Integration",
+        "Post-Processing & Visual Effects",
+        "React Three Fiber (R3F) Ecosystem"
+      ]
+    }
+  ]
+}

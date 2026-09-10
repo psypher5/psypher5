@@ -1,0 +1,162 @@
+[
+  {
+    "id": "8HeNnp9sdm4",
+    "title": "WebGPU & TSL in Three.js \u2014 The new course",
+    "channel": "Bruno Simon",
+    "published": "4 days ago",
+    "views": "22,096 views",
+    "word_count": 970
+  },
+  {
+    "id": "R7l4uVMWRF0",
+    "title": "Build an Ecommerce Keyboard Website with Three.js, Next.js 15, GSAP, and Prismic - Full Course 2025",
+    "channel": "Prismic",
+    "published": "11 months ago",
+    "views": "68,124 views",
+    "word_count": 85927
+  },
+  {
+    "id": "ifKnOtWOW0w",
+    "title": "ThreeJS & WebGPU",
+    "channel": "Tom Delalande",
+    "published": "3 months ago",
+    "views": "17,215 views",
+    "word_count": 748
+  },
+  {
+    "id": "dlrVCxsq1tE",
+    "title": "Intro to Three.js Shading Language (TSL) \u2013 WebGPU shaders without GLSL",
+    "channel": "Alvaro Dev Labs",
+    "published": "2 months ago",
+    "views": "523 views",
+    "word_count": 2718
+  },
+  {
+    "id": "-O1TxAtMpG4",
+    "title": "What is three.js TSL, and why use it?",
+    "channel": "goodTSL",
+    "published": "11 months ago",
+    "views": "773 views",
+    "word_count": 665
+  },
+  {
+    "id": "6NYtMRXgCjk",
+    "title": "Intro to Technical Art for the Web: Creating Shaders with Three.js, TSL, and Blender",
+    "channel": "Andrew Woan",
+    "published": "11 months ago",
+    "views": "3,945 views",
+    "word_count": 19290
+  },
+  {
+    "id": "5OYkDfm-cUY",
+    "title": "Procedural Hex Grid for My Game (Three.js, TSL, React Three Fiber)",
+    "channel": "Yoa 3D",
+    "published": "11 months ago",
+    "views": "1,009 views",
+    "word_count": 1594
+  },
+  {
+    "id": "7oLgEV9ih1M",
+    "title": "How to Fix the Bloom in Three.js Using TSL and R3F",
+    "channel": "Yoa 3D",
+    "published": "5 months ago",
+    "views": "586 views",
+    "word_count": 1570
+  },
+  {
+    "id": "vA4O6n9UUl8",
+    "title": "Convert Blender Shader & Geometry Nodes to TSL/Three.js with Blender MCP",
+    "channel": "Andrew Woan",
+    "published": "4 months ago",
+    "views": "2,147 views",
+    "word_count": 3387
+  },
+  {
+    "id": "G-F5Qvy-7KM",
+    "title": "How I Build Insane Three.js Websites With Claude Opus 5",
+    "channel": "DesignCode",
+    "published": "3 weeks ago",
+    "views": "94,867 views",
+    "word_count": 6117
+  },
+  {
+    "id": "iO-P2gEuOUc",
+    "title": "Making 60,000 Particles Feel Alive (TSL + WebGPU)",
+    "channel": "Cortiz Dev",
+    "published": "3 months ago",
+    "views": "2,405 views",
+    "word_count": 1463
+  },
+  {
+    "id": "PxEK-k6Efi0",
+    "title": "From Pictures of Objects to 3D Three.js in MINUTES",
+    "channel": "DesignCourse",
+    "published": "1 month ago",
+    "views": "12,945 views",
+    "word_count": 954
+  },
+  {
+    "id": "rrUqNAjmwCY",
+    "title": "The Rise of Three.js",
+    "channel": "Robot Bobby",
+    "published": "3 months ago",
+    "views": "8,446 views",
+    "word_count": 851
+  },
+  {
+    "id": "fBH8SYA1aTI",
+    "title": "From Blender to Three.js: The Complete Baking Guide (AO, PBR, High\u2192Low Poly)",
+    "channel": "Wawa Sensei",
+    "published": "11 months ago",
+    "views": "6,873 views",
+    "word_count": 4707
+  },
+  {
+    "id": "g80mQtoB05s",
+    "title": "Converting a Blender tutorial into a 3D website with three.js [Speedrun]",
+    "channel": "Andrew Woan",
+    "published": "1 month ago",
+    "views": "2,039 views",
+    "word_count": 3094
+  },
+  {
+    "id": "3hgt_GrkAm0",
+    "title": "Let's Code a 3D Globe (Three.js, TSL, React Three Fiber)",
+    "channel": "Yoa 3D",
+    "published": "7 months ago",
+    "views": "3,374 views",
+    "word_count": 1772
+  },
+  {
+    "id": "GVBO8i7oR9A",
+    "title": "Mastering Three.js WebGPU: Create TSL Volumetric Clouds using Raymarching",
+    "channel": "goodTSL",
+    "published": "9 months ago",
+    "views": "492 views",
+    "word_count": 1500
+  },
+  {
+    "id": "oQZt-N5mNW0",
+    "title": "Create Interactive VFX with Three.js WebGPU & TSL",
+    "channel": "goodTSL",
+    "published": "9 months ago",
+    "views": "176 views",
+    "word_count": 1366
+  },
+  {
+    "id": "zbxruD0zUnw",
+    "title": "Getting Started with Three.js",
+    "channel": "Robot Bobby",
+    "published": "4 months ago",
+    "views": "2,825 views",
+    "word_count": 758
+  },
+  {
+    "id": "ozWrlHQGuvI",
+    "title": "3D Web Development with Blender and Three.js \u2013 Create a Cozy Caf\u00e9 Portfolio",
+    "channel": "freeCodeCamp.org",
+    "published": "4 months ago",
+    "views": "57,553 views",
+    "word_count": 67899
+  }
+]

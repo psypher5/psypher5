@@ -150,102 +150,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Commercial Games Database (Interactive Smartphone Console)
     const commercialApps = {
-        'csr': {
-            studio: 'ZYNGA / NATURALMOTION',
-            studioUrl: 'https://www.naturalmotion.com/',
-            platform: 'iOS / Android / Kindle',
-            title: 'CSR Racing',
-            icon: '🏎️',
-            tagline: '130M+ Downloads // Drag Racing Phenomenon',
-            desc: 'Exploratory testing of new vehicle upgrade mechanics, tuning drag physics curves, and authoring Release Candidate (RC) submission test cases across extensive iOS, Android, and Kindle hardware matrices.',
-            bullets: [
-                'Drafted high-precision JIRA tickets with concise hardware reproduction steps.',
-                'Analyzed memory dumps and crash logs using ADB, Android Monitor, Charles Proxy, and Xcode.',
-                'Verified live-event server synchronization, IAP storefront flows, and multi-device cloud saves.'
-            ],
-            tags: ['iOS / Android', 'ADB Logcat', 'Charles Proxy', 'Xcode', 'Jira Agile']
-        },
-        'csr2': {
-            studio: 'ZYNGA / NATURALMOTION',
-            studioUrl: 'https://www.naturalmotion.com/',
-            platform: 'iOS / Android',
-            title: 'CSR 2',
-            icon: '🏁',
-            tagline: 'Hyper-Realistic Shaders & Synchronous Multiplayer',
-            desc: 'Conducted pre-launch graphical profiling, shader fidelity checks, and real-time multiplayer race synchronization testing for next-generation mobile graphics.',
-            bullets: [
-                'Real-time PBR material rendering & dynamic car paint reflection profiling.',
-                'Synchronous real-time multiplayer lobby handshake and latency testing.',
-                'Live continuous build verification and feature sign-offs with development leads.'
-            ],
-            tags: ['Real-time Multiplayer', 'PBR Shaders', 'Continuous Integration', 'Device Farm']
-        },
-        'csrclassics': {
-            studio: 'ZYNGA / NATURALMOTION',
-            studioUrl: 'https://www.naturalmotion.com/',
-            platform: 'iOS / Android',
-            title: 'CSR Classics',
-            icon: '🚘',
-            tagline: 'Vintage Legends & Custom Restoration',
-            desc: 'Focused on vehicle restoration upgrade mechanics, engine audio synchronization, and cross-generation device compatibility for classic muscle and vintage sports cars.',
-            bullets: [
-                'Restoration stage state persistence and progression verification.',
-                'Multi-tier hardware benchmark testing across legacy iOS and Android GPUs.',
-                'Storefront packaging and release build certification.'
-            ],
-            tags: ['Classic Cars', 'Audio Profiling', 'State Persistence', 'Release Verification']
-        },
-        'titans': {
-            studio: 'NATURALMOTION / SILVER LINING',
-            studioUrl: 'https://www.naturalmotion.com/',
-            platform: 'iOS / Android',
-            title: 'Dawn of Titans',
-            icon: '⚔️',
-            tagline: 'Console-Quality 3D Strategy & Massive Scale Battles',
-            desc: 'Led on-site QA team of 4 at NaturalMotion London offices executing large-scale tactical army simulations, rendering engine stress testing, and cloud save synchronization.',
-            bullets: [
-                'On-site QA team leadership, daily/weekly status reporting, and tester onboarding.',
-                'Stress testing rendering limits with thousands of concurrent on-screen units.',
-                'Alliance war network packet validation and live event monitoring.'
-            ],
-            tags: ['On-site QA Lead', 'Massive Unit Rendering', 'Alliance Multiplayer', 'Cloud Saves']
-        },
-        'ninja': {
-            studio: 'NATURALMOTION',
-            studioUrl: 'https://www.naturalmotion.com/',
-            platform: 'iOS / Android',
-            title: 'Clumsy Ninja',
-            icon: '🥋',
-            tagline: 'Euphoria Physics Engine & Procedural Animation',
-            desc: 'Rigorous physics sandbox testing powered by the Euphoria procedural animation engine. Verified ragdoll interactions, touch gesture responsiveness, and AI behavior loops.',
-            bullets: [
-                'Ragdoll constraint physics & dynamic impulse force validation.',
-                'Touch screen multi-point gesture tracking and kinematic response testing.',
-                'Interactive sandbox mini-games and reward telemetry verification.'
-            ],
-            tags: ['Euphoria Physics', 'Procedural Animation', 'Kinematics', 'Touch Mechanics']
-        },
-        'farmville': {
-            studio: 'ZYNGA',
-            studioUrl: 'https://www.zynga.com/',
-            platform: 'iOS / Android / Kindle',
-            title: 'FarmVille 2: Country Escape',
-            icon: '🚜',
-            tagline: 'Global Casual Phenomenon & Offline/Online Sync',
-            desc: 'Tested farm expansion loops, crafting timers, offline-to-online state reconciliation, and social trading markets across diverse international localized builds.',
-            bullets: [
-                'Offline timer reconciliation & conflict resolution on reconnect.',
-                'Multi-language localization and UI text truncation verification.',
-                'Co-op social trade order book testing and cross-platform friend sync.'
-            ],
-            tags: ['Offline State Sync', 'Localization QA', 'Crafting Loops', 'Social Systems']
-        },
         'sonicforces': {
             studio: 'SEGA HARDLIGHT',
             studioUrl: 'https://www.hardlightstudio.com/',
             platform: 'iOS / Android',
             title: 'Sonic Forces: Speed Battle',
-            icon: '🦔',
+            icon: 'assets/commercial/icons/sonicforces.jpg',
+            banner: 'assets/commercial/banners/sonicforces.png',
             tagline: 'Real-Time 4-Player Synchronous Racing',
             desc: 'Merged and verified developer pull requests, compiled internal developer builds, and performed global test ring distribution for SEGA Hardlight flagship titles.',
             bullets: [
@@ -260,7 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
             studioUrl: 'https://www.hardlightstudio.com/',
             platform: 'iOS / Android',
             title: 'Sonic Dash 2: Sonic Boom',
-            icon: '⚡',
+            icon: 'assets/commercial/icons/sonicdash2.jpg',
+            banner: 'assets/commercial/banners/sonicdash2.png',
             tagline: 'Team Switch Endless Runner // Enerbeam Mechanics',
             desc: 'Completed release and submission testing with sign-off responsibility for feature work, energetic beam mechanics, and store packaging.',
             bullets: [
@@ -275,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
             studioUrl: 'https://valkyria.sega.com/',
             platform: 'PC / Steam',
             title: 'Valkyria Chronicles 4',
-            icon: '🛡️',
+            icon: 'assets/commercial/icons/valkyria.jpg',
+            banner: 'assets/commercial/banners/valkyria.jpg',
             tagline: 'Tactical RPG // PC Platform Quality Verification',
             desc: 'Verified PC platform release candidate builds, graphical display scaling, keyboard/mouse remapping, and port stability for SEGA\'s critically acclaimed tactical role-playing game.',
             bullets: [
@@ -285,12 +198,109 @@ document.addEventListener('DOMContentLoaded', () => {
             ],
             tags: ['SEGA', 'PC Port QA', 'Steam Integration', 'Input Remapping', 'Display Scaling']
         },
+        'csr': {
+            studio: 'ZYNGA / NATURALMOTION',
+            studioUrl: 'https://www.naturalmotion.com/',
+            platform: 'iOS / Android / Kindle',
+            title: 'CSR Racing',
+            icon: 'assets/commercial/icons/csr.jpg',
+            banner: 'assets/commercial/banners/csr.png',
+            tagline: '130M+ Downloads // Drag Racing Phenomenon',
+            desc: 'Exploratory testing of new vehicle upgrade mechanics, tuning drag physics curves, and authoring Release Candidate (RC) submission test cases across extensive iOS, Android, and Kindle hardware matrices.',
+            bullets: [
+                'Drafted high-precision JIRA tickets with concise hardware reproduction steps.',
+                'Analyzed memory dumps and crash logs using ADB, Android Monitor, Charles Proxy, and Xcode.',
+                'Verified live-event server synchronization, IAP storefront flows, and multi-device cloud saves.'
+            ],
+            tags: ['iOS / Android', 'ADB Logcat', 'Charles Proxy', 'Xcode', 'Jira Agile']
+        },
+        'csr2': {
+            studio: 'ZYNGA / NATURALMOTION',
+            studioUrl: 'https://www.naturalmotion.com/',
+            platform: 'iOS / Android',
+            title: 'CSR 2',
+            icon: 'assets/commercial/icons/csr2.jpg',
+            banner: 'assets/commercial/banners/csr2.png',
+            tagline: 'Hyper-Realistic Shaders & Synchronous Multiplayer',
+            desc: 'Conducted pre-launch graphical profiling, shader fidelity checks, and real-time multiplayer race synchronization testing for next-generation mobile graphics.',
+            bullets: [
+                'Real-time PBR material rendering & dynamic car paint reflection profiling.',
+                'Synchronous real-time multiplayer lobby handshake and latency testing.',
+                'Live continuous build verification and feature sign-offs with development leads.'
+            ],
+            tags: ['Real-time Multiplayer', 'PBR Shaders', 'Continuous Integration', 'Device Farm']
+        },
+        'csrclassics': {
+            studio: 'ZYNGA / NATURALMOTION',
+            studioUrl: 'https://www.naturalmotion.com/',
+            platform: 'iOS / Android',
+            title: 'CSR Classics',
+            icon: 'assets/commercial/icons/csrclassics.jpg',
+            banner: 'assets/commercial/banners/csrclassics.jpg',
+            tagline: 'Vintage Legends & Custom Restoration',
+            desc: 'Focused on vehicle restoration upgrade mechanics, engine audio synchronization, and cross-generation device compatibility for classic muscle and vintage sports cars.',
+            bullets: [
+                'Restoration stage state persistence and progression verification.',
+                'Multi-tier hardware benchmark testing across legacy iOS and Android GPUs.',
+                'Storefront packaging and release build certification.'
+            ],
+            tags: ['Classic Cars', 'Audio Profiling', 'State Persistence', 'Release Verification']
+        },
+        'titans': {
+            studio: 'NATURALMOTION / SILVER LINING',
+            studioUrl: 'https://www.naturalmotion.com/',
+            platform: 'iOS / Android',
+            title: 'Dawn of Titans',
+            icon: 'assets/commercial/icons/titans.png',
+            banner: 'assets/commercial/banners/titans.jpg',
+            tagline: 'Console-Quality 3D Strategy & Massive Scale Battles',
+            desc: 'Led on-site QA team of 4 at NaturalMotion London offices executing large-scale tactical army simulations, rendering engine stress testing, and cloud save synchronization.',
+            bullets: [
+                'On-site QA team leadership, daily/weekly status reporting, and tester onboarding.',
+                'Stress testing rendering limits with thousands of concurrent on-screen units.',
+                'Alliance war network packet validation and live event monitoring.'
+            ],
+            tags: ['On-site QA Lead', 'Massive Unit Rendering', 'Alliance Multiplayer', 'Cloud Saves']
+        },
+        'ninja': {
+            studio: 'NATURALMOTION',
+            studioUrl: 'https://www.naturalmotion.com/',
+            platform: 'iOS / Android',
+            title: 'Clumsy Ninja',
+            icon: 'assets/commercial/icons/ninja.jpg',
+            banner: 'assets/commercial/banners/ninja.jpg',
+            tagline: 'Euphoria Physics Engine & Procedural Animation',
+            desc: 'Rigorous physics sandbox testing powered by the Euphoria procedural animation engine. Verified ragdoll interactions, touch gesture responsiveness, and AI behavior loops.',
+            bullets: [
+                'Ragdoll constraint physics & dynamic impulse force validation.',
+                'Touch screen multi-point gesture tracking and kinematic response testing.',
+                'Interactive sandbox mini-games and reward telemetry verification.'
+            ],
+            tags: ['Euphoria Physics', 'Procedural Animation', 'Kinematics', 'Touch Mechanics']
+        },
+        'farmville': {
+            studio: 'ZYNGA',
+            studioUrl: 'https://www.zynga.com/',
+            platform: 'iOS / Android / Kindle',
+            title: 'FarmVille 2: Country Escape',
+            icon: 'assets/commercial/icons/farmville.jpg',
+            banner: 'assets/commercial/banners/farmville.jpg',
+            tagline: 'Global Casual Phenomenon & Offline/Online Sync',
+            desc: 'Tested farm expansion loops, crafting timers, offline-to-online state reconciliation, and social trading markets across diverse international localized builds.',
+            bullets: [
+                'Offline timer reconciliation & conflict resolution on reconnect.',
+                'Multi-language localization and UI text truncation verification.',
+                'Co-op social trade order book testing and cross-platform friend sync.'
+            ],
+            tags: ['Offline State Sync', 'Localization QA', 'Crafting Loops', 'Social Systems']
+        },
         'pizzahut': {
             studio: 'ADACTUS & EDM GROUP',
             studioUrl: 'https://www.adactus.co.uk/',
             platform: 'Web / iOS / Android',
             title: 'Pizza Hut Loyalty & Web',
-            icon: '🍕',
+            icon: 'assets/commercial/icons/pizzahut.jpg',
+            banner: 'assets/commercial/banners/pizzahut.jpg',
             tagline: 'Enterprise Ordering & Customer Loyalty Platform',
             desc: 'Executed end-to-end user journeys for the UK Pizza Hut web platform and dedicated mobile customer loyalty applications, covering menu builders, discount vouchers, and payment gateway security.',
             bullets: [
@@ -305,7 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
             studioUrl: 'http://skyscrappers.groundshatter.com/',
             platform: 'PC / Consoles',
             title: 'SkyScrappers',
-            icon: '🥊',
+            icon: 'assets/commercial/icons/skyscrappers.jpg',
+            banner: 'assets/commercial/banners/skyscrappers.jpg',
             tagline: 'Arcade Platform Brawler // Fast-Paced Combat',
             desc: 'QA verification for GroundShatter\'s high-tempo arcade brawler. Tested 4-player local controller inputs, falling debris physics, and competitive tournament balance.',
             bullets: [
@@ -317,33 +328,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // 3. Personal Indie Projects Database (3D Game Box Shelf)
+    // 3. Personal Indie Projects Database (Interactive Showcase Carousel)
     const indieBoxes = {
-        'ewefo': {
-            title: 'ewe-FO',
-            tagline: 'Abduct. Automate. Ascend.',
-            status: 'Playable Prototype',
-            statusClass: 'status-in-dev',
-            engine: 'Three.js / WebGL & Godot 4',
-            playableUrl: 'games/ewefo/index.html',
-            desc: 'An arcade physics-based abduction game set across a diorama-styled British countryside. Pilot a tractor-beam equipped UFO by night to herd and harvest livestock, while building automated conveyor networks, energy condensors, and processing pipelines by day.',
+        'noblegnomes': {
+            title: 'Noble Gnomes',
+            tagline: 'Steam-Powered Pond Exploration & Slime Arcana',
+            status: 'Live Playable 3D',
+            statusClass: 'status-playable',
+            engine: 'Three.js / WebGL & Cloudflare Workers',
+            playableUrl: 'https://noblegnomes.psypher5.workers.dev/',
+            heroImage: 'assets/noble_gnomes.png',
+            desc: 'A whimsical and vibrant 3D fantasy aquatic adventure! Captain the steam-powered "Puddlehopper" exploration vessel across an enchanted lilypad pond with a stalwart crew of gnomes, confronting ancient glowing moss slime behemoths with arcane shield runes.',
             pillars: [
-                'Dynamic tractor-beam spring physics & multi-body rope constraints.',
-                '2.5D tilt-shift camera shader with day/night atmospheric transitions.',
-                'Factory-style automation loops: wool spin, raw milk refining, and alien tech trees.'
+                'Steam-powered boat navigation across enchanted garden waters with real-time wake physics.',
+                'Tactical arcane battles with magical sigils against colossal glowing pond entities.',
+                'Procedural Web Audio soundscapes paired with custom stylized lilypad & flora shaders.'
             ],
-            tech: ['Three.js', 'WebGL', 'Godot 4', 'Custom Physics', 'Automation'],
+            tech: ['Three.js', 'WebGL', 'Web Audio API', 'Cloudflare Workers', 'Edge Architecture'],
+            psr: {
+                problem: 'Delivering rich interactive 3D water shaders, dynamic boat wake ripples, and spatial pond acoustics instantly on mobile web without heavy pre-load waits.',
+                solution: 'Deployed on Cloudflare Workers edge network with compressed asset streaming, instanced pond lilypad geometry, and a procedural Web Audio acoustic synthesizer.',
+                result: 'Instant global cold-start loading (<150ms), buttery smooth 60 FPS mobile WebGL rendering, and an enchanting interactive sandbox.'
+            },
             conceptArt: [
-                { src: 'assets/psypher53-2-WE5f5c30150a (1).png', title: 'ewe-FO: Visual Pipeline', tag: 'CONCEPT // 2.5D DIORAMA', desc: 'Concept art and 3D diorama assets authored for the prototype.' }
+                { src: 'assets/noble_gnomes.png', title: 'Puddlehopper vs Slime Behemoth', tag: 'NOBLE GNOMES // KEY ART', desc: 'The Gnome Explorer steam vessel confronting the arcane moss slime beast in the enchanted lilypad pond.' }
             ]
         },
         'moments': {
             title: 'Moments',
             tagline: 'Memories of Merlin',
-            status: 'Playable Prototype',
-            statusClass: 'status-in-dev',
+            status: 'Live Playable 3D',
+            statusClass: 'status-playable',
             engine: 'Three.js / WebGL',
             playableUrl: 'games/moments/index.html',
+            heroImage: 'assets/merlin.jpg',
             desc: 'An emotional 3D memorial journey created for Merlin the miniature dachshund. Guide Merlin across celestial meadows, bridge rainbow chasms, collect memory prism gems, and run free under vibrant starry skies.',
             pillars: [
                 'Emotional memorial journey featuring dynamic ambient orchestral sound design.',
@@ -351,16 +369,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Gem power belt mechanics: Sunburst Dash, Petal Shield, and Spirit Bark.'
             ],
             tech: ['Three.js', 'WebGL', 'Web Audio API', 'Procedural Terrain'],
+            psr: {
+                problem: 'High-fidelity 3D rendering with dynamic web audio and petal particle dynamics often causes frame stutter and audio buffer underruns on mobile devices.',
+                solution: 'Optimized procedural chunk streaming in Three.js, instanced meshes for meadow flora, and an asynchronous Web Audio API bus architecture with spatial node panning.',
+                result: 'Rock-solid 60 FPS on mobile browsers, zero audio stutter, and an emotional, seamless interactive tribute.'
+            },
             conceptArt: [
                 { src: 'assets/merlin.jpg', title: 'Memories of Merlin', tag: 'MOMENTS // PROTAGONIST', desc: 'Merlin the miniature dachshund across every chapter of life — from a puppy in the palm of a hand to exploring the morning frost.' }
+            ]
+        },
+        'ewefo': {
+            title: 'ewe-FO',
+            tagline: 'Abduct. Automate. Ascend.',
+            status: 'Live Playable 3D',
+            statusClass: 'status-playable',
+            engine: 'Three.js / WebGL & Godot 4',
+            playableUrl: 'games/ewefo/index.html',
+            heroImage: 'assets/psypher53-2-WE5f5c30150a (1).png',
+            desc: 'An arcade physics-based abduction game set across a diorama-styled British countryside. Pilot a tractor-beam equipped UFO by night to herd and harvest livestock, while building automated conveyor networks, energy condensors, and processing pipelines by day.',
+            pillars: [
+                'Dynamic tractor-beam spring physics & multi-body rope constraints.',
+                '2.5D tilt-shift camera shader with day/night atmospheric transitions.',
+                'Factory-style automation loops: wool spin, raw milk refining, and alien tech trees.'
+            ],
+            tech: ['Three.js', 'WebGL', 'Godot 4', 'Custom Physics', 'Automation'],
+            psr: {
+                problem: 'Simulating multi-body elastic rope constraints for a tractor beam while simultaneously updating multiple autonomous pasture AI entities caused physics instability and erratic raycast tunneling.',
+                solution: 'Implemented a sub-stepped Verlet integration solver with velocity damping and spatial grid partitioning for herd AI queries.',
+                result: 'Predictable, tactile tractor-beam spring physics that feel delightfully responsive at 60 FPS in WebGL.'
+            },
+            conceptArt: [
+                { src: 'assets/psypher53-2-WE5f5c30150a (1).png', title: 'ewe-FO: Visual Pipeline', tag: 'CONCEPT // 2.5D DIORAMA', desc: 'Concept art and 3D diorama assets authored for the prototype.' }
             ]
         },
         'wick': {
             title: 'Adventures of Wick',
             tagline: 'Keep the flame alive.',
             status: 'Engine Concept',
-            statusClass: 'status-concept',
+            statusClass: 'status-engine',
             engine: 'Custom C++ Engine (SDL2 / Modern OpenGL)',
+            heroImage: 'assets/art-web/digital/Out_of_the_mist__by_Psypher5.webp',
             desc: 'A dark, atmospheric platformer following a candle-headed sprite. Navigate a shadowy, wind-swept forest, solve physics-based light puzzles, and manage your melting wax reserve before the draft extinguishes your spark.',
             pillars: [
                 'Dynamic 2D shadow raymarching and soft light illumination fields.',
@@ -368,6 +416,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Custom lightweight 2D physics solver and tilemap streaming engine.'
             ],
             tech: ['C++ 17', 'SDL2 / OpenGL', '2D Raymarching', 'Shadow Physics', 'Custom Engine'],
+            psr: {
+                problem: 'Full 2D soft shadow rendering in custom engines often requires complex geometry clipping or heavy multi-pass screen-space shaders that overwhelm integrated GPUs.',
+                solution: 'Engineered a custom lightweight 2D radial distance field raymarcher using Modern OpenGL & SDL2 in C++17, caching static occluder edges into a 1D shadow lookup texture.',
+                result: 'Sub-millisecond light pass times (<0.4ms) with buttery-smooth penumbras and real-time melting wax vertex displacement.'
+            },
             conceptArt: [
                 { src: 'assets/art-web/drawing/AoWConcept01.webp', title: 'Adventures of Wick: Hero Concept', tag: 'CHARACTER // ATMOSPHERE', desc: 'Hand-crafted visual design for the candle-headed sprite and melting wax dynamic state.' },
                 { src: 'assets/art-web/drawing/AoWConcept03.webp', title: 'Lantern & Light Mechanism Props', tag: 'PROPS // ILLUMINATION', desc: 'Interactable oil lamps, windbreaks, and light redirect prisms.' },
@@ -380,6 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
             status: 'In Orbit Prototype',
             statusClass: 'status-prototype',
             engine: 'Unity (C#)',
+            heroImage: 'assets/art-web/digital/peng back.webp',
             desc: 'A tactical sci-fi defense system simulator. Manage power distribution matrices, synchronize automated point-defense turrets, and coordinate shield vectors to defend orbital mining facilities against escalating hostile incursions.',
             pillars: [
                 'Dynamic energy rerouting between shields, CIWS kinetic turrets, and cooling systems.',
@@ -387,6 +441,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Automated drone patrol routing and critical infrastructure triage.'
             ],
             tech: ['Unity Engine', 'C# Systems Architecture', 'RTS / Tactical', 'Energy Grid Matrix'],
+            psr: {
+                problem: 'Managing hundreds of simultaneous ballistic projectile trajectories, rotating CIWS turrets, and energy grid load balancing in real time can saturate the main CPU thread.',
+                solution: 'Decoupled event-driven system in Unity C# using sparse array pooling for projectiles, deterministic vector maths for shield deflection arcs, and state-machine power routing.',
+                result: 'Zero allocation during gameplay loops, rock-solid frame delivery, and fluid tactical orbital defense feedback.'
+            },
             conceptArt: [
                 { src: 'assets/art-web/digital/peng back.webp', title: 'Tactical Defense Mech (Penguin)', tag: 'VOID WARDEN // UNIT DESIGN', desc: 'Chassis design and armaments for the automated defense units defending outer mining arrays.' }
             ]
@@ -650,14 +709,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. SPA Morphing Tabs State Management
     const appContainer = document.getElementById('app-container');
     const subpages = document.querySelectorAll('.subpage');
-    const dockButtons = document.querySelectorAll('.nav-dock-btn');
+    const navButtons = document.querySelectorAll('.nav-dock-btn, .hero-nav-btn');
 
-    window.switchTab = function(tabId) {
+    window.switchTab = function(tabId, e) {
+        const evt = e || window.event;
+        if (evt && typeof evt.stopPropagation === 'function') {
+            evt.stopPropagation();
+        }
         if (!appContainer) return;
+
+        // Guarantee all modals and overlays are dismissed when switching tabs
+        if (typeof closeModal === 'function') closeModal();
+        if (typeof closeArtLightbox === 'function') closeArtLightbox();
+        if (typeof closeGameTheater === 'function') closeGameTheater();
         
-        const targetBtn = document.querySelector(`.nav-dock-btn[data-tab="${tabId}"]`);
-        if (targetBtn && targetBtn.classList.contains('active')) {
-            goHome();
+        const targetBtn = document.querySelector(`.nav-dock-btn[data-tab="${tabId}"], .hero-nav-btn[data-tab="${tabId}"]`);
+        if (targetBtn && targetBtn.classList.contains('active') && appContainer.classList.contains('state-subpage-active')) {
+            goHome(evt);
             return;
         }
         
@@ -672,20 +740,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        dockButtons.forEach(btn => {
+        navButtons.forEach(btn => {
             if (btn.getAttribute('data-tab') === tabId) {
                 btn.classList.add('active');
             } else {
                 btn.classList.remove('active');
             }
         });
+
+        // Update URL hash smoothly without jump
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, '', '#' + tabId);
+        }
     };
 
-    window.goHome = function() {
+    window.goHome = function(e) {
+        const evt = e || window.event;
+        if (evt && typeof evt.stopPropagation === 'function') {
+            evt.stopPropagation();
+        }
         if (!appContainer) return;
+
+        // Guarantee all modals and overlays are dismissed when returning home
+        if (typeof closeModal === 'function') closeModal();
+        if (typeof closeArtLightbox === 'function') closeArtLightbox();
+        if (typeof closeGameTheater === 'function') closeGameTheater();
+
         appContainer.classList.remove('state-subpage-active');
         subpages.forEach(page => page.classList.remove('active'));
-        dockButtons.forEach(btn => btn.classList.remove('active'));
+        navButtons.forEach(btn => btn.classList.remove('active'));
+
+        // Clear hash on return to home
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
     };
 
     // Click outside active subpage to return to homepage
@@ -696,36 +784,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const isSubpage = e.target.closest('.subpage');
         const isNavDock = e.target.closest('#bottom-nav');
+        const isHeroNav = e.target.closest('.hero-nav-dock') || e.target.closest('#hero');
         const isModal = e.target.closest('.modal-wrapper') || e.target.closest('.modal-overlay') || e.target.closest('#art-lightbox') || e.target.closest('#game-theater-modal');
         const isHeader = e.target.closest('#site-header') || e.target.closest('.header-brand');
 
-        if (!isSubpage && !isNavDock && !isModal && !isHeader) {
-            window.goHome();
+        if (!isSubpage && !isNavDock && !isHeroNav && !isModal && !isHeader) {
+            window.goHome(e);
         }
     });
 
-    // 5. Commercial Smartphone App Selector
-    window.selectApp = function(appKey) {
+    // 5. Interactive Smartphone OS & App Lifecycle Controller
+    let currentAppKey = null;
+    const commercialAppKeys = Object.keys(commercialApps);
+
+    window.openApp = function(appKey) {
         const data = commercialApps[appKey];
         if (!data) return;
+        currentAppKey = appKey;
 
-        document.querySelectorAll('.app-icon-item').forEach(el => el.classList.remove('active'));
-        const activeIcon = document.querySelector(`.app-icon-item[onclick*="${appKey}"]`);
-        if (activeIcon) activeIcon.classList.add('active');
+        const homeScreen = document.getElementById('phone-screen-home');
+        const appScreen = document.getElementById('phone-screen-app');
+        const heroBanner = document.getElementById('app-hero-banner');
+        const heroIcon = document.getElementById('app-hero-icon');
+        const heroTitle = document.getElementById('app-hero-title');
+        const heroStudio = document.getElementById('app-hero-studio');
+        const platformBadge = document.getElementById('app-platform-badge');
+        const studioLink = document.getElementById('app-studio-link');
+        const taglineEl = document.getElementById('app-tagline');
+        const descEl = document.getElementById('app-desc');
+        const bulletList = document.getElementById('app-bullet-list');
+        const techTags = document.getElementById('app-tech-tags');
+        const bodyScroll = document.getElementById('app-screen-body');
 
-        // Update external dossier panel
-        const studioEl = document.getElementById('dossier-studio');
-        const platformEl = document.getElementById('dossier-platform');
-        const titleEl = document.getElementById('dossier-title');
-        const taglineEl = document.getElementById('dossier-tagline');
-        const descEl = document.getElementById('dossier-desc');
-        const bulletList = document.getElementById('dossier-bullet-list');
-        const techTags = document.getElementById('dossier-tech-tags');
-        const studioLink = document.getElementById('dossier-studio-link');
-
-        if (studioEl) studioEl.textContent = data.studio;
-        if (platformEl) platformEl.textContent = data.platform;
-        if (titleEl) titleEl.textContent = data.title;
+        // Populate In-Phone App Detail Content
+        if (heroBanner) {
+            heroBanner.src = data.banner;
+            heroBanner.alt = `${data.title} Hero Banner`;
+        }
+        if (heroIcon) {
+            heroIcon.src = data.icon;
+            heroIcon.alt = `${data.title} Icon`;
+        }
+        if (heroTitle) heroTitle.textContent = data.title;
+        if (heroStudio) heroStudio.textContent = data.studio;
+        if (platformBadge) platformBadge.textContent = data.platform;
+        if (studioLink) {
+            if (data.studioUrl) {
+                studioLink.href = data.studioUrl;
+                studioLink.style.display = 'inline-flex';
+            } else {
+                studioLink.style.display = 'none';
+            }
+        }
         if (taglineEl) taglineEl.textContent = data.tagline;
         if (descEl) descEl.textContent = data.desc;
 
@@ -748,47 +858,116 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        if (studioLink && data.studioUrl) {
-            studioLink.href = data.studioUrl;
-            studioLink.style.display = 'inline-flex';
+        // Scroll app view to top on load
+        if (bodyScroll) bodyScroll.scrollTop = 0;
+
+        // Slide into App Detail Screen
+        if (homeScreen) homeScreen.classList.add('is-background');
+        if (appScreen) appScreen.classList.add('is-open');
+    };
+
+    window.selectApp = window.openApp; // Backwards compatibility
+
+    window.phoneNavBack = function() {
+        const homeScreen = document.getElementById('phone-screen-home');
+        const appScreen = document.getElementById('phone-screen-app');
+        if (appScreen && appScreen.classList.contains('is-open')) {
+            appScreen.classList.remove('is-open');
+            if (homeScreen) homeScreen.classList.remove('is-background');
+            currentAppKey = null;
         }
     };
 
-    // 6. Indie 3D Game Box Selection (4 Boxes: ewe-FO, Moments, Wick, Void Warden)
-    let activeIndieKey = 'ewefo';
+    window.phoneNavHome = function() {
+        phoneNavBack();
+    };
 
-    window.selectIndieBox = function(boxKey) {
+    window.phoneNavNext = function() {
+        if (!commercialAppKeys.length) return;
+        if (!currentAppKey) {
+            openApp(commercialAppKeys[0]);
+            return;
+        }
+        const currentIndex = commercialAppKeys.indexOf(currentAppKey);
+        const nextIndex = (currentIndex + 1) % commercialAppKeys.length;
+        openApp(commercialAppKeys[nextIndex]);
+    };
+
+    // 6. Interactive Unified Project Showcase Carousel Controller
+    const projectKeys = ['noblegnomes', 'moments', 'ewefo', 'wick', 'voidwarden'];
+    let activeIndieKey = 'noblegnomes';
+
+    window.selectProject = function(boxKey) {
         const data = indieBoxes[boxKey];
         if (!data) return;
         activeIndieKey = boxKey;
 
-        document.querySelectorAll('.retro-console-box, .game-box-3d').forEach(box => {
-            if (box.getAttribute('data-box') === boxKey) {
-                box.classList.add('active');
+        // Update Netflix Tray Cards Active State
+        document.querySelectorAll('.netflix-card').forEach(card => {
+            if (card.getAttribute('data-project') === boxKey) {
+                card.classList.add('active');
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             } else {
-                box.classList.remove('active');
+                card.classList.remove('active');
             }
         });
 
-        const statusEl = document.getElementById('indie-status');
-        const engineEl = document.getElementById('indie-engine');
-        const titleEl = document.getElementById('indie-title');
-        const taglineEl = document.getElementById('indie-tagline');
-        const descEl = document.getElementById('indie-desc');
-        const pillarsList = document.getElementById('indie-pillars-list');
-        const techPills = document.getElementById('indie-tech-pills');
-        const playContainer = document.getElementById('play-action-container');
-        const playBtn = document.getElementById('btn-play-game');
+        // Update Billboard Elements
+        const billboard = document.getElementById('netflix-billboard');
+        const backdropImg = document.getElementById('billboard-backdrop-img');
+        const kickerEl = document.getElementById('billboard-kicker');
+        const statusBadge = document.getElementById('billboard-status-badge');
+        const engineBadge = document.getElementById('billboard-engine-badge');
+        const titleEl = document.getElementById('billboard-title');
+        const taglineEl = document.getElementById('billboard-tagline');
+        const descEl = document.getElementById('billboard-desc');
+        const playBtn = document.getElementById('btn-billboard-play');
+        const playLabel = document.getElementById('btn-billboard-play-label');
+        const pillarsList = document.getElementById('project-pillars-list');
+        const techTags = document.getElementById('project-tech-tags');
 
-        if (statusEl) {
-            statusEl.textContent = data.status;
-            statusEl.className = `status-tag ${data.statusClass}`;
+        // PSR Framework Elements
+        const psrProblem = document.getElementById('psr-problem-text');
+        const psrSolution = document.getElementById('psr-solution-text');
+        const psrResult = document.getElementById('psr-result-text');
+
+        if (backdropImg) {
+            backdropImg.src = data.heroImage;
+            backdropImg.alt = `${data.title} Hero Artwork`;
         }
-        if (engineEl) engineEl.textContent = data.engine;
+
+        if (kickerEl) {
+            kickerEl.textContent = `PSYPHER5 ORIGINAL // ${data.engine.toUpperCase()}`;
+        }
+
+        if (statusBadge) {
+            statusBadge.textContent = data.status;
+            statusBadge.className = `status-badge-chip ${data.statusClass}`;
+        }
+
+        if (engineBadge) engineBadge.textContent = data.engine;
         if (titleEl) titleEl.textContent = data.title;
         if (taglineEl) taglineEl.textContent = data.tagline;
         if (descEl) descEl.textContent = data.desc;
 
+        // Toggle Play in Browser Button
+        if (playBtn) {
+            if (data.playableUrl) {
+                playBtn.style.display = 'inline-flex';
+                if (playLabel) playLabel.textContent = `Play ${data.title} in Browser`;
+            } else {
+                playBtn.style.display = 'none';
+            }
+        }
+
+        // PSR Case Study
+        if (data.psr) {
+            if (psrProblem) psrProblem.textContent = data.psr.problem;
+            if (psrSolution) psrSolution.textContent = data.psr.solution;
+            if (psrResult) psrResult.textContent = data.psr.result;
+        }
+
+        // Pillars
         if (pillarsList) {
             pillarsList.innerHTML = '';
             data.pillars.forEach(p => {
@@ -798,35 +977,78 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        if (techPills) {
-            techPills.innerHTML = '';
+        // Tech Tags
+        if (techTags) {
+            techTags.innerHTML = '';
             data.tech.forEach(t => {
                 const span = document.createElement('span');
                 span.className = 'tech-tag';
                 span.textContent = t;
-                techPills.appendChild(span);
+                techTags.appendChild(span);
             });
         }
 
-        // Toggle Play in Browser Button
-        if (playContainer && playBtn) {
-            if (data.playableUrl) {
-                playContainer.style.display = 'flex';
-                playBtn.innerHTML = `<span class="play-icon">&#x25B6;</span> Play ${data.title} in Browser`;
-            } else {
-                playContainer.style.display = 'none';
-            }
-        }
-
-        // Render concept art preview thumbnails for the active indie game
+        // Concept gallery thumbnails
         renderIndieConceptGallery(boxKey);
+
+        // Smooth billboard crossfade animation
+        if (billboard) {
+            billboard.classList.remove('billboard-fade');
+            void billboard.offsetWidth; // Trigger reflow
+            billboard.classList.add('billboard-fade');
+        }
     };
 
+    window.scrollToSpecsDrawer = function() {
+        const drawer = document.getElementById('netflix-specs-drawer');
+        if (drawer) {
+            drawer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    window.selectIndieBox = window.selectProject; // Backwards compatibility
+
+    window.stepProject = function(dir) {
+        const currentIndex = projectKeys.indexOf(activeIndieKey);
+        let nextIndex = currentIndex + dir;
+        if (nextIndex < 0) nextIndex = projectKeys.length - 1;
+        if (nextIndex >= projectKeys.length) nextIndex = 0;
+        selectProject(projectKeys[nextIndex]);
+    };
+
+    function initProjectSwipe() {
+        const stage = document.getElementById('project-showcase-stage');
+        if (!stage) return;
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        stage.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        stage.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const diffX = touchEndX - touchStartX;
+            const diffY = touchEndY - touchStartY;
+
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+                if (diffX < 0) {
+                    stepProject(1);
+                } else {
+                    stepProject(-1);
+                }
+            }
+        }, { passive: true });
+    }
+
     // 7. Live Game Theater Modal Engine
-    window.launchActiveGame = function() {
-        const game = indieBoxes[activeIndieKey];
+    window.launchActiveGame = function(key) {
+        const targetKey = key || activeIndieKey;
+        const game = indieBoxes[targetKey];
         if (game && game.playableUrl) {
-            openGameTheater(activeIndieKey);
+            openGameTheater(targetKey);
         }
     };
 
@@ -869,6 +1091,13 @@ document.addEventListener('DOMContentLoaded', () => {
             iframe.requestFullscreen().catch(err => console.log('Fullscreen error:', err));
         } else {
             document.exitFullscreen().catch(err => console.log('Exit fullscreen error:', err));
+        }
+    };
+
+    window.openTheaterNewTab = function() {
+        const game = indieBoxes[activeIndieKey];
+        if (game && game.playableUrl) {
+            window.open(game.playableUrl, '_blank', 'noopener,noreferrer');
         }
     };
 
@@ -1220,6 +1449,7 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
             closeArtLightbox();
             closeGameTheater();
+            phoneNavBack();
         } else if (artLightbox && artLightbox.classList.contains('show')) {
             if (e.key === 'ArrowLeft') {
                 stepLightboxImage(-1);
@@ -1281,108 +1511,192 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let careerIndex = 0;
 
-    // Render nodes directly along the wave track
-    function renderWaveNodes() {
-        const nodesContainer = document.getElementById('wave-milestone-nodes');
-        if (!nodesContainer) return;
-        nodesContainer.innerHTML = '';
+    // 12. Career Time-Deck Runway & Scrubber Controller
+    function renderCareerScrubber() {
+        const rail = document.getElementById('career-scrubber-rail');
+        if (!rail) return;
+        rail.innerHTML = '';
 
-        const total = careerMilestones.length;
         careerMilestones.forEach((m, i) => {
-            const node = document.createElement('div');
-            node.className = `wave-node${i === careerIndex ? ' active' : ''}${m.isMystery ? ' node-mystery' : ''}`;
-            
-            // X position spaced evenly along track (6% to 94%)
-            const xPercent = (i / (total - 1)) * 88 + 6;
-            node.style.left = `${xPercent}%`;
-
-            const mysteryBadge = m.isMystery ? '<div class="sonar-ring"></div>' : '';
-
-            node.innerHTML = `
-                <div class="node-dot">${mysteryBadge}</div>
-                <span class="node-label">${m.year}</span>
-                <div class="node-tooltip">${m.company}${m.isMystery ? ' 🌊⚓' : ''}</div>
-            `;
-            node.onclick = (e) => {
+            const btn = document.createElement('button');
+            btn.className = `career-era-node${i === careerIndex ? ' active' : ''}${m.isMystery ? ' node-mystery' : ''}`;
+            btn.type = 'button';
+            btn.setAttribute('role', 'tab');
+            btn.setAttribute('aria-selected', i === careerIndex ? 'true' : 'false');
+            btn.setAttribute('aria-label', `${m.company} (${m.year})`);
+            btn.innerHTML = `<span class="era-dot"><span class="sonar-ring"></span></span><span class="era-year">${m.year}</span>`;
+            btn.onclick = (e) => {
                 if (e) e.stopPropagation();
                 careerIndex = i;
-                renderCareer();
+                updateCareerDeck();
             };
-            nodesContainer.appendChild(node);
+            rail.appendChild(btn);
         });
     }
 
-    function renderCareer() {
-        const m = careerMilestones[careerIndex];
-        if (!m) return;
+    let lastCareerSwipeTime = 0;
 
-        // Update single stable center card
-        const dateEl = document.getElementById('panel-date');
-        const indexEl = document.getElementById('panel-index');
-        const roleEl = document.getElementById('panel-role');
-        const companyEl = document.getElementById('panel-company');
-        const tagsEl = document.getElementById('panel-tags');
-        const singleCard = document.getElementById('career-single-card');
+    function renderCareerDeckCards() {
+        const runway = document.getElementById('career-deck-runway');
+        if (!runway) return;
+        runway.innerHTML = '';
 
-        if (singleCard) {
-            singleCard.style.opacity = '0.7';
-            singleCard.style.transform = 'scale(0.99)';
-            if (m.isMystery) {
-                singleCard.classList.add('card-classified');
-            } else {
-                singleCard.classList.remove('card-classified');
-            }
-            setTimeout(() => {
-                singleCard.style.opacity = '1';
-                singleCard.style.transform = 'scale(1)';
-            }, 100);
-        }
+        careerMilestones.forEach((m, i) => {
+            const card = document.createElement('div');
+            card.className = 'career-deck-card glass-panel';
+            card.setAttribute('role', 'tabpanel');
+            card.setAttribute('data-index', i);
+            card.setAttribute('data-key', m.key);
 
-        if (dateEl) dateEl.textContent = m.date;
-        if (indexEl) indexEl.textContent = `${String(careerIndex + 1).padStart(2, '0')} / ${String(careerMilestones.length).padStart(2, '0')}`;
-        if (roleEl) roleEl.textContent = m.role;
-        if (companyEl) companyEl.textContent = m.company;
-        
-        if (tagsEl) {
+            let tagsHtml = '';
             if (m.tags && m.tags.length > 0) {
-                tagsEl.innerHTML = m.tags.map(t => `<span class="q-tag">${t}</span>`).join('');
+                tagsHtml = m.tags.map(t => `<span class="career-card-chip">${t}</span>`).join('');
             } else if (m.isMystery) {
-                tagsEl.innerHTML = `<span class="q-tag q-tag-classified">🌊 🤫 SUB-SURFACE // CLASSIFIED</span>`;
-            } else {
-                tagsEl.innerHTML = '';
+                tagsHtml = `<span class="career-card-chip chip-classified"><span class="chip-dot"></span> SUB-SURFACE // CLASSIFIED</span>`;
             }
-        }
 
-        // Progress indicator dots
-        const dotsEl = document.getElementById('career-dots');
-        if (dotsEl) {
-            dotsEl.innerHTML = '';
-            careerMilestones.forEach((_, i) => {
-                const dot = document.createElement('span');
-                dot.className = `career-dot${i === careerIndex ? ' active' : ''}${careerMilestones[i].isMystery ? ' dot-mystery' : ''}`;
-                dot.title = careerMilestones[i].company;
-                dot.onclick = (e) => {
-                    if (e) e.stopPropagation();
+            card.innerHTML = `
+                <div class="career-card-header">
+                    <span class="career-card-period">${m.date.toUpperCase()}</span>
+                    <span class="career-card-index">${String(i + 1).padStart(2, '0')} / ${String(careerMilestones.length).padStart(2, '0')}</span>
+                </div>
+                <div class="career-card-body">
+                    <h3 class="career-card-role">${m.role}</h3>
+                    <h4 class="career-card-company">${m.company}</h4>
+                    <div class="career-card-tags">${tagsHtml}</div>
+                </div>
+                <div class="career-card-inspect-hint">
+                    <span>Tap to inspect full engineering scope</span>
+                    <span class="hint-arrow">&rarr;</span>
+                </div>
+            `;
+
+            card.onclick = (e) => {
+                if (e) e.stopPropagation();
+                // Prevent synthetic clicks right after a touch swipe
+                if (Date.now() - lastCareerSwipeTime < 350) return;
+                if (i === careerIndex) {
+                    // Active card click opens the deep-dive modal
+                    openModal(m.key);
+                } else {
+                    // Clicking faded side card advances/reverses timeline to that card
                     careerIndex = i;
-                    renderCareer();
-                };
-                dotsEl.appendChild(dot);
+                    updateCareerDeck();
+                }
+            };
+
+            runway.appendChild(card);
+        });
+    }
+
+    function updateCareerDeck() {
+        const runway = document.getElementById('career-deck-runway');
+        if (!runway) return;
+
+        const cards = runway.querySelectorAll('.career-deck-card');
+        cards.forEach((card, i) => {
+            const diff = i - careerIndex;
+            card.classList.remove('is-active', 'is-next', 'is-next-2', 'is-prev', 'is-prev-2', 'is-distant');
+
+            if (diff === 0) {
+                card.classList.add('is-active');
+                card.setAttribute('aria-hidden', 'false');
+                card.setAttribute('tabindex', '0');
+            } else if (diff === 1) {
+                card.classList.add('is-next');
+                card.setAttribute('aria-hidden', 'false');
+                card.setAttribute('tabindex', '0');
+            } else if (diff === 2) {
+                card.classList.add('is-next-2');
+                card.setAttribute('aria-hidden', 'true');
+                card.setAttribute('tabindex', '-1');
+            } else if (diff === -1) {
+                card.classList.add('is-prev');
+                card.setAttribute('aria-hidden', 'false');
+                card.setAttribute('tabindex', '0');
+            } else if (diff === -2) {
+                card.classList.add('is-prev-2');
+                card.setAttribute('aria-hidden', 'true');
+                card.setAttribute('tabindex', '-1');
+            } else {
+                card.classList.add('is-distant');
+                card.setAttribute('aria-hidden', 'true');
+                card.setAttribute('tabindex', '-1');
+            }
+        });
+
+        // Update horizontal scrubber rail nodes
+        const rail = document.getElementById('career-scrubber-rail');
+        const railWrapper = document.getElementById('career-scrubber-rail-wrapper');
+        if (rail) {
+            const nodes = rail.querySelectorAll('.career-era-node');
+            nodes.forEach((node, i) => {
+                const isActive = (i === careerIndex);
+                node.classList.toggle('active', isActive);
+                node.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                if (isActive && railWrapper) {
+                    const targetScroll = node.offsetLeft - (railWrapper.clientWidth / 2) + (node.clientWidth / 2);
+                    railWrapper.scrollTo({ left: Math.max(0, targetScroll), behavior: 'smooth' });
+                }
             });
         }
 
-        // Stationary arrow buttons disabled states
+        // Update stationary navigation arrow states
         const prevBtn = document.getElementById('career-prev');
         const nextBtn = document.getElementById('career-next');
-        if (prevBtn) prevBtn.disabled = careerIndex === 0;
-        if (nextBtn) nextBtn.disabled = careerIndex === careerMilestones.length - 1;
+        if (prevBtn) prevBtn.disabled = (careerIndex === 0);
+        if (nextBtn) nextBtn.disabled = (careerIndex === careerMilestones.length - 1);
 
-        renderWaveNodes();
+        // Update counter and timeline metadata
+        const m = careerMilestones[careerIndex];
+        const counterEl = document.getElementById('career-deck-counter');
+        if (counterEl) {
+            counterEl.textContent = `${String(careerIndex + 1).padStart(2, '0')} / ${String(careerMilestones.length).padStart(2, '0')}`;
+        }
+        const spanEl = document.getElementById('career-deck-timeline-span');
+        if (spanEl && m) {
+            spanEl.innerHTML = `${m.date} &bull; ${m.company}`;
+        }
     }
+
+    // Touch Swipe Gestures for Career Runway (Mobile)
+    (function initCareerSwipe() {
+        const stage = document.getElementById('career-deck-stage');
+        if (!stage) return;
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        const SWIPE_THRESHOLD = 40;
+
+        stage.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        stage.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+
+            if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
+                lastCareerSwipeTime = Date.now();
+                if (deltaX < 0) {
+                    stepCareer(1); // Swipe left → advance forward in time
+                } else {
+                    stepCareer(-1); // Swipe right → step back
+                }
+            }
+        }, { passive: true });
+    })();
 
     window.stepCareer = function(dir) {
         const total = careerMilestones.length;
         careerIndex = Math.max(0, Math.min(total - 1, careerIndex + dir));
-        renderCareer();
+        updateCareerDeck();
     };
 
     window.openActiveMilestoneModal = function() {
@@ -1390,9 +1704,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (m) openModal(m.key);
     };
 
-    renderCareer();
-    selectIndieBox('ewefo');
-    selectApp('csr');
+    renderCareerScrubber();
+    renderCareerDeckCards();
+    updateCareerDeck();
+    selectProject('noblegnomes');
+
+    // Hash routing or default to Hero Home
+    const initialHash = window.location.hash.replace('#', '');
+    if (['about', 'projects', 'contact'].includes(initialHash)) {
+        switchTab(initialHash);
+    } else {
+        goHome();
+    }
 
     // 13. 3-Block Interests Interactive Selector (Square -> Rectangular)
     window.selectInterest = function(index) {
@@ -1406,4 +1729,132 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    // 14. Retro-Modern Contact Console Interactivity
+    const contactChannels = {
+        email: {
+            label: 'TRANSMISSION TARGET // DIRECT EMAIL',
+            url: 'tom@psypher5.co.uk',
+            href: 'mailto:tom@psypher5.co.uk',
+            openLabel: 'Launch Email ↗',
+            copyText: 'tom@psypher5.co.uk'
+        },
+        twitter: {
+            label: 'TRANSMISSION TARGET // X (TWITTER)',
+            url: 'x.com/psypher5',
+            href: 'https://x.com/psypher5',
+            openLabel: 'Open Profile ↗',
+            copyText: 'https://x.com/psypher5'
+        },
+        linkedin: {
+            label: 'TRANSMISSION TARGET // LINKEDIN',
+            url: 'linkedin.com/in/psypher5',
+            href: 'https://www.linkedin.com/in/psypher5',
+            openLabel: 'Open Profile ↗',
+            copyText: 'https://www.linkedin.com/in/psypher5'
+        },
+        github: {
+            label: 'TRANSMISSION TARGET // GITHUB',
+            url: 'github.com/psypher5',
+            href: 'https://github.com/psypher5',
+            openLabel: 'Open Repos ↗',
+            copyText: 'https://github.com/psypher5'
+        },
+        twitch: {
+            label: 'TRANSMISSION TARGET // TWITCH',
+            url: 'twitch.tv/psypher5',
+            href: 'https://www.twitch.tv/psypher5',
+            openLabel: 'Open Stream ↗',
+            copyText: 'https://www.twitch.tv/psypher5'
+        },
+        steam: {
+            label: 'TRANSMISSION TARGET // STEAM',
+            url: 'steamcommunity.com/id/psypher5',
+            href: 'https://steamcommunity.com/id/psypher5',
+            openLabel: 'Open Steam Profile ↗',
+            copyText: 'psypher5'
+        }
+    };
+
+
+    let activeContactChannel = 'email';
+
+    window.selectContactChannel = function(channelKey) {
+        const data = contactChannels[channelKey];
+        if (!data) return;
+        activeContactChannel = channelKey;
+
+        // Update active icon button
+        document.querySelectorAll('.inset-icon-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-channel') === channelKey);
+        });
+
+        // Update readout
+        const labelEl = document.getElementById('retro-readout-label');
+        const urlEl = document.getElementById('retro-readout-url');
+        const openBtn = document.getElementById('retro-action-open');
+        const openLabel = document.getElementById('retro-action-open-label');
+
+        if (labelEl) labelEl.textContent = data.label;
+        if (urlEl) {
+            urlEl.style.opacity = '0';
+            setTimeout(() => {
+                urlEl.textContent = data.url;
+                urlEl.style.opacity = '1';
+            }, 100);
+        }
+        if (openBtn) {
+            openBtn.href = data.href;
+            if (data.href.startsWith('mailto:')) {
+                openBtn.removeAttribute('target');
+                openBtn.removeAttribute('rel');
+            } else {
+                openBtn.setAttribute('target', '_blank');
+                openBtn.setAttribute('rel', 'noopener noreferrer');
+            }
+        }
+        if (openLabel) openLabel.textContent = data.openLabel;
+    };
+
+    window.copyCurrentContactHandle = function(e) {
+        if (e) e.preventDefault();
+        const data = contactChannels[activeContactChannel];
+        if (!data) return;
+
+        const textToCopy = data.copyText;
+        const toast = document.getElementById('retro-copy-toast');
+
+        function showToast() {
+            if (toast) {
+                toast.textContent = `COPIED: ${textToCopy}`;
+                toast.classList.add('visible');
+                setTimeout(() => {
+                    toast.classList.remove('visible');
+                }, 2200);
+            }
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy).then(showToast).catch(() => {
+                fallbackCopy(textToCopy);
+            });
+        } else {
+            fallbackCopy(textToCopy);
+        }
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {}
+            document.body.removeChild(ta);
+        }
+    };
+
 });
+

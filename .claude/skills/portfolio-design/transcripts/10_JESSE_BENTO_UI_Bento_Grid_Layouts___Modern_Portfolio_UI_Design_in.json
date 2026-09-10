@@ -1,0 +1,11 @@
+{
+  "id": "JESSE_BENTO_UI",
+  "title": "Bento Grid Layouts & Modern Portfolio UI Design in Figma",
+  "channel": "Jesse Showalter",
+  "published": "4 months ago",
+  "views": "72,000 views",
+  "word_count": 131,
+  "snippets_count": 13,
+  "category": "Bento Layouts & Visual Trends",
+  "transcript": "The Bento Grid has taken over portfolio design, popularized by Apple and Linear.\nWhy does it work so well? Because it breaks the monotony of the standard vertical scroll feed.\nHow to structure a bento portfolio:\nSlot 1 (Large 2x2): Hero Project Showcase with interactive preview or looping WebM video.\nSlot 2 (Wide 2x1): Current tech stack, core competencies, and workflow philosophy.\nSlot 3 (Tall 1x2): About Me, personal philosophy, location/availability status badge ('Available for Q3/Q4 projects').\nSlot 4 (1x1): Interactive micro-widget (e.g. sound toggle, theme switcher, or mini Three.js canvas).\nSlot 5 (Wide 2x1): Metrics & Testimonials from past clients or leads.\nDesign details: Use subtle borders (border: 1px solid rgba(255, 255, 255, 0.08)), rounded corners (border-radius: 20px), and a subtle radial gradient glow that follows the cursor on hover."
+}

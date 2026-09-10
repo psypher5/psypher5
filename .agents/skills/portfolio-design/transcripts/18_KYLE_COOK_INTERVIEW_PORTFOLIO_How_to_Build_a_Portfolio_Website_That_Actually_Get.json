@@ -1,0 +1,11 @@
+{
+  "id": "KYLE_COOK_INTERVIEW_PORTFOLIO",
+  "title": "How to Build a Portfolio Website That Actually Gets You Interviews",
+  "channel": "Web Dev Simplified (Kyle Cook)",
+  "published": "5 months ago",
+  "views": "104,000 views",
+  "word_count": 113,
+  "snippets_count": 12,
+  "category": "Hiring & Architecture",
+  "transcript": "Let's talk about what hiring managers actually care about when looking at your portfolio:\nThey do not care about fancy animations if the site is slow or hard to navigate.\nIf an animation delays access to the content by 3 seconds, you are hurting yourself.\nPrioritize speed and accessibility:\n1. Fast first contentful paint (FCP under 1 second).\n2. Keyboard navigation: every button and interactive card must have clear :focus-visible outlines.\n3. Mobile responsiveness: more than 50% of recruiters will open your portfolio link on their phone during a commute or meeting. If the layout breaks or horizontal scrolls, you're out.\n4. Test on real devices, not just the Chrome DevTools responsive toggle."
+}

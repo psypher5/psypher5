@@ -1,0 +1,11 @@
+{
+  "id": "HYPERPLEXED_MICRO_INTERACTIONS",
+  "title": "Micro-Interactions and Magnetic Buttons for Portfolio Websites",
+  "channel": "Hyperplexed",
+  "published": "4 months ago",
+  "views": "190,000 views",
+  "word_count": 94,
+  "snippets_count": 14,
+  "category": "Micro-Interactions",
+  "transcript": "Micro-interactions are the polish that makes a website feel expensive and premium.\nThe Magnetic Button: When the cursor moves within 50px of a CTA button, the button translates toward the cursor:\nconst x = (e.clientX - rect.left - rect.width / 2) * 0.35;\nconst y = (e.clientY - rect.top - rect.height / 2) * 0.35;\nbutton.style.transform = `translate(${x}px, ${y}px)`;\nWhen the mouse leaves, animate it back to (0,0) with an elastic spring easing.\nHover card glare: Add a dynamic radial-gradient highlight overlay on project cards that tracks the mouse position across the card surface."
+}

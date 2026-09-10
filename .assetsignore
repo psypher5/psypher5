@@ -9,3 +9,5 @@ scripts/compress-art.js
 art_guide.md
 TODO.md
 *.log
+.agents/
+.claude/

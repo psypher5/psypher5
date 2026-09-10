@@ -1,0 +1,11 @@
+{
+  "id": "SLOBODAN_NEXT15_PORTFOLIO",
+  "title": "Full Stack Developer Portfolio with Next.js 15, Tailwind CSS, and Server Actions",
+  "channel": "Slobodan Gajic",
+  "published": "2 months ago",
+  "views": "45,000 views",
+  "word_count": 95,
+  "snippets_count": 8,
+  "category": "Modern Next.js Stack",
+  "transcript": "Building a production portfolio in Next.js 15:\nUse Next.js 15 App Router with Server Components for all static content. This guarantees zero client-side JavaScript overhead for reading project descriptions.\nOnly use Client Components ('use client') for interactive widgets: the theme toggle, the contact form with Server Actions, and the canvas animation.\nUse Tailwind CSS v4 for rapid utility styling with custom design tokens.\nSet up metadata and OpenGraph images dynamically using next/og so when you share your portfolio link on LinkedIn or Twitter, it renders a gorgeous social preview card with your name and photo."
+}

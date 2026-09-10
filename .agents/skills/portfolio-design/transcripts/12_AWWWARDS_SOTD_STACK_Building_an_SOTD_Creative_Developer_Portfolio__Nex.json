@@ -1,0 +1,11 @@
+{
+  "id": "AWWWARDS_SOTD_STACK",
+  "title": "Building an SOTD Creative Developer Portfolio: Next.js, Three.js, GSAP & Lenis",
+  "channel": "Kobe Michael & Creative Devs",
+  "published": "3 months ago",
+  "views": "98,000 views",
+  "word_count": 124,
+  "snippets_count": 23,
+  "category": "Creative Development & Motion",
+  "transcript": "Here is the exact technical blueprint used to build Site of the Day (SOTD) portfolios:\n1. Smooth Scrolling with Lenis. The native browser scroll is jerky and uncoordinated. Lenis provides buttery smooth momentum scrolling while remaining lightweight and fully accessible.\n2. GSAP ScrollTrigger synchronization. You must connect Lenis to ScrollTrigger:\nlenis.on('scroll', ScrollTrigger.update);\ngsap.ticker.add((time) => { lenis.raf(time * 1000); });\ngsap.ticker.lagSmoothing(0);\nThis guarantees zero animation jitter when scrolling rapidly.\n3. Three.js WebGL / WebGPU Canvas Integration. Run the canvas fixed in the background (position: fixed; inset: 0; pointer-events: none). Use GSAP to animate camera positions and 3D model rotations as the user scrolls past HTML sections.\n4. Accessibility: Always wrap scroll triggers in a matchMedia check for (prefers-reduced-motion: no-preference). Respect users who experience motion sickness."
+}

@@ -1,0 +1,11 @@
+{
+  "id": "CODEGRID_CREATIVE_LANDING",
+  "title": "Interactive 3D Portfolio Landing Page with Three.js and Smooth Scrolling",
+  "channel": "Codegrid",
+  "published": "3 months ago",
+  "views": "62,000 views",
+  "word_count": 85,
+  "snippets_count": 16,
+  "category": "Interactive Animation",
+  "transcript": "In this tutorial we build a creative portfolio landing page.\nWe place a low-poly interactive 3D model in the center. As the mouse moves, the model tilts toward the cursor using lerp (linear interpolation) inside requestAnimationFrame:\nmodel.rotation.x += (targetRotationX - model.rotation.x) * 0.05;\nmodel.rotation.y += (targetRotationY - model.rotation.y) * 0.05;\nThis creates an organic, responsive feel that draws the user into the experience.\nCombine this with split-text reveal animations on headings using GSAP SplitType. Words fade and translate up from below an overflow: hidden container."
+}

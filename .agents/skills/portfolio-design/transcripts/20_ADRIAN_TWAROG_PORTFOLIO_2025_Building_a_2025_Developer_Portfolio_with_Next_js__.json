@@ -1,0 +1,11 @@
+{
+  "id": "ADRIAN_TWAROG_PORTFOLIO_2025",
+  "title": "Building a 2025 Developer Portfolio with Next.js, Aceternity UI, and Tailwind",
+  "channel": "Adrian Twarog",
+  "published": "2 months ago",
+  "views": "67,000 views",
+  "word_count": 103,
+  "snippets_count": 10,
+  "category": "Modern UI Component Systems",
+  "transcript": "In 2025, component libraries like Aceternity UI and Shadcn UI have set a new visual standard for portfolios:\nBento grid components, glowing border cards, moving border buttons, and animated background grids.\nKey components to include:\n1. Spotlight hero: A subtle conical or radial glow that follows the mouse across the dark background.\n2. Animated Pin or Hover Card: Cards that elevate and cast soft colored drop shadows on hover.\n3. Tech Stack Infinite Marquee: A smooth horizontal ticker showing logos of languages, frameworks, and tools you use.\n4. Contact section with a copy-to-clipboard button for your email address with immediate visual checkmark feedback."
+}

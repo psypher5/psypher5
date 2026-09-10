@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tom Woodward | psypher5</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-p5.png">
+    <link rel="shortcut icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
 </head>
@@ -18,13 +22,30 @@
         <header id="site-header">
             <div class="header-brand" onclick="goHome()" title="Return to Home">
                 <img src="assets/logo-p5.png" alt="psypher5 Logo" class="logo">
-                <span class="header-brand-name">psypher5</span>
             </div>
         </header>
         <main>
             <section id="hero">
                 <div class="hero-content">
                     <img src="assets/psypher53-2-WE5f5c30150a (1).png" alt="PSYPHER5 Logo" class="hero-logo">
+                    
+                    <!-- Under-Logo Navigation Icons with Hover Labels -->
+                    <nav class="hero-nav-dock" aria-label="Explore Sections">
+                        <button class="hero-nav-btn" data-tab="about" onclick="switchTab('about', event)" aria-label="About">
+                            <svg class="hero-nav-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            <span class="hero-nav-label">About</span>
+                        </button>
+                        
+                        <button class="hero-nav-btn" data-tab="projects" onclick="switchTab('projects', event)" aria-label="Projects">
+                            <svg class="hero-nav-icon" viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <span class="hero-nav-label">Projects</span>
+                        </button>
+                        
+                        <button class="hero-nav-btn" data-tab="contact" onclick="switchTab('contact', event)" aria-label="Contact">
+                            <svg class="hero-nav-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            <span class="hero-nav-label">Contact</span>
+                        </button>
+                    </nav>
                 </div>
             </section>
 
@@ -45,9 +66,9 @@
                                 <div class="profile-hero-text">
                                     <h1 class="profile-name">Tom Woodward</h1>
                                     <div class="role-subtitle">Staff R&amp;D Quality Engineer | Dad | Gamer</div>
-                                    <div class="bio-pill-tags">
-                                        <span class="bio-pill">MEng Games Design &amp; 3D Modelling</span>
-                                        <span class="bio-pill">12+ Yrs Systems &amp; QA</span>
+                                    <div class="bio-tech-tags">
+                                        <span class="bio-tag">MEng Games Design &amp; 3D Modelling</span>
+                                        <span class="bio-tag">12+ Yrs Systems &amp; QA</span>
                                     </div>
                                     <div class="bio-narrative-box">
                                         <p>I'm an <strong>SDET who doesn't mind diving into a bit of chaos to bring order to the system</strong>. With a Master's degree in Game Development &amp; 3D Modelling and over a decade of experience in software and distributed systems, I specialise in designing, implementing, and maintaining the rigorous automation and test foundations that keep complex engineering workflows reliable.</p>
@@ -128,9 +149,9 @@
                                         <h4>Homelab &amp; Smart Systems</h4>
                                         <p class="interest-main-desc">Proxmox VE hypervisor hosting VMs and LXC containers. Home Assistant automations driving Zigbee2MQTT mesh networks. Frigate NVR with local Coral TPU AI object detection, and smart energy pipelines.</p>
                                         <div class="interest-pills centered-pills">
-                                            <span>Proxmox VE</span>
-                                            <span>Home Assistant</span>
-                                            <span>Frigate Coral AI</span>
+                                            <a href="https://www.proxmox.com/en/proxmox-virtual-environment/overview" target="_blank" rel="noopener noreferrer" class="interest-pill-link" onclick="event.stopPropagation()" title="Open Proxmox VE Overview">Proxmox VE ↗</a>
+                                            <a href="https://www.home-assistant.io/" target="_blank" rel="noopener noreferrer" class="interest-pill-link" onclick="event.stopPropagation()" title="Open Home Assistant Official Site">Home Assistant ↗</a>
+                                            <a href="https://frigate.video/" target="_blank" rel="noopener noreferrer" class="interest-pill-link" onclick="event.stopPropagation()" title="Open Frigate NVR Documentation">Frigate Coral AI ↗</a>
                                         </div>
                                     </div>
                                 </div>
@@ -138,547 +159,481 @@
                             </div>
                         </div>
 
-                        <!-- ═══ SECTION: CAREER (With Holographic CV Sticker) ═══ -->
+                        <!-- ═══ SECTION: CAREER (With Holographic Peeled CV Sticker & Winding Timeline) ═══ -->
                         <div class="open-section">
                             <div class="career-section-header-wrap">
                                 <h2 class="open-section-label">Career</h2>
                                 <a href="assets/Tom_Woodward_CV.pdf" download class="holo-cv-sticker" title="Download CV (PDF)">
                                     <div class="holo-foil-layer"></div>
-                                    <span class="holo-text">CV</span>
-                                    <span class="holo-sub">PDF</span>
                                     <div class="holo-curl-corner"></div>
+                                    <span class="holo-text">CV</span>
+                                    <span class="holo-sub">DOWNLOAD</span>
                                 </a>
                             </div>
 
                             <div class="career-unified-wrapper">
-                                <!-- Animated Wave Track with Milestone Nodes -->
+                                <!-- Scrollable Winding Cyber Wave Track & Alternating Eras -->
                                 <div class="career-wave-track-box">
-                                    <svg class="career-wave-svg" viewBox="0 0 1000 80" preserveAspectRatio="none" aria-hidden="true">
-                                        <path class="wave-path-glow" d="M 0,40 Q 125,5 250,40 T 500,40 T 750,40 T 1000,40" fill="none"/>
-                                        <path class="wave-path-main" d="M 0,40 Q 125,5 250,40 T 500,40 T 750,40 T 1000,40" fill="none"/>
-                                    </svg>
-                                    <div class="wave-milestone-nodes" id="wave-milestone-nodes">
-                                        <!-- JS generates 12 clickable dots along the wave -->
+                                    <div class="career-scrubber-rail-wrapper" id="career-scrubber-rail-wrapper">
+                                        <svg class="career-wave-svg" viewBox="0 0 1600 120" preserveAspectRatio="none" aria-hidden="true">
+                                            <path class="wave-path-glow" d="M 0,60 C 70,12 110,12 180,60 C 250,108 290,108 360,60 C 430,12 470,12 540,60 C 610,108 650,108 720,60 C 790,12 830,12 900,60 C 970,108 1010,108 1080,60 C 1150,12 1190,12 1260,60 C 1330,108 1370,108 1440,60 L 1600,60" fill="none" />
+                                            <path class="wave-path-main" d="M 0,60 C 70,12 110,12 180,60 C 250,108 290,108 360,60 C 430,12 470,12 540,60 C 610,108 650,108 720,60 C 790,12 830,12 900,60 C 970,108 1010,108 1080,60 C 1150,12 1190,12 1260,60 C 1330,108 1370,108 1440,60 L 1600,60" fill="none" />
+                                        </svg>
+                                        <div class="career-scrubber-rail" id="career-scrubber-rail" role="tablist" aria-label="Career Timeline Eras">
+                                            <!-- JS generates clickable year nodes with undulating wave offsets & sonar-ring on active -->
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Single Stable Center Card with Stationary Arrow Buttons -->
-                                <div class="career-stable-viewer">
+                                <!-- Horizontal Time-Deck Runway: Active Card Center, Peeking Faded Cards to the Right -->
+                                <div class="career-time-deck-container">
                                     <button class="career-arrow-btn" id="career-prev" onclick="stepCareer(-1)" aria-label="Previous milestone">&#8592;</button>
 
-                                    <!-- Single Central Fixed-Height Card -->
-                                    <div class="career-single-card glass-panel" id="career-single-card" onclick="openActiveMilestoneModal()">
-                                        <div class="career-card-topbar">
-                                            <span class="career-card-date" id="panel-date">Present</span>
-                                            <span class="career-card-index" id="panel-index">01 / 12</span>
-                                        </div>
-                                        <h3 class="career-card-role" id="panel-role">Senior Engineer - Software Engineering (Assurance)</h3>
-                                        <div class="career-card-company" id="panel-company">[CLASSIFIED]</div>
-                                        <div class="career-card-tags" id="panel-tags"></div>
-                                        <div class="career-card-inspect-hint">
-                                            <span>Click card to examine full role scope ↗</span>
+                                    <div class="career-deck-stage" id="career-deck-stage">
+                                        <div class="career-deck-runway" id="career-deck-runway">
+                                            <!-- JS populates cards once; CSS transforms handle fluid horizontal time navigation -->
                                         </div>
                                     </div>
 
                                     <button class="career-arrow-btn" id="career-next" onclick="stepCareer(1)" aria-label="Next milestone">&#8594;</button>
                                 </div>
-
-                                <!-- Progress Dots Strip -->
-                                <div class="career-dots-strip" id="career-dots"></div>
                             </div>
                         </div>
 
                         <!-- ═══ SECTION: COMMERCIAL TITLES ═══ -->
                         <div class="open-section">
                             <h2 class="open-section-label">Commercial Titles</h2>
-                            <p class="section-sub-label">Tap an app to inspect verified QA &amp; engineering scope across major releases</p>
-                            <div class="phone-and-dossier-layout">
-                                <div class="device-phone-wrapper">
-                                    <div class="smartphone-frame">
-                                        <div class="phone-speaker-notch"></div>
-                                        <div class="phone-dynamic-island"></div>
-                                        <div class="phone-screen-glass">
-                                            <div class="phone-status-bar">
-                                                <span class="time-readout">9:41</span>
-                                                <span class="carrier-readout">PSYPHER-5G</span>
-                                                <span class="battery-icon">100%</span>
-                                            </div>
+                            <p class="section-sub-label">Tap an app icon to load its QA &amp; engineering scope — right inside the phone</p>
 
-                                            <div class="phone-scroll-content">
-                                                <!-- SECTION 1: SEGA -->
+                            <!-- All-in-One Immersive Smartphone Showcase -->
+                            <div class="interactive-phone-showcase">
+                                <div class="smartphone-frame immersive-phone">
+
+                                    <!-- Notch / Dynamic Island -->
+                                    <div class="phone-dynamic-island"></div>
+
+                                    <!-- Status Bar -->
+                                    <div class="phone-status-bar">
+                                        <span class="time-readout">9:41</span>
+                                        <span class="carrier-readout">PSYPHER-5G</span>
+                                        <span class="battery-icon">100% ⚡</span>
+                                    </div>
+
+                                    <!-- Screen Container: Home ↔ App screens slide in/out -->
+                                    <div class="phone-screen-container" id="phone-screen-container">
+
+                                        <!-- HOME SCREEN: App Grid -->
+                                        <div class="phone-screen phone-screen-home active" id="phone-screen-home">
+                                            <div class="phone-home-scroll">
+                                                <!-- SEGA -->
                                                 <div class="phone-studio-header">SEGA</div>
                                                 <div class="phone-app-grid">
-                                                    <div class="app-icon-item" onclick="selectApp('sonicforces')">
-                                                        <div class="app-squircle app-sonic">🦔</div>
+                                                    <div class="app-icon-item" onclick="openApp('sonicforces')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/sonicforces.jpg" alt="Sonic Forces" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">Sonic Forces</span>
                                                     </div>
-                                                    <div class="app-icon-item" onclick="selectApp('sonicdash2')">
-                                                        <div class="app-squircle app-sonicdash">⚡</div>
+                                                    <div class="app-icon-item" onclick="openApp('sonicdash2')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/sonicdash2.jpg" alt="Sonic Dash 2" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">Sonic Boom</span>
                                                     </div>
-                                                    <div class="app-icon-item" onclick="selectApp('valkyria')">
-                                                        <div class="app-squircle app-valkyria">🛡️</div>
+                                                    <div class="app-icon-item" onclick="openApp('valkyria')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/valkyria.jpg" alt="Valkyria Chronicles 4" loading="lazy" style="object-fit:cover;">
+                                                        </div>
                                                         <span class="app-name">Valkyria 4</span>
                                                     </div>
                                                 </div>
 
-                                                <!-- SECTION 2: ZYNGA / NATURALMOTION -->
+                                                <!-- ZYNGA / NATURALMOTION -->
                                                 <div class="phone-studio-header">ZYNGA / NATURALMOTION</div>
                                                 <div class="phone-app-grid">
-                                                    <div class="app-icon-item active" onclick="selectApp('csr')">
-                                                        <div class="app-squircle app-csr">🏎️</div>
+                                                    <div class="app-icon-item" onclick="openApp('csr')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/csr.jpg" alt="CSR Racing" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">CSR Racing</span>
                                                     </div>
-                                                    <div class="app-icon-item" onclick="selectApp('csr2')">
-                                                        <div class="app-squircle app-csr2">🏁</div>
+                                                    <div class="app-icon-item" onclick="openApp('csr2')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/csr2.jpg" alt="CSR 2" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">CSR 2</span>
                                                     </div>
-                                                    <div class="app-icon-item" onclick="selectApp('csrclassics')">
-                                                        <div class="app-squircle app-csrclassics">🚘</div>
+                                                    <div class="app-icon-item" onclick="openApp('csrclassics')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/csrclassics.jpg" alt="CSR Classics" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">CSR Classics</span>
                                                     </div>
-                                                    <div class="app-icon-item" onclick="selectApp('titans')">
-                                                        <div class="app-squircle app-titans">⚔️</div>
+                                                    <div class="app-icon-item" onclick="openApp('titans')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/titans.png" alt="Dawn of Titans" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">Dawn of Titans</span>
                                                     </div>
-                                                    <div class="app-icon-item" onclick="selectApp('ninja')">
-                                                        <div class="app-squircle app-ninja">🥋</div>
+                                                    <div class="app-icon-item" onclick="openApp('ninja')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/ninja.jpg" alt="Clumsy Ninja" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">Clumsy Ninja</span>
                                                     </div>
-                                                    <div class="app-icon-item" onclick="selectApp('farmville')">
-                                                        <div class="app-squircle app-farmville">🚜</div>
+                                                    <div class="app-icon-item" onclick="openApp('farmville')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/farmville.jpg" alt="FarmVille 2" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">FarmVille 2</span>
                                                     </div>
                                                 </div>
 
-                                                <!-- SECTION 3: COMMERCIAL & ENTERPRISE -->
+                                                <!-- COMMERCIAL & ENTERPRISE -->
                                                 <div class="phone-studio-header">COMMERCIAL &amp; ENTERPRISE</div>
                                                 <div class="phone-app-grid">
-                                                    <div class="app-icon-item" onclick="selectApp('pizzahut')">
-                                                        <div class="app-squircle app-pizzahut">🍕</div>
+                                                    <div class="app-icon-item" onclick="openApp('pizzahut')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/pizzahut.jpg" alt="Pizza Hut" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">Pizza Hut</span>
                                                     </div>
-                                                    <div class="app-icon-item" onclick="selectApp('skyscrappers')">
-                                                        <div class="app-squircle app-skyscrappers">🥊</div>
+                                                    <div class="app-icon-item" onclick="openApp('skyscrappers')">
+                                                        <div class="app-squircle-img">
+                                                            <img src="assets/commercial/icons/skyscrappers.jpg" alt="SkyScrappers" loading="lazy">
+                                                        </div>
                                                         <span class="app-name">SkyScrappers</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div><!-- /phone-screen-home -->
+
+                                        <!-- APP DETAIL SCREEN: Loaded dynamically by JS -->
+                                        <div class="phone-screen phone-screen-app" id="phone-screen-app">
+                                            <!-- Hero Banner -->
+                                            <div class="app-screen-hero" id="app-screen-hero">
+                                                <img class="app-hero-banner" id="app-hero-banner" src="" alt="" loading="lazy">
+                                                <div class="app-hero-scrim"></div>
+                                                <!-- Overlapping App Icon + Name -->
+                                                <div class="app-hero-identity">
+                                                    <div class="app-hero-icon-wrap">
+                                                        <img class="app-hero-icon" id="app-hero-icon" src="" alt="">
+                                                    </div>
+                                                    <div class="app-hero-meta">
+                                                        <h3 class="app-hero-title" id="app-hero-title">CSR Racing</h3>
+                                                        <span class="app-hero-studio" id="app-hero-studio">Zynga / NaturalMotion</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- App Body Content (scrollable) -->
+                                            <div class="app-screen-body" id="app-screen-body">
+                                                <!-- Platform & Studio Link -->
+                                                <div class="app-meta-row">
+                                                    <span class="app-platform-badge" id="app-platform-badge">iOS / Android</span>
+                                                    <a class="app-studio-link" id="app-studio-link" href="#" target="_blank" rel="noopener noreferrer">Studio ↗</a>
+                                                </div>
+                                                <!-- Tagline -->
+                                                <div class="app-tagline" id="app-tagline">130M+ Downloads</div>
+                                                <!-- Description -->
+                                                <p class="app-desc" id="app-desc"></p>
+                                                <!-- Key Test Engineering Areas -->
+                                                <div class="app-bullet-section">
+                                                    <h4 class="app-bullet-header">Key Test Engineering Areas</h4>
+                                                    <ul class="app-bullet-list" id="app-bullet-list"></ul>
+                                                </div>
+                                                <!-- Tech Tags -->
+                                                <div class="app-tech-tags" id="app-tech-tags"></div>
+                                            </div>
+                                        </div><!-- /phone-screen-app -->
+
+                                    </div><!-- /phone-screen-container -->
+
+                                    <!-- Android 3-Button Navigation Bar -->
+                                    <div class="phone-android-nav">
+                                        <button class="android-nav-btn" onclick="phoneNavBack()" title="Back" aria-label="Back">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                                        </button>
+                                        <button class="android-nav-btn android-nav-home" onclick="phoneNavHome()" title="Home" aria-label="Home">
+                                            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5.5"/></svg>
+                                        </button>
+                                        <button class="android-nav-btn" onclick="phoneNavNext()" title="Next App" aria-label="Next App">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="device-dossier-panel" id="device-dossier-panel">
-                                    <div class="dossier-header-row">
-                                        <div class="dossier-meta-group">
-                                            <span id="dossier-studio" class="dossier-studio-tag">Zynga / NaturalMotion</span>
-                                            <span id="dossier-platform" class="dossier-platform-tag">iOS / Android / Kindle</span>
-                                        </div>
-                                        <a id="dossier-studio-link" href="https://www.naturalmotion.com/" target="_blank" rel="noopener noreferrer" class="btn-studio-visit">
-                                            Studio Website ↗
-                                        </a>
-                                    </div>
-                                    <h3 id="dossier-title">CSR Racing</h3>
-                                    <div id="dossier-tagline" class="project-card-tagline">130M+ Downloads // Drag Racing Phenomenon</div>
-                                    <p id="dossier-desc" class="project-card-desc">Conducted exploratory testing of new vehicle upgrade mechanics, drafted comprehensive JIRA bug reports with reproducible hardware steps, and authored Release Candidate (RC) submission test cases across iOS, Android, and Kindle hardware matrices.</p>
-                                    <div class="dossier-bullet-wrap">
-                                        <h4>Key Test Engineering Areas</h4>
-                                        <ul id="dossier-bullet-list">
-                                            <li>Vehicle suspension tuning, drag physics curves, and gearbox ratio verification.</li>
-                                            <li>Log and crash dump analysis using ADB, Android Monitor, Charles Proxy, and Xcode Instruments.</li>
-                                            <li>Memory profiling and asset streaming optimisation across low-end ARM chipsets.</li>
-                                        </ul>
-                                    </div>
-                                    <div class="dossier-action-row">
-                                        <div class="project-card-tech" id="dossier-tech-tags">
-                                            <span class="tech-tag">iOS / Android</span>
-                                            <span class="tech-tag">ADB Logcat</span>
-                                            <span class="tech-tag">Charles Proxy</span>
-                                            <span class="tech-tag">Xcode</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                                </div><!-- /smartphone-frame -->
+                            </div><!-- /interactive-phone-showcase -->
                         </div>
 
                     </div>
                 </div>
 
                 <!-- ══════════════════════════════════════════ -->
-                <!-- SUBPAGE 2: PROJECTS & GAMES (Wooden Shelf) -->
+                <!-- SUBPAGE 2: PROJECTS & GAMES (Showcase Carousel) -->
                 <!-- ══════════════════════════════════════════ -->
                 <div id="subpage-projects" class="subpage glass-panel">
-                    <h1 class="section-title">Projects &amp; Games</h1>
-                    <p class="section-sub-label centered-sub">Personal indie games, prototypes, and playable 3D browser builds</p>
-
-                    <!-- Tactile Wooden Shelf Alcove -->
-                    <div class="wooden-shelf-alcove">
-                        <div class="alcove-backboard">
-                            <div class="alcove-spotlight spot-1"></div>
-                            <div class="alcove-spotlight spot-2"></div>
-                            <div class="alcove-spotlight spot-3"></div>
-                            <div class="alcove-spotlight spot-4"></div>
-                        </div>
-
-                        <div class="game-boxes-rack">
-                            <!-- Box 1: ewe-FO (Mega Drive Clamshell Case) -->
-                            <div class="retro-console-box active" data-box="ewefo" onclick="selectIndieBox('ewefo')">
-                                <div class="box-shadow"></div>
-                                
-                                <!-- Clamshell Tray (Inner base holding the cartridge) -->
-                                <div class="case-body">
-                                    <div class="case-spine">
-                                        <div class="spine-grid-decal"></div>
-                                        <span class="spine-system">MEGA DRIVE</span>
-                                        <span class="spine-title">ewe-FO</span>
-                                        <span class="spine-code">P5-001</span>
-                                    </div>
-                                    <div class="case-interior">
-                                        <div class="cartridge-unit cartridge-megadrive">
-                                            <div class="cart-ribs"></div>
-                                            <div class="cart-label box-ewefo">
-                                                <div class="cart-top-bar">16-BIT CARTRIDGE</div>
-                                                <div class="cart-title">ewe-FO</div>
-                                                <div class="cart-sub">Abduct. Automate.</div>
-                                            </div>
-                                            <div class="cart-arrow">&#x25BC; INSERT INTO CONSOLE</div>
-                                            <button type="button" class="btn-cart-play" onclick="launchActiveGame(); event.stopPropagation();">
-                                                &#x25B6; PLAY CARTRIDGE
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Clamshell Front Lid (Opens in 3D) -->
-                                <div class="case-lid">
-                                    <div class="lid-face lid-front box-ewefo">
-                                        <div class="box-front-header">
-                                            <span class="box-platform-badge">MEGA DRIVE // WEB</span>
-                                            <span class="box-rating">E</span>
-                                        </div>
-                                        <div class="box-front-center">
-                                            <div class="box-logo-art">&#x1F6F8;&#x1F411;</div>
-                                            <h3>ewe-FO</h3>
-                                            <div class="box-subtitle">Abduct. Automate. Ascend.</div>
-                                        </div>
-                                        <div class="box-front-footer">
-                                            <span class="box-playable-badge">&#x25B6; PLAYABLE IN BROWSER</span>
-                                        </div>
-                                        <div class="case-latch"></div>
-                                    </div>
-                                    <div class="lid-face lid-inside">
-                                        <div class="manual-booklet">
-                                            <div class="manual-header">INSTRUCTION MANUAL</div>
-                                            <div class="manual-title">ewe-FO</div>
-                                            <p class="manual-desc">Diorama Abduction Edition</p>
-                                            <div class="manual-controls">
-                                                <span>WASD / Arrows: Steer</span>
-                                                <span>SPACE: Tractor Beam</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="netflix-showcase-container">
+                        
+                        <!-- 1. Cinematic Featured Billboard -->
+                        <div class="netflix-billboard" id="netflix-billboard">
+                            <div class="billboard-backdrop-wrap">
+                                <img id="billboard-backdrop-img" src="assets/noble_gnomes.png" alt="Noble Gnomes" class="billboard-backdrop-img">
+                                <div class="billboard-vignette-scrim"></div>
                             </div>
-
-                            <!-- Box 2: Moments (PlayStation 1 Jewel Case) -->
-                            <div class="retro-console-box" data-box="moments" onclick="selectIndieBox('moments')">
-                                <div class="box-shadow"></div>
+                            
+                            <div class="billboard-content">
+                                <div class="billboard-meta-strip">
+                                    <span class="billboard-kicker" id="billboard-kicker">PSYPHER5 ORIGINAL // THREE.JS &amp; CLOUDFLARE WORKERS</span>
+                                    <div class="billboard-badges">
+                                        <span id="billboard-status-badge" class="status-badge-chip status-playable">LIVE PLAYABLE 3D</span>
+                                        <span id="billboard-engine-badge" class="engine-badge-chip">Three.js / WebGL</span>
+                                    </div>
+                                </div>
                                 
-                                <div class="case-body">
-                                    <div class="case-spine">
-                                        <div class="spine-grid-decal ps-decal"></div>
-                                        <span class="spine-system">PS1 CD-ROM</span>
-                                        <span class="spine-title">Moments</span>
-                                        <span class="spine-code">SLES-0994</span>
-                                    </div>
-                                    <div class="case-interior ps-interior">
-                                        <div class="cd-spindle">
-                                            <div class="cd-disc cd-moments">
-                                                <div class="cd-hole"></div>
-                                                <div class="cd-label">
-                                                    <span class="cd-title">Moments</span>
-                                                    <span class="cd-sub">Memories of Merlin</span>
-                                                </div>
-                                                <button type="button" class="btn-cd-play" onclick="launchActiveGame(); event.stopPropagation();">
-                                                    &#x25B6; BOOT DISC
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="case-lid">
-                                    <div class="lid-face lid-front box-moments">
-                                        <div class="box-front-header">
-                                            <span class="box-platform-badge">PS1 // WEBGL</span>
-                                            <span class="box-rating">E</span>
-                                        </div>
-                                        <div class="box-front-center">
-                                            <div class="box-logo-art">&#x1F43E;&#x1F308;</div>
-                                            <h3>Moments</h3>
-                                            <div class="box-subtitle">Memories of Merlin</div>
-                                        </div>
-                                        <div class="box-front-footer">
-                                            <span class="box-playable-badge">&#x25B6; PLAYABLE IN BROWSER</span>
-                                        </div>
-                                        <div class="case-latch"></div>
-                                    </div>
-                                    <div class="lid-face lid-inside">
-                                        <div class="manual-booklet manual-moments">
-                                            <div class="manual-header">MEMORIAL EDITION</div>
-                                            <div class="manual-title">Moments</div>
-                                            <p class="manual-desc">For Merlin the Miniature Dachshund</p>
-                                            <div class="manual-controls">
-                                                <span>A/D: Steer &bull; Space: Jump</span>
-                                                <span>E: Bark &bull; S: Slide</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Box 3: Adventures of Wick (Custom Engine Case) -->
-                            <div class="retro-console-box" data-box="wick" onclick="selectIndieBox('wick')">
-                                <div class="box-shadow"></div>
+                                <h1 class="billboard-title" id="billboard-title">Noble Gnomes</h1>
+                                <div class="billboard-tagline" id="billboard-tagline">Steam-Powered Pond Exploration &amp; Slime Arcana</div>
+                                <p class="billboard-desc" id="billboard-desc">A whimsical and vibrant 3D fantasy aquatic adventure! Captain the steam-powered "Puddlehopper" exploration vessel across an enchanted lilypad pond with a stalwart crew of gnomes, confronting ancient glowing moss slime behemoths with arcane shield runes.</p>
                                 
-                                <div class="case-body">
-                                    <div class="case-spine">
-                                        <div class="spine-grid-decal wick-decal"></div>
-                                        <span class="spine-system">CUSTOM C++</span>
-                                        <span class="spine-title">Adventures of Wick</span>
-                                        <span class="spine-code">WCK-003</span>
-                                    </div>
-                                    <div class="case-interior">
-                                        <div class="cartridge-unit cartridge-wick">
-                                            <div class="cart-ribs"></div>
-                                            <div class="cart-label box-wick">
-                                                <div class="cart-top-bar">C++ ENGINE ROM</div>
-                                                <div class="cart-title">Wick</div>
-                                                <div class="cart-sub">Keep the Flame Alive</div>
-                                            </div>
-                                            <div class="cart-arrow">&#x25BC; INSERT INTO CONSOLE</div>
-                                            <div class="cart-concept-badge">ENGINE CONCEPT</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="case-lid">
-                                    <div class="lid-face lid-front box-wick">
-                                        <div class="box-front-header">
-                                            <span class="box-platform-badge">CUSTOM C++</span>
-                                            <span class="box-rating">E</span>
-                                        </div>
-                                        <div class="box-front-center">
-                                            <div class="box-logo-art">&#x1F56F;&#xFE0F;&#x1F332;</div>
-                                            <h3>Adventures of Wick</h3>
-                                            <div class="box-subtitle">Keep the Flame Alive</div>
-                                        </div>
-                                        <div class="box-front-footer">
-                                            <span>SDL2 // 2D LIGHT RAYMARCHING</span>
-                                        </div>
-                                        <div class="case-latch"></div>
-                                    </div>
-                                    <div class="lid-face lid-inside">
-                                        <div class="manual-booklet">
-                                            <div class="manual-header">DESIGN DOCUMENT</div>
-                                            <div class="manual-title">Wick</div>
-                                            <p class="manual-desc">Dynamic 2D shadow raymarching and melting wax mechanics</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Box 4: Void Warden (Tactical Sci-Fi Module) -->
-                            <div class="retro-console-box" data-box="voidwarden" onclick="selectIndieBox('voidwarden')">
-                                <div class="box-shadow"></div>
-                                
-                                <div class="case-body">
-                                    <div class="case-spine">
-                                        <div class="spine-grid-decal void-decal"></div>
-                                        <span class="spine-system">UNITY C#</span>
-                                        <span class="spine-title">Void Warden</span>
-                                        <span class="spine-code">VWD-004</span>
-                                    </div>
-                                    <div class="case-interior">
-                                        <div class="cartridge-unit cartridge-void">
-                                            <div class="cart-ribs"></div>
-                                            <div class="cart-label box-voidwarden">
-                                                <div class="cart-top-bar">ORBITAL DEFENSE ROM</div>
-                                                <div class="cart-title">Void Warden</div>
-                                                <div class="cart-sub">Sector: Locked Down</div>
-                                            </div>
-                                            <div class="cart-arrow">&#x25BC; INSERT INTO CONSOLE</div>
-                                            <div class="cart-concept-badge">ORBIT PROTOTYPE</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="case-lid">
-                                    <div class="lid-face lid-front box-voidwarden">
-                                        <div class="box-front-header">
-                                            <span class="box-platform-badge">UNITY C#</span>
-                                            <span class="box-rating">T</span>
-                                        </div>
-                                        <div class="box-front-center">
-                                            <div class="box-logo-art">&#x1F6E1;&#xFE0F;&#x1F6F0;&#xFE0F;</div>
-                                            <h3>Void Warden</h3>
-                                            <div class="box-subtitle">Sector Status: Locked Down</div>
-                                        </div>
-                                        <div class="box-front-footer">
-                                            <span>TACTICAL ORBITAL DEFENSE</span>
-                                        </div>
-                                        <div class="case-latch"></div>
-                                    </div>
-                                    <div class="lid-face lid-inside">
-                                        <div class="manual-booklet">
-                                            <div class="manual-header">TACTICAL BRIEFING</div>
-                                            <div class="manual-title">Void Warden</div>
-                                            <p class="manual-desc">Automated point-defense grids and shield vector modulation</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Solid Wood Shelf Ledge with Depth -->
-                        <div class="wooden-shelf-ledge">
-                            <div class="shelf-wood-surface"></div>
-                            <div class="shelf-wood-bevel"></div>
-                            <div class="shelf-wood-shadow"></div>
-                        </div>
-                    </div>
-
-                    <!-- Selected Game Dossier Panel -->
-                    <div class="indie-detail-dossier" id="indie-detail-dossier">
-                        <div class="indie-dossier-grid">
-                            <div class="indie-dossier-main">
-                                <div class="indie-badge-row">
-                                    <span id="indie-status" class="status-tag status-in-dev">Playable Prototype</span>
-                                    <span id="indie-engine" class="dossier-platform-tag">Three.js / WebGL</span>
-                                </div>
-                                <h3 id="indie-title">ewe-FO</h3>
-                                <div id="indie-tagline" class="project-card-tagline">Abduct. Automate. Ascend.</div>
-                                <p id="indie-desc" class="project-card-desc">An arcade physics-based abduction game set across a diorama-styled British countryside. Pilot a tractor-beam equipped UFO by night to herd and harvest livestock, while building automated conveyor networks and energy condensers by day.</p>
-                                
-                                <!-- Play In Browser Action Button -->
-                                <div class="play-action-container" id="play-action-container">
-                                    <button class="btn-play-game" id="btn-play-game" onclick="launchActiveGame()">
-                                        <span class="play-icon">&#x25B6;</span> Play in Browser
+                                <div class="billboard-actions">
+                                    <button type="button" class="btn-billboard-play" id="btn-billboard-play" onclick="launchActiveGame()">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        <span id="btn-billboard-play-label">Play Noble Gnomes in Browser</span>
                                     </button>
-                                    <span class="play-note">Instant 3D WebGL • Keyboard &amp; Mouse / Touch</span>
-                                </div>
-                            </div>
-                            <div class="indie-dossier-sidebar">
-                                <h4>Core Pillars &amp; Mechanics</h4>
-                                <ul id="indie-pillars-list">
-                                    <li>Dynamic tractor-beam spring physics &amp; multi-body rope constraints.</li>
-                                    <li>2.5D tilt-shift camera shader with day/night atmospheric transitions.</li>
-                                    <li>Factory-style automation loops: wool spin, raw milk refining, and alien tech trees.</li>
-                                </ul>
-                                <div class="project-card-tech" id="indie-tech-pills">
-                                    <span class="tech-tag">Three.js</span>
-                                    <span class="tech-tag">WebGL</span>
-                                    <span class="tech-tag">Custom Physics</span>
-                                    <span class="tech-tag">Automation</span>
+                                    <button type="button" class="btn-billboard-newtab" onclick="openTheaterNewTab()" title="Open in dedicated browser tab">
+                                        <span>↗ New Tab</span>
+                                    </button>
+                                    <button type="button" class="btn-billboard-info" onclick="scrollToSpecsDrawer()" title="View technical architecture">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                                        <span>Architecture &amp; Specs</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- Concept Art Strip -->
-                        <div class="indie-concept-section" id="indie-concept-section">
-                            <div class="indie-concept-header">
-                                <h4>Visual Development &amp; Assets</h4>
-                                <span class="concept-hint-tag">Tap thumbnail to inspect full resolution ↗</span>
+
+                        <!-- 2. "Other Projects" Horizontal Tray (Always in view!) -->
+                        <div class="netflix-tray-section">
+                            <div class="netflix-tray-header">
+                                <h3 class="tray-section-title">Expeditions &amp; Prototypes</h3>
+                                <span class="tray-section-count">05 TITLES &bull; SELECT TO FEATURE</span>
                             </div>
-                            <div class="indie-concept-gallery" id="indie-concept-gallery">
-                                <!-- Populated dynamically by JS -->
+
+                            <div class="netflix-tray-track" id="netflix-tray-track">
+                                <!-- Card 1: Noble Gnomes -->
+                                <div class="netflix-card active" data-project="noblegnomes" onclick="selectProject('noblegnomes')">
+                                    <div class="netflix-card-thumb-wrap">
+                                        <img src="assets/noble_gnomes.png" alt="Noble Gnomes" class="netflix-card-thumb" loading="lazy">
+                                        <div class="netflix-card-overlay">
+                                            <span class="card-status-chip chip-playable">PLAYABLE 3D</span>
+                                        </div>
+                                    </div>
+                                    <div class="netflix-card-info">
+                                        <div class="card-title-row">
+                                            <span class="card-icon">🍄</span>
+                                            <h4 class="card-title">Noble Gnomes</h4>
+                                        </div>
+                                        <div class="card-tech-sub">Three.js &bull; Workers Edge</div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: Moments -->
+                                <div class="netflix-card" data-project="moments" onclick="selectProject('moments')">
+                                    <div class="netflix-card-thumb-wrap">
+                                        <img src="assets/merlin.jpg" alt="Moments" class="netflix-card-thumb" loading="lazy">
+                                        <div class="netflix-card-overlay">
+                                            <span class="card-status-chip chip-playable">PLAYABLE 3D</span>
+                                        </div>
+                                    </div>
+                                    <div class="netflix-card-info">
+                                        <div class="card-title-row">
+                                            <span class="card-icon">🐾</span>
+                                            <h4 class="card-title">Moments</h4>
+                                        </div>
+                                        <div class="card-tech-sub">Three.js &bull; WebGL &bull; Audio</div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 3: ewe-FO -->
+                                <div class="netflix-card" data-project="ewefo" onclick="selectProject('ewefo')">
+                                    <div class="netflix-card-thumb-wrap">
+                                        <img src="assets/psypher53-2-WE5f5c30150a (1).png" alt="ewe-FO" class="netflix-card-thumb" loading="lazy">
+                                        <div class="netflix-card-overlay">
+                                            <span class="card-status-chip chip-playable">PLAYABLE 3D</span>
+                                        </div>
+                                    </div>
+                                    <div class="netflix-card-info">
+                                        <div class="card-title-row">
+                                            <span class="card-icon">🛸</span>
+                                            <h4 class="card-title">ewe-FO</h4>
+                                        </div>
+                                        <div class="card-tech-sub">Three.js &bull; Godot 4 &bull; Physics</div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 4: Adventures of Wick -->
+                                <div class="netflix-card" data-project="wick" onclick="selectProject('wick')">
+                                    <div class="netflix-card-thumb-wrap">
+                                        <img src="assets/art-web/digital/Out_of_the_mist__by_Psypher5.webp" alt="Adventures of Wick" class="netflix-card-thumb" loading="lazy">
+                                        <div class="netflix-card-overlay">
+                                            <span class="card-status-chip chip-engine">C++ ENGINE</span>
+                                        </div>
+                                    </div>
+                                    <div class="netflix-card-info">
+                                        <div class="card-title-row">
+                                            <span class="card-icon">🕯️</span>
+                                            <h4 class="card-title">Adventures of Wick</h4>
+                                        </div>
+                                        <div class="card-tech-sub">Custom C++17 &bull; SDL2 &bull; OpenGL</div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 5: Void Warden -->
+                                <div class="netflix-card" data-project="voidwarden" onclick="selectProject('voidwarden')">
+                                    <div class="netflix-card-thumb-wrap">
+                                        <img src="assets/art-web/digital/peng back.webp" alt="Void Warden" class="netflix-card-thumb" loading="lazy">
+                                        <div class="netflix-card-overlay">
+                                            <span class="card-status-chip chip-proto">UNITY C#</span>
+                                        </div>
+                                    </div>
+                                    <div class="netflix-card-info">
+                                        <div class="card-title-row">
+                                            <span class="card-icon">🛡️</span>
+                                            <h4 class="card-title">Void Warden</h4>
+                                        </div>
+                                        <div class="card-tech-sub">Unity Engine &bull; Tactical RTS</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- 3. Deep Architecture & PSR Specs Drawer -->
+                        <div class="netflix-specs-drawer" id="netflix-specs-drawer">
+                            <div class="psr-framework-box" id="psr-framework-box">
+                                <div class="psr-header">
+                                    <span class="psr-badge">PSR CASE STUDY</span>
+                                    <span class="psr-sub">Architecture &amp; Engineering Decisions</span>
+                                </div>
+                                <div class="psr-grid">
+                                    <div class="psr-item psr-problem">
+                                        <span class="psr-tag">PROBLEM</span>
+                                        <p id="psr-problem-text">Delivering rich interactive 3D water shaders, dynamic boat wake ripples, and spatial pond acoustics instantly on mobile web without heavy pre-load waits.</p>
+                                    </div>
+                                    <div class="psr-item psr-solution">
+                                        <span class="psr-tag">SOLUTION</span>
+                                        <p id="psr-solution-text">Deployed on Cloudflare Workers edge network with compressed asset streaming, instanced pond lilypad geometry, and a procedural Web Audio acoustic synthesizer.</p>
+                                    </div>
+                                    <div class="psr-item psr-result">
+                                        <span class="psr-tag">RESULT</span>
+                                        <p id="psr-result-text">Instant global cold-start loading (&lt;150ms), buttery smooth 60 FPS mobile WebGL rendering, and an enchanting interactive sandbox.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pillars & Tech Grid -->
+                            <div class="project-pillars-tech-grid">
+                                <div class="project-pillars-col">
+                                    <h4>Core Pillars &amp; Mechanics</h4>
+                                    <ul id="project-pillars-list">
+                                        <li>Steam-powered boat navigation across enchanted garden waters with real-time wake physics.</li>
+                                        <li>Tactical arcane battles with magical sigils against colossal glowing pond entities.</li>
+                                        <li>Procedural Web Audio soundscapes paired with custom stylized lilypad &amp; flora shaders.</li>
+                                    </ul>
+                                </div>
+                                <div class="project-tech-col">
+                                    <h4>Engine Tech Stack</h4>
+                                    <div class="project-card-tech" id="project-tech-tags">
+                                        <span class="tech-tag">Three.js</span>
+                                        <span class="tech-tag">WebGL</span>
+                                        <span class="tech-tag">Web Audio API</span>
+                                        <span class="tech-tag">Cloudflare Workers</span>
+                                        <span class="tech-tag">Edge Architecture</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Concept Art Strip -->
+                            <div class="indie-concept-section" id="project-concept-section">
+                                <div class="indie-concept-header">
+                                    <h4>Visual Development &amp; Assets</h4>
+                                    <span class="concept-hint-tag">Tap thumbnail to inspect full resolution ↗</span>
+                                </div>
+                                <div class="indie-concept-gallery" id="indie-concept-gallery">
+                                    <!-- Populated dynamically by JS -->
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div><!-- /subpage-projects -->
 
-                <!-- SUBPAGE 3: CONTACT -->
+                <!-- SUBPAGE 3: CONTACT (Homage Inset Console Deck) -->
                 <div id="subpage-contact" class="subpage glass-panel">
                     <div class="contact-page-container">
                         <h1 class="section-title">Get In Touch</h1>
                         <p class="contact-intro-text">Open to exciting engineering challenges, game development collaborations, or simply connecting about distributed systems and testing architectures.</p>
                         
-                        <!-- Centerpiece: Copy Email Button & Direct Email CTA -->
-                        <div class="contact-email-actions">
-                            <button type="button" class="btn-copy-email" onclick="copyEmailToClipboard(event)">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                                <span>Copy Email: tom@psypher5.co.uk</span>
-                            </button>
-                            <a href="mailto:tom@psypher5.co.uk" class="btn-direct-email">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                                <span>Send Direct Email ↗</span>
-                            </a>
-                            <span id="copy-email-toast" class="copy-email-toast"></span>
-                        </div>
+                        <!-- Tactile Retro-Modern Inset Console (Homage to First Website) -->
+                        <div class="retro-contact-chassis">
+                            <div class="retro-chassis-header">
+                                <span class="retro-chassis-status"><span class="sonar-ring-small"></span>COMM LINK ONLINE</span>
+                                <span class="retro-chassis-sub">SELECT CHANNEL</span>
+                            </div>
 
-                        <!-- Front-and-Center Social Links Showcase -->
-                        <div class="social-showcase-grid">
-                            <a href="https://www.linkedin.com/in/psypher5" target="_blank" rel="noopener noreferrer" class="social-card social-linkedin">
-                                <div class="social-card-icon">
-                                    <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
-                                </div>
-                                <div class="social-card-info">
-                                    <span class="social-network">LinkedIn</span>
-                                    <span class="social-handle">in/psypher5</span>
-                                    <span class="social-desc">Professional background &amp; recommendations</span>
-                                </div>
-                                <span class="social-card-arrow">↗</span>
-                            </a>
+                            <!-- Debossed Inset Icon Dock -->
+                            <div class="retro-icons-row" role="tablist" aria-label="Contact Channels">
+                                <button type="button" class="inset-icon-btn active" data-channel="email" onclick="selectContactChannel('email')" title="Email (tom@psypher5.co.uk)">
+                                    <span class="inset-letter">M</span>
+                                </button>
+                                <button type="button" class="inset-icon-btn" data-channel="twitter" onclick="selectContactChannel('twitter')" title="X / Twitter (@psypher5)">
+                                    <span class="inset-letter">t</span>
+                                </button>
+                                <button type="button" class="inset-icon-btn" data-channel="linkedin" onclick="selectContactChannel('linkedin')" title="LinkedIn (in/psypher5)">
+                                    <span class="inset-letter">in</span>
+                                </button>
+                                <button type="button" class="inset-icon-btn" data-channel="github" onclick="selectContactChannel('github')" title="GitHub (@psypher5)">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                                </button>
+                                <button type="button" class="inset-icon-btn" data-channel="twitch" onclick="selectContactChannel('twitch')" title="Twitch (twitch.tv/psypher5)">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M11.64 5.93h1.43v4.28h-1.43m3.93-4.28H17v4.28h-1.43M5.93 2.36L3.07 5.21v13.57h4.29V23.1l2.85-2.86h3.58l5.71-5.71V2.36H5.93m11.43 10.71l-2.86 2.86h-3.57l-2.86 2.86v-2.86H5.21V3.79h12.15v9.28z"/></svg>
+                                </button>
+                                <button type="button" class="inset-icon-btn" data-channel="steam" onclick="selectContactChannel('steam')" title="Steam (psypher5)">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12s-5.373-12-12-12zM8.077 17.077c-.848 0-1.536-.688-1.536-1.536s.688-1.536 1.536-1.536 1.536.688 1.536 1.536-.688 1.536-1.536 1.536zm7.865-5.393c-1.53 0-2.77-1.24-2.77-2.77s1.24-2.77 2.77-2.77 2.77 1.24 2.77 2.77-1.24 2.77-2.77 2.77z"/></svg>
+                                </button>
+                            </div>
 
-                            <a href="https://github.com/psypher5" target="_blank" rel="noopener noreferrer" class="social-card social-github">
-                                <div class="social-card-icon">
-                                    <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                            <!-- Glowing Cyber Terminal Readout -->
+                            <div class="retro-readout-display">
+                                <div class="retro-readout-label" id="retro-readout-label">TRANSMISSION TARGET // DIRECT EMAIL</div>
+                                <div class="retro-readout-url" id="retro-readout-url">tom@psypher5.co.uk</div>
+                                <div class="retro-readout-actions">
+                                    <a href="mailto:tom@psypher5.co.uk" id="retro-action-open" class="retro-action-btn retro-btn-open">
+                                        <span id="retro-action-open-label">Launch Email ↗</span>
+                                    </a>
+                                    <button type="button" id="retro-action-copy" class="retro-action-btn retro-btn-copy" onclick="copyCurrentContactHandle(event)">
+                                        <span id="retro-copy-label">Copy to Clipboard</span>
+                                    </button>
                                 </div>
-                                <div class="social-card-info">
-                                    <span class="social-network">GitHub</span>
-                                    <span class="social-handle">@psypher5</span>
-                                    <span class="social-desc">Open source tools, shaders &amp; game repos</span>
-                                </div>
-                                <span class="social-card-arrow">↗</span>
-                            </a>
-
-                            <a href="https://x.com/psypher5" target="_blank" rel="noopener noreferrer" class="social-card social-x">
-                                <div class="social-card-icon">
-                                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                                </div>
-                                <div class="social-card-info">
-                                    <span class="social-network">X / Twitter</span>
-                                    <span class="social-handle">@psypher5</span>
-                                    <span class="social-desc">Tech musings, game dev updates &amp; thoughts</span>
-                                </div>
-                                <span class="social-card-arrow">↗</span>
-                            </a>
-
-                            <a href="https://www.twitch.tv/psypher5" target="_blank" rel="noopener noreferrer" class="social-card social-twitch">
-                                <div class="social-card-icon">
-                                    <svg viewBox="0 0 24 24"><path d="M11.64 5.93h1.43v4.28h-1.43m3.93-4.28H17v4.28h-1.43M5.93 2.36L3.07 5.21v13.57h4.29V23.1l2.85-2.86h3.58l5.71-5.71V2.36H5.93m11.43 10.71l-2.86 2.86h-3.57l-2.86 2.86v-2.86H5.21V3.79h12.15v9.28z"/></svg>
-                                </div>
-                                <div class="social-card-info">
-                                    <span class="social-network">Twitch</span>
-                                    <span class="social-handle">twitch.tv/psypher5</span>
-                                    <span class="social-desc">Live coding sessions &amp; gaming streams</span>
-                                </div>
-                                <span class="social-card-arrow">↗</span>
-                            </a>
+                                <span id="retro-copy-toast" class="retro-copy-toast" aria-live="polite"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- Bottom Nav Dock -->
+            <!-- Floating Labeled Nav Dock -->
             <nav id="bottom-nav">
-                <button class="nav-dock-btn" data-tab="about" data-tooltip="Dashboard" aria-label="Dashboard" onclick="switchTab('about')">
+                <button class="nav-dock-btn" data-tab="about" aria-label="About Tom" onclick="switchTab('about', event)">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <span class="nav-btn-label">About</span>
                 </button>
-                <button class="nav-dock-btn" data-tab="projects" data-tooltip="Projects &amp; Games" aria-label="Projects and Games" onclick="switchTab('projects')">
+                <button class="nav-dock-btn" data-tab="projects" aria-label="Projects and Games" onclick="switchTab('projects', event)">
                     <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    <span class="nav-btn-label">Projects</span>
                 </button>
-                <button class="nav-dock-btn" data-tab="contact" data-tooltip="Contact" aria-label="Contact" onclick="switchTab('contact')">
+                <button class="nav-dock-btn" data-tab="contact" aria-label="Contact" onclick="switchTab('contact', event)">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span class="nav-btn-label">Contact</span>
                 </button>
             </nav>
         </main>
@@ -693,6 +648,7 @@
                     <h3 id="theater-title">Game Title</h3>
                 </div>
                 <div class="theater-actions">
+                    <button class="theater-btn" onclick="openTheaterNewTab()" title="Open Game in New Tab">&#x2197; New Tab</button>
                     <button class="theater-btn" onclick="toggleTheaterFullscreen()" title="Toggle Fullscreen">&#x26F6; Fullscreen</button>
                     <button class="theater-btn theater-close" onclick="closeGameTheater()" title="Close Game">&times; Close</button>
                 </div>

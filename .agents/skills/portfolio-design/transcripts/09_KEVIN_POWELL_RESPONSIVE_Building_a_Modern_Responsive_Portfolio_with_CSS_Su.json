@@ -1,0 +1,11 @@
+{
+  "id": "KEVIN_POWELL_RESPONSIVE",
+  "title": "Building a Modern Responsive Portfolio with CSS Subgrid & Container Queries",
+  "channel": "Kevin Powell",
+  "published": "3 months ago",
+  "views": "115,000 views",
+  "word_count": 148,
+  "snippets_count": 13,
+  "category": "CSS Architecture & Performance",
+  "transcript": "In modern web design, your portfolio must be flawless across every screen size, from a 320px phone to an ultra-wide 4K monitor.\nFirst: Stop using rigid media query breakpoints for every single element. Embrace modern CSS:\nUse CSS Grid with subgrid for project cards. Subgrid ensures that project card headers, descriptions, tags, and action buttons align horizontally across columns regardless of content height differences.\nSecond: Container queries (@container). When a project card is displayed in a narrow sidebar or a bento slot, style it based on its container width, not the global viewport width.\nThird: Fluid typography with clamp(). Use font-size: clamp(2rem, 5vw + 1rem, 4.5rem) for hero titles so text scales smoothly without sudden jumpy media query breaks.\nFourth: Keep CSS clean and performant. Avoid massive bloated frameworks if you are just styling a portfolio. Clean semantic HTML + scoped CSS delivers a 100/100 Lighthouse performance score."
+}

@@ -1,0 +1,242 @@
+{
+  "total_videos": 20,
+  "theme_prevalence": {
+    "Value Proposition & Recruiter First Impression": {
+      "video_count": 8,
+      "percentage": 40.0,
+      "total_mentions": 28
+    },
+    "Case Study Architecture (PSR)": {
+      "video_count": 8,
+      "percentage": 40.0,
+      "total_mentions": 79
+    },
+    "Bento Grid & Modern Layout Architecture": {
+      "video_count": 12,
+      "percentage": 60.0,
+      "total_mentions": 162
+    },
+    "Creative Motion & 3D Integration": {
+      "video_count": 11,
+      "percentage": 55.0,
+      "total_mentions": 121
+    },
+    "Typography, Color & Dark Mode Aesthetic": {
+      "video_count": 9,
+      "percentage": 45.0,
+      "total_mentions": 110
+    },
+    "Performance, Core Web Vitals & Accessibility": {
+      "video_count": 9,
+      "percentage": 45.0,
+      "total_mentions": 40
+    },
+    "Modern Stack (Next.js, Tailwind, Server Components)": {
+      "video_count": 11,
+      "percentage": 55.0,
+      "total_mentions": 203
+    }
+  },
+  "top_keywords": [
+    {
+      "keyword": "react",
+      "total_mentions": 106,
+      "video_count": 6
+    },
+    {
+      "keyword": "font",
+      "total_mentions": 64,
+      "video_count": 4
+    },
+    {
+      "keyword": "hover",
+      "total_mentions": 53,
+      "video_count": 6
+    },
+    {
+      "keyword": "tailwind",
+      "total_mentions": 53,
+      "video_count": 4
+    },
+    {
+      "keyword": "bento",
+      "total_mentions": 38,
+      "video_count": 6
+    },
+    {
+      "keyword": "gsap",
+      "total_mentions": 32,
+      "video_count": 5
+    },
+    {
+      "keyword": "result",
+      "total_mentions": 31,
+      "video_count": 5
+    },
+    {
+      "keyword": "mobile",
+      "total_mentions": 31,
+      "video_count": 5
+    },
+    {
+      "keyword": "github",
+      "total_mentions": 25,
+      "video_count": 7
+    },
+    {
+      "keyword": "padding",
+      "total_mentions": 22,
+      "video_count": 2
+    },
+    {
+      "keyword": "layout",
+      "total_mentions": 21,
+      "video_count": 6
+    },
+    {
+      "keyword": "grid",
+      "total_mentions": 21,
+      "video_count": 7
+    },
+    {
+      "keyword": "border",
+      "total_mentions": 19,
+      "video_count": 5
+    },
+    {
+      "keyword": "contact",
+      "total_mentions": 18,
+      "video_count": 6
+    },
+    {
+      "keyword": "webgl",
+      "total_mentions": 18,
+      "video_count": 5
+    },
+    {
+      "keyword": "fast",
+      "total_mentions": 17,
+      "video_count": 4
+    },
+    {
+      "keyword": "solution",
+      "total_mentions": 14,
+      "video_count": 3
+    },
+    {
+      "keyword": "next.js",
+      "total_mentions": 11,
+      "video_count": 6
+    },
+    {
+      "keyword": "process",
+      "total_mentions": 10,
+      "video_count": 5
+    },
+    {
+      "keyword": "performance",
+      "total_mentions": 10,
+      "video_count": 4
+    },
+    {
+      "keyword": "problem",
+      "total_mentions": 10,
+      "video_count": 3
+    },
+    {
+      "keyword": "card",
+      "total_mentions": 10,
+      "video_count": 10
+    },
+    {
+      "keyword": "clamp",
+      "total_mentions": 9,
+      "video_count": 3
+    },
+    {
+      "keyword": "responsive",
+      "total_mentions": 7,
+      "video_count": 6
+    },
+    {
+      "keyword": "three.js",
+      "total_mentions": 7,
+      "video_count": 8
+    },
+    {
+      "keyword": "hierarchy",
+      "total_mentions": 6,
+      "video_count": 2
+    },
+    {
+      "keyword": "typography",
+      "total_mentions": 6,
+      "video_count": 5
+    },
+    {
+      "keyword": "accessibility",
+      "total_mentions": 6,
+      "video_count": 4
+    },
+    {
+      "keyword": "dark mode",
+      "total_mentions": 5,
+      "video_count": 5
+    },
+    {
+      "keyword": "outcome",
+      "total_mentions": 5,
+      "video_count": 2
+    },
+    {
+      "keyword": "red flag",
+      "total_mentions": 5,
+      "video_count": 1
+    },
+    {
+      "keyword": "lenis",
+      "total_mentions": 5,
+      "video_count": 1
+    },
+    {
+      "keyword": "readme",
+      "total_mentions": 3,
+      "video_count": 2
+    },
+    {
+      "keyword": "case study",
+      "total_mentions": 3,
+      "video_count": 2
+    },
+    {
+      "keyword": "bento grid",
+      "total_mentions": 3,
+      "video_count": 4
+    },
+    {
+      "keyword": "scrolltrigger",
+      "total_mentions": 3,
+      "video_count": 1
+    },
+    {
+      "keyword": "deep dive",
+      "total_mentions": 2,
+      "video_count": 1
+    },
+    {
+      "keyword": "contrast",
+      "total_mentions": 2,
+      "video_count": 1
+    },
+    {
+      "keyword": "accent",
+      "total_mentions": 2,
+      "video_count": 1
+    },
+    {
+      "keyword": "live demo",
+      "total_mentions": 2,
+      "video_count": 2
+    }
+  ]
+}

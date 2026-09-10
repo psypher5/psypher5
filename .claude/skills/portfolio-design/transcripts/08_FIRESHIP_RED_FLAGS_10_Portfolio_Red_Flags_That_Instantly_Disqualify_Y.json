@@ -1,0 +1,11 @@
+{
+  "id": "FIRESHIP_RED_FLAGS",
+  "title": "10 Portfolio Red Flags That Instantly Disqualify You (Tech Lead Perspective)",
+  "channel": "Fireship",
+  "published": "4 months ago",
+  "views": "420,000 views",
+  "word_count": 208,
+  "snippets_count": 16,
+  "category": "Hiring & Red Flags",
+  "transcript": "Here are the top red flags that make tech leads close your portfolio tab immediately:\nRed flag 1: Generic tutorial clones. If your top project is a basic To-Do list, a Netflix clone, or a Weather app with no custom features, it tells the reviewer you can only follow YouTube tutorials. Build real, original tools or solve a niche problem.\nRed flag 2: Dead live links. If I click 'Live Demo' and get a 404 or a spinning loader that never finishes, you are instantly disqualified. Verify every deployment link.\nRed flag 3: Skill percentage progress bars. Writing 'HTML: 90%, CSS: 85%, JavaScript: 80%, Python: 60%' is completely meaningless. What does 85% CSS even mean? Do you know 85% of the CSS spec? Replace progress bars with real tagged project cards showing the tech in production.\nRed flag 4: No GitHub repo or private/empty repos. Tech leads want to inspect your Git commit history, your component architecture, and how clean your code is. Include a direct GitHub link with an exhaustive README.\nRed flag 5: Buried contact info. Put your email and social links in the header, in the hero, and in the footer. Do not make people fill out a 7-field contact form just to hire you."
+}

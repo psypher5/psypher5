@@ -1,0 +1,11 @@
+{
+  "id": "DESIGN_COURSE_RULES",
+  "title": "10 UI/UX Rules for Developer Portfolios in 2024/2025",
+  "channel": "DesignCourse (Gary Simon)",
+  "published": "3 months ago",
+  "views": "135,000 views",
+  "word_count": 195,
+  "snippets_count": 24,
+  "category": "UI/UX & Visual Hierarchy",
+  "transcript": "In this masterclass we break down the definitive UI/UX rules that separate an amateur portfolio from a professional one.\nRule 1: The 3-Second Value Proposition. When someone lands above the fold, they must understand three things within 3 seconds: your name, your exact specialization (e.g. 'Senior Frontend Engineer | React & WebGL'), and proof of work. Do not write 'I create digital dreams' or 'Passionate coder'. Be explicit.\nRule 2: Visual hierarchy and whitespace. The number one mistake developers make is cramming elements together. Give your sections 80px to 120px of vertical padding. Let elements breathe.\nRule 3: Contrast and accessibility. Ensure your text has at least a 4.5:1 contrast ratio against the background. If using dark mode (#0a0a0a), do not use pure #ffffff for body text—use #e0e0e0 or #cccccc to reduce eye strain, while keeping headings crisp.\nRule 4: Limit your color palette. Pick one primary neutral, one surface color, and one vibrant accent color (e.g. electric cyan, lime, or amber). Never use 6 different accent colors across your buttons.\nRule 5: Bento grids. Use modular bento cards to organize skills, projects, and testimonials. Bento grids create rhythm and clean responsive collapsing on mobile."
+}

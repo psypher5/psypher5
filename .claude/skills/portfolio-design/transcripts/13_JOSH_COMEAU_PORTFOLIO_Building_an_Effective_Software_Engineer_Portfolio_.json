@@ -1,0 +1,11 @@
+{
+  "id": "JOSH_COMEAU_PORTFOLIO",
+  "title": "Building an Effective Software Engineer Portfolio & Tech Blog",
+  "channel": "Josh W. Comeau",
+  "published": "5 months ago",
+  "views": "58,000 views",
+  "word_count": 110,
+  "snippets_count": 16,
+  "category": "Technical Writing & Authority",
+  "transcript": "The most underrated superpower of a portfolio is technical writing.\nHaving 2 or 3 in-depth technical blog posts on your portfolio establishes you as an authority in your field.\nA hiring manager sees that you can explain complex architectural concepts clearly to other human beings.\nKey elements:\n1. Interactive code playgrounds or interactive diagrams (using MDX).\n2. Clean reading typography: 18px to 20px font size, 1.6 to 1.7 line height, and a maximum reading line length of 65 characters (max-width: 65ch).\n3. Search and filtering for articles and projects.\n4. High performance: pre-render all pages statically with Next.js SSG or Astro. A developer portfolio should load in under 500 milliseconds."
+}

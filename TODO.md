@@ -5,10 +5,10 @@
 ---
 
 ## 📱 1. Mobile & Responsive Refinements
-- [ ] **Avatar & Hero Layout on Small Viewports (< 480px)**
-  - Fine-tune avatar scale and vertical margin on ultra-compact phone screens.
-  - Ensure title and subtitle font sizes scale proportionally using `clamp()`.
-  - Adjust padding around the full-width family quote box on narrow displays.
+- [x] **Avatar & Hero Layout on Small Viewports (< 480px)**
+  - [x] Fine-tune avatar scale and vertical margin on ultra-compact phone screens (`.profile-avatar` 120px).
+  - [x] Ensure title and subtitle font sizes scale proportionally using `clamp()`.
+  - [x] Adjust padding around the full-width family quote box on narrow displays.
 
 - [ ] **Smartphone Console & Dossier (Mobile Views)**
   - Add smooth touch momentum scrolling (`-webkit-overflow-scrolling: touch`) inside the smartphone screen glass.
@@ -20,15 +20,16 @@
   - Test touch/tap responsiveness for 3D box selection vs swipe events.
   - Adjust physical shelf ledge width and glowing strip for vertical viewport heights.
 
-- [ ] **Career Wave Timeline**
-  - Increase touch radius / tap area for milestone wave nodes on mobile devices.
-  - Ensure milestone tooltip popovers reposition correctly if tapped near screen edges.
-  - Fine-tune single card height on mobile to prevent layout shifts during fast navigation.
+- [x] **Career Wave Timeline**
+  - [x] Serpentine SVG wave timeline with staggered milestone nodes.
+  - [x] Touch radius / tap area for milestone wave nodes enlarged with active state highlight.
+  - [x] Synchronized card deck navigation without edge clipping or page jumping.
+  - [x] Fixed carousel layout shifts by replacing `scrollIntoView()` with target-safe container scrolling.
 
-- [ ] **Bottom Nav Dock & Screen Heights**
-  - Add `env(safe-area-inset-bottom)` support for iOS Safari home indicator bar.
-  - Optimize backdrop-blur performance on low-power mobile GPUs.
-  - Prevent accidental double-tap zoom triggers on dock buttons.
+- [x] **Bottom Nav Dock & Screen Heights**
+  - [x] Add `env(safe-area-inset-bottom)` support for iOS Safari home indicator bar.
+  - [x] Optimize backdrop-blur performance with GPU-friendly translucent glass.
+  - [x] Prevent accidental double-tap zoom triggers using `touch-action: manipulation;`.
 
 ---
 
@@ -43,10 +44,10 @@
 ---
 
 ## ⚙️ 3. Polish & Meta
-- [ ] **Custom Favicon & PWA Icons**
-  - Generate apple-touch-icon and 32x32 / 16x16 `.png` favicon package.
-  - Add `manifest.json` for "Add to Home Screen" support on mobile.
-- [ ] **Contact Form Backend Hookup**
-  - Connect direct contact form to a Cloudflare Workers email routing endpoint or Formspree.
+- [x] **Custom Favicon & PWA Icons**
+  - [x] Generate apple-touch-icon and 32x32 / 16x16 `.png` favicon package plus root multi-res `favicon.ico`.
+  - [x] Add `manifest.json` with 192px and 512px maskable icons for "Add to Home Screen" support on mobile.
+- [x] **Contact Channel Interface**
+  - [x] Tactile Inset Retro Modern Console Deck with live transmission target readout, direct mailto action, Steam profile integration, and clipboard copy toasts.
 - [ ] **SEO & OpenGraph Tags**
   - Add `<meta property="og:image">`, Twitter card meta tags, and description for rich link previews in Discord/LinkedIn/WhatsApp.

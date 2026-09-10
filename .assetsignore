@@ -6,8 +6,8 @@ assets/art/
 package.json
 package-lock.json
 scripts/compress-art.js
-art_guide.md
-TODO.md
+docs/
+*.md
 *.log
 .agents/
 .claude/

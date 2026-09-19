@@ -2100,10 +2100,20 @@ document.addEventListener('DOMContentLoaded', () => {
         popover.classList.toggle('active');
     };
 
+    function getShareableTrackUrl(index) {
+        const isFile = window.location.protocol === 'file:' || !window.location.origin || window.location.origin === 'null';
+        if (isFile) {
+            return `https://psypher5.pages.dev/#soundtrack?track=${index}`;
+        }
+        const origin = window.location.origin;
+        const path = window.location.pathname && window.location.pathname !== '/' ? window.location.pathname : '/';
+        return `${origin}${path}#soundtrack?track=${index}`;
+    }
+
     window.shareTrackOnX = function(e) {
         if (e) e.stopPropagation();
         const track = geminiTracks[currentTrackIndex];
-        const shareUrl = `https://psypher5.com/#soundtrack?track=${currentTrackIndex}`;
+        const shareUrl = getShareableTrackUrl(currentTrackIndex);
         const tweetText = `Listening to "${track.title}" (${track.genre}) on @psypher5's Gemini AI Soundtrack! 🎧✨`;
         const twitterIntent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(shareUrl)}`;
         window.open(twitterIntent, '_blank', 'noopener,noreferrer,width=560,height=440');
@@ -2113,9 +2123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.copyTrackLink = function(e) {
         if (e) e.stopPropagation();
-        const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'https://psypher5.com';
-        const path = window.location.pathname ? window.location.pathname : '/';
-        const shareUrl = `${origin}${path}#soundtrack?track=${currentTrackIndex}`;
+        const shareUrl = getShareableTrackUrl(currentTrackIndex);
         const label = document.getElementById('copy-link-label');
 
         navigator.clipboard.writeText(shareUrl).then(() => {

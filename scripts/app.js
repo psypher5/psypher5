@@ -330,6 +330,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Personal Indie Projects Database (Interactive Showcase Carousel)
     const indieBoxes = {
+        'aegis': {
+            title: 'Aegis of Ages',
+            tagline: 'Hilltop Fortress Defense & Siege Arcana',
+            status: 'Live on Spawn.co',
+            statusClass: 'status-playable',
+            engine: 'Spawn Engine // WebGL 3D',
+            playableUrl: 'https://www.spawn.co/@psypher5/aegis-of-ages/play',
+            externalTab: true,
+            heroImage: 'assets/aegis_of_ages.webp',
+            desc: 'You command a hilltop fortress under siege from every direction! Strategically place archers, barricades, and spikes between waves, aim the heavy ballista by hand, douse spreading structural fires, and hold the line against escalating hostile incursions.',
+            pillars: [
+                '360° hilltop fortress fortification: place archers, spikes, and emergency barricades between mounting enemy waves.',
+                'Manual ballista ballistics: tactile trajectory aiming and high-impact siege physics against oncoming siege units.',
+                'Tactical crisis response: dousing spreading structural fires while coordinating multi-directional defense.'
+            ],
+            tech: ['Spawn Engine', 'WebGL 3D', 'Tactical Tower Defense', 'Real-Time Physics', 'Spatial Audio'],
+            psr: {
+                problem: 'Orchestrating multi-directional 360-degree siege waves, manual ballista trajectory aiming, and procedural fire propagation in a real-time web-accessible 3D environment.',
+                solution: 'Engineered on the high-performance Spawn engine with reactive wave management, localized spatial siege paths, and manual physics-driven defense targeting.',
+                result: 'A thrilling, immediate hilltop siege experience playable directly in modern browsers with zero download friction.'
+            },
+            conceptArt: [
+                { src: 'assets/aegis_of_ages.webp', title: 'Hilltop Fortress Under Siege', tag: 'AEGIS OF AGES // KEY ART', desc: 'Commanding the high ground: ballista positions, archer ramparts, and invading siege battalions.' }
+            ]
+        },
         'noblegnomes': {
             title: 'Noble Gnomes',
             tagline: 'Steam-Powered Pond Exploration & Slime Arcana',
@@ -894,7 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // 6. Interactive Unified Project Showcase Carousel Controller
-    const projectKeys = ['noblegnomes', 'moments', 'ewefo', 'wick', 'voidwarden'];
+    const projectKeys = ['noblegnomes', 'aegis', 'moments', 'ewefo', 'wick', 'voidwarden'];
     let activeIndieKey = 'noblegnomes';
 
     window.selectProject = function(boxKey) {
@@ -951,12 +976,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (descEl) descEl.textContent = data.desc;
 
         // Toggle Play in Browser Button
+        const newTabBtn = document.querySelector('.btn-billboard-newtab');
         if (playBtn) {
             if (data.playableUrl) {
                 playBtn.style.display = 'inline-flex';
-                if (playLabel) playLabel.textContent = `Play ${data.title} in Browser`;
+                if (data.externalTab) {
+                    if (playLabel) playLabel.textContent = `Play ${data.title} on Spawn.co ↗`;
+                    if (newTabBtn) newTabBtn.style.display = 'none';
+                } else {
+                    if (playLabel) playLabel.textContent = `Play ${data.title} in Browser`;
+                    if (newTabBtn) newTabBtn.style.display = 'inline-flex';
+                }
             } else {
                 playBtn.style.display = 'none';
+                if (newTabBtn) newTabBtn.style.display = 'none';
             }
         }
 
@@ -1048,13 +1081,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetKey = key || activeIndieKey;
         const game = indieBoxes[targetKey];
         if (game && game.playableUrl) {
-            openGameTheater(targetKey);
+            if (game.externalTab) {
+                window.open(game.playableUrl, '_blank', 'noopener,noreferrer');
+            } else {
+                openGameTheater(targetKey);
+            }
         }
     };
 
     window.openGameTheater = function(key) {
         const game = indieBoxes[key];
         if (!game || !game.playableUrl) return;
+
+        if (game.externalTab) {
+            window.open(game.playableUrl, '_blank', 'noopener,noreferrer');
+            return;
+        }
 
         const modal = document.getElementById('game-theater-modal');
         const iframe = document.getElementById('theater-iframe');
@@ -1856,5 +1898,742 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // ===================================================
+    // 16. Gemini Soundtrack Audio Player Widget Controller
+    // ===================================================
+    const geminiTracks = [
+        {
+            id: 0,
+            title: 'Arrival at the Maw',
+            artist: 'Tom Woodward & Gemini AI',
+            file: 'assets/audio/Arrival_at_the_Maw.mp3',
+            art: 'assets/noble_gnomes.png',
+            genre: 'Orchestral / Ambient'
+        },
+        {
+            id: 1,
+            title: 'Cathedral at Speed',
+            artist: 'Tom Woodward & Gemini AI',
+            file: 'assets/audio/Cathedral_at_Speed.mp3',
+            art: 'assets/psypher53-2-WE5f5c30150a (1).png',
+            genre: 'Cyber Synthwave'
+        },
+        {
+            id: 2,
+            title: "Gravity's Last Stand",
+            artist: 'Tom Woodward & Gemini AI',
+            file: 'assets/audio/Gravity_s_Last_Stand.mp3',
+            art: 'assets/art-web/digital/peng back.webp',
+            genre: 'Sci-Fi / Cinematic'
+        },
+        {
+            id: 3,
+            title: 'Quantum Entanglement',
+            artist: 'Tom Woodward & Gemini AI',
+            file: 'assets/audio/Quantum_Entanglement.mp3',
+            art: 'assets/art-web/digital/Out_of_the_mist__by_Psypher5.webp',
+            genre: 'Atmospheric Glitch'
+        },
+        {
+            id: 4,
+            title: 'Salt-Stained Morning',
+            artist: 'Tom Woodward & Gemini AI',
+            file: 'assets/audio/Salt_Stained_Morning.mp3',
+            art: 'assets/merlin.jpg',
+            genre: 'Reflective Melodic'
+        },
+        {
+            id: 5,
+            title: "The Archmage's Gait",
+            artist: 'Tom Woodward & Gemini AI',
+            file: 'assets/audio/The_Archmage_s_Gait.mp3',
+            art: 'assets/aegis_of_ages.webp',
+            genre: 'Arcane Fantasy'
+        }
+    ];
+
+    let currentTrackIndex = 0;
+    let lastVolume = 0.8;
+    const audioEl = document.getElementById('gemini-audio-player');
+    const widgetEl = document.getElementById('audio-player-widget');
+
+    // ── Global Like & Social Share System (Cloudflare KV + Organic Counts) ──
+    const baselineLikes = [0, 0, 0, 0, 0, 0];
+
+    function getLikedTracks() {
+        try {
+            return JSON.parse(localStorage.getItem('psypher5_liked_tracks') || '[]');
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function getTrackLikes(idx) {
+        try {
+            const cached = JSON.parse(localStorage.getItem('psypher5_track_likes') || '{}');
+            if (typeof cached[idx] === 'number') {
+                return cached[idx];
+            }
+        } catch (e) {}
+        return baselineLikes[idx] || 0;
+    }
+
+    function setTrackLikes(idx, count) {
+        try {
+            const cached = JSON.parse(localStorage.getItem('psypher5_track_likes') || '{}');
+            cached[idx] = count;
+            localStorage.setItem('psypher5_track_likes', JSON.stringify(cached));
+        } catch (e) {}
+    }
+
+    async function fetchLikesFromServer() {
+        try {
+            const res = await fetch('/api/likes');
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.tracks) {
+                    localStorage.setItem('psypher5_track_likes', JSON.stringify(data.tracks));
+                    updateLikeUI(currentTrackIndex);
+                }
+            }
+        } catch (err) {
+            // Local preview or offline - graceful fallback to localStorage
+        }
+    }
+
+    function updateLikeUI(index) {
+        const likeBtn = document.getElementById('audio-like-btn');
+        const countEl = document.getElementById('audio-like-count');
+        if (!likeBtn || !countEl) return;
+
+        const likedTracks = getLikedTracks();
+        const isLiked = likedTracks.includes(index);
+        const count = getTrackLikes(index);
+
+        if (isLiked) {
+            likeBtn.classList.add('liked');
+            likeBtn.setAttribute('title', 'Unlike this track');
+        } else {
+            likeBtn.classList.remove('liked');
+            likeBtn.setAttribute('title', 'Like this track');
+        }
+        countEl.textContent = count.toLocaleString();
+    }
+
+    // Micro-interaction: particle burst on like
+    function spawnLikeParticles() {
+        const container = document.getElementById('audio-like-particles');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const symbols = ['❤️', '💖', '✨', '🔥', '🎵'];
+        for (let i = 0; i < 5; i++) {
+            const p = document.createElement('span');
+            p.className = 'heart-particle';
+            p.textContent = symbols[i % symbols.length];
+            const angle = (Math.PI * 2 * i) / 5 + (Math.random() - 0.5) * 0.5;
+            const dist = 24 + Math.random() * 20;
+            const tx = Math.cos(angle) * dist;
+            const ty = -18 - Math.random() * 25;
+            p.style.setProperty('--tx', `${tx}px`);
+            p.style.setProperty('--ty', `${ty}px`);
+            p.style.left = '20%';
+            p.style.top = '30%';
+            container.appendChild(p);
+            setTimeout(() => {
+                if (p.parentNode) p.parentNode.removeChild(p);
+            }, 850);
+        }
+    }
+
+    window.toggleAudioLike = function(e) {
+        if (e) e.stopPropagation();
+        const likedTracks = getLikedTracks();
+        const trackIdx = currentTrackIndex;
+        const alreadyLiked = likedTracks.includes(trackIdx);
+        let currentCount = getTrackLikes(trackIdx);
+
+        if (alreadyLiked) {
+            const updated = likedTracks.filter(id => id !== trackIdx);
+            localStorage.setItem('psypher5_liked_tracks', JSON.stringify(updated));
+            currentCount = Math.max(0, currentCount - 1);
+            setTrackLikes(trackIdx, currentCount);
+
+            // Cloudflare KV Sync
+            fetch('/api/likes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ track: trackIdx, action: 'unlike' })
+            }).then(r => r.json()).then(data => {
+                if (data && typeof data.count === 'number') {
+                    setTrackLikes(trackIdx, data.count);
+                    updateLikeUI(trackIdx);
+                }
+            }).catch(() => {});
+        } else {
+            likedTracks.push(trackIdx);
+            localStorage.setItem('psypher5_liked_tracks', JSON.stringify(likedTracks));
+            currentCount += 1;
+            setTrackLikes(trackIdx, currentCount);
+            spawnLikeParticles();
+
+            // Cloudflare KV Sync
+            fetch('/api/likes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ track: trackIdx, action: 'like' })
+            }).then(r => r.json()).then(data => {
+                if (data && typeof data.count === 'number') {
+                    setTrackLikes(trackIdx, data.count);
+                    updateLikeUI(trackIdx);
+                }
+            }).catch(() => {});
+        }
+        updateLikeUI(trackIdx);
+    };
+
+    // Social Share Menu
+    window.toggleAudioShareMenu = function(e) {
+        if (e) e.stopPropagation();
+        const popover = document.getElementById('audio-share-popover');
+        if (!popover) return;
+        popover.classList.toggle('active');
+    };
+
+    window.shareTrackOnX = function(e) {
+        if (e) e.stopPropagation();
+        const track = geminiTracks[currentTrackIndex];
+        const shareUrl = `https://psypher5.com/#soundtrack?track=${currentTrackIndex}`;
+        const tweetText = `Listening to "${track.title}" (${track.genre}) on @psypher5's Gemini AI Soundtrack! 🎧✨`;
+        const twitterIntent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(shareUrl)}`;
+        window.open(twitterIntent, '_blank', 'noopener,noreferrer,width=560,height=440');
+        const popover = document.getElementById('audio-share-popover');
+        if (popover) popover.classList.remove('active');
+    };
+
+    window.copyTrackLink = function(e) {
+        if (e) e.stopPropagation();
+        const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'https://psypher5.com';
+        const path = window.location.pathname ? window.location.pathname : '/';
+        const shareUrl = `${origin}${path}#soundtrack?track=${currentTrackIndex}`;
+        const label = document.getElementById('copy-link-label');
+
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            if (label) {
+                const origText = label.textContent;
+                label.textContent = 'Copied! ✓';
+                label.style.color = '#00e5ff';
+                setTimeout(() => {
+                    label.textContent = origText;
+                    label.style.color = '';
+                    const popover = document.getElementById('audio-share-popover');
+                    if (popover) popover.classList.remove('active');
+                }, 1400);
+            }
+        }).catch(() => {
+            // Fallback for non-secure or restricted environments
+            const ta = document.createElement('textarea');
+            ta.value = shareUrl;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            if (label) {
+                label.textContent = 'Copied! ✓';
+                setTimeout(() => {
+                    label.textContent = 'Copy Track Link';
+                }, 1400);
+            }
+        });
+    };
+
+    // ── Time & Formatting ──
+    function formatAudioTime(seconds) {
+        if (isNaN(seconds) || seconds < 0) return '0:00';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function updateTrackUI(index) {
+        const track = geminiTracks[index];
+        if (!track) return;
+
+        const miniArt = document.getElementById('audio-mini-art');
+        const deckArt = document.getElementById('audio-deck-art');
+        const titleEl = document.getElementById('audio-track-title');
+        const countEl = document.getElementById('audio-track-count');
+        const genreEl = document.getElementById('audio-track-genre');
+        const artistEl = document.getElementById('audio-track-artist');
+
+        if (miniArt) miniArt.src = track.art;
+        if (deckArt) deckArt.src = track.art;
+        if (titleEl) titleEl.textContent = track.title;
+        if (countEl) countEl.textContent = `TRACK 0${index + 1} OF 0${geminiTracks.length}`;
+        if (genreEl) genreEl.textContent = track.genre;
+        if (artistEl) artistEl.textContent = track.artist;
+
+        document.querySelectorAll('.audio-track-item').forEach(item => {
+            const itemIdx = parseInt(item.getAttribute('data-track-index'), 10);
+            if (itemIdx === index) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+
+        updateLikeUI(index);
+    }
+
+    function setPlayingStateUI(isPlaying) {
+        if (!widgetEl) return;
+        if (isPlaying) {
+            widgetEl.classList.add('is-playing');
+        } else {
+            widgetEl.classList.remove('is-playing');
+        }
+
+        const miniPlayIcon = document.getElementById('mini-play-icon');
+        const miniPauseIcon = document.getElementById('mini-pause-icon');
+        const deckPlayIcon = document.getElementById('deck-play-icon');
+        const deckPauseIcon = document.getElementById('deck-pause-icon');
+
+        if (miniPlayIcon && miniPauseIcon) {
+            miniPlayIcon.style.display = isPlaying ? 'none' : 'block';
+            miniPauseIcon.style.display = isPlaying ? 'block' : 'none';
+        }
+        if (deckPlayIcon && deckPauseIcon) {
+            deckPlayIcon.style.display = isPlaying ? 'none' : 'block';
+            deckPauseIcon.style.display = isPlaying ? 'block' : 'none';
+        }
+    }
+
+    window.toggleAudioPlayer = function(e) {
+        if (e) e.stopPropagation();
+        if (!widgetEl) return;
+        widgetEl.classList.toggle('collapsed');
+        // Redraw wave canvas immediately when expanding
+        if (!widgetEl.classList.contains('collapsed')) {
+            setTimeout(drawWaveScrubber, 50);
+        }
+    };
+
+    window.toggleAudioPlayback = function(e) {
+        if (e) e.stopPropagation();
+        if (!audioEl) return;
+
+        if (audioEl.paused) {
+            const playPromise = audioEl.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => {
+                    console.warn('Playback error, re-executing load pipeline:', err);
+                    audioEl.load();
+                    audioEl.play().catch(e => console.error('Audio play failed:', e));
+                });
+            }
+        } else {
+            audioEl.pause();
+        }
+    };
+
+    function loadTrack(index, autoPlay = false) {
+        if (!audioEl || !geminiTracks[index]) return;
+        currentTrackIndex = index;
+        const track = geminiTracks[index];
+
+        const resolvedUrl = new URL(track.file, window.location.href).href;
+        if (audioEl.src !== resolvedUrl) {
+            audioEl.src = resolvedUrl;
+            audioEl.load();
+        }
+
+        updateTrackUI(index);
+
+        const currTimeEl = document.getElementById('audio-time-curr');
+        if (currTimeEl) currTimeEl.textContent = '0:00';
+
+        drawWaveScrubber();
+
+        if (autoPlay) {
+            const playPromise = audioEl.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => console.warn('Autoplay prevented:', err));
+            }
+        }
+    }
+
+    window.playTrack = function(index) {
+        if (index === currentTrackIndex) {
+            window.toggleAudioPlayback();
+        } else {
+            loadTrack(index, true);
+        }
+    };
+
+    window.prevAudioTrack = function() {
+        if (!audioEl) return;
+        if (audioEl.currentTime > 3) {
+            audioEl.currentTime = 0;
+            drawWaveScrubber();
+        } else {
+            const nextIdx = (currentTrackIndex - 1 + geminiTracks.length) % geminiTracks.length;
+            loadTrack(nextIdx, !audioEl.paused);
+        }
+    };
+
+    window.nextAudioTrack = function() {
+        if (!audioEl) return;
+        const nextIdx = (currentTrackIndex + 1) % geminiTracks.length;
+        loadTrack(nextIdx, !audioEl.paused);
+    };
+
+    // ── Volume & Mute ──
+    window.setAudioVolume = function(val) {
+        if (!audioEl) return;
+        const volume = parseFloat(val);
+        audioEl.volume = volume;
+        audioEl.muted = volume === 0;
+        updateVolumeIcons(volume);
+    };
+
+    window.toggleAudioMute = function() {
+        if (!audioEl) return;
+        const slider = document.getElementById('audio-vol-slider');
+        if (audioEl.muted || audioEl.volume === 0) {
+            audioEl.muted = false;
+            audioEl.volume = lastVolume > 0 ? lastVolume : 0.8;
+            if (slider) slider.value = audioEl.volume;
+            updateVolumeIcons(audioEl.volume);
+        } else {
+            lastVolume = audioEl.volume;
+            audioEl.muted = true;
+            audioEl.volume = 0;
+            if (slider) slider.value = 0;
+            updateVolumeIcons(0);
+        }
+    };
+
+    function updateVolumeIcons(volume) {
+        const volHigh = document.getElementById('vol-high-icon');
+        const volMuted = document.getElementById('vol-muted-icon');
+        if (volHigh && volMuted) {
+            if (volume === 0 || (audioEl && audioEl.muted)) {
+                volHigh.style.display = 'none';
+                volMuted.style.display = 'block';
+            } else {
+                volHigh.style.display = 'block';
+                volMuted.style.display = 'none';
+            }
+        }
+    }
+
+    // ── Android Auto Style Dynamic Squiggly Wavy Scrubber Canvas ──
+    let waveCanvas = null;
+    let waveCtx = null;
+    let wavePhase = 0;
+    let waveAnimId = null;
+    let isSeeking = false;
+
+    function initWaveScrubber() {
+        waveCanvas = document.getElementById('audio-wave-canvas');
+        if (!waveCanvas) return;
+        waveCtx = waveCanvas.getContext('2d');
+
+        const container = document.getElementById('audio-wave-container');
+        if (!container) return;
+
+        function updateCanvasSize() {
+            if (!waveCanvas || !container) return;
+            const rect = container.getBoundingClientRect();
+            if (rect.width === 0) return;
+            const dpr = window.devicePixelRatio || 1;
+            waveCanvas.width = rect.width * dpr;
+            waveCanvas.height = rect.height * dpr;
+            waveCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            drawWaveScrubber();
+        }
+
+        window.addEventListener('resize', updateCanvasSize);
+        setTimeout(updateCanvasSize, 100);
+
+        // Hover timestamp indicator
+        const hoverLine = document.getElementById('audio-wave-hover-line');
+        const tooltip = document.getElementById('audio-wave-tooltip');
+
+        function handlePointerSeek(e) {
+            if (!audioEl || !audioEl.duration) return;
+            const rect = container.getBoundingClientRect();
+            const clientX = e.touches && e.touches.length ? e.touches[0].clientX : e.clientX;
+            const clickX = Math.max(0, Math.min(rect.width, clientX - rect.left));
+            const pct = clickX / rect.width;
+            audioEl.currentTime = pct * audioEl.duration;
+            drawWaveScrubber();
+        }
+
+        function handlePointerMove(e) {
+            const rect = container.getBoundingClientRect();
+            const clientX = e.touches && e.touches.length ? e.touches[0].clientX : e.clientX;
+            const hoverX = Math.max(0, Math.min(rect.width, clientX - rect.left));
+            const pct = hoverX / rect.width;
+
+            if (hoverLine) {
+                hoverLine.style.left = `${hoverX}px`;
+            }
+            if (tooltip && audioEl && audioEl.duration) {
+                tooltip.style.left = `${hoverX}px`;
+                tooltip.textContent = formatAudioTime(pct * audioEl.duration);
+            }
+
+            if (isSeeking) {
+                handlePointerSeek(e);
+            }
+        }
+
+        container.addEventListener('pointerdown', (e) => {
+            isSeeking = true;
+            container.setPointerCapture(e.pointerId);
+            handlePointerSeek(e);
+        });
+
+        container.addEventListener('pointermove', handlePointerMove);
+
+        container.addEventListener('pointerup', (e) => {
+            if (isSeeking) {
+                isSeeking = false;
+                try { container.releasePointerCapture(e.pointerId); } catch (err) {}
+            }
+        });
+
+        container.addEventListener('pointercancel', (e) => {
+            isSeeking = false;
+            try { container.releasePointerCapture(e.pointerId); } catch (err) {}
+        });
+    }
+
+    function drawWaveScrubber() {
+        if (!waveCanvas || !waveCtx) return;
+        const rect = waveCanvas.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        if (width === 0 || height === 0) return;
+
+        waveCtx.clearRect(0, 0, width, height);
+
+        const centerY = height / 2;
+        const duration = audioEl && audioEl.duration ? audioEl.duration : 1;
+        const currentTime = audioEl ? audioEl.currentTime : 0;
+        const progressPct = Math.max(0, Math.min(1, currentTime / duration));
+        const playedWidth = progressPct * width;
+
+        // 1. Draw Unplayed Track (Sleek horizontal rail + buffered)
+        waveCtx.beginPath();
+        waveCtx.moveTo(playedWidth, centerY);
+        waveCtx.lineTo(width, centerY);
+        waveCtx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+        waveCtx.lineWidth = 2.5;
+        waveCtx.lineCap = 'round';
+        waveCtx.stroke();
+
+        // Buffered segment
+        if (audioEl && audioEl.buffered && audioEl.buffered.length > 0 && duration > 0) {
+            const bufferedEnd = audioEl.buffered.end(audioEl.buffered.length - 1);
+            const bufferedWidth = Math.min(width, (bufferedEnd / duration) * width);
+            if (bufferedWidth > playedWidth) {
+                waveCtx.beginPath();
+                waveCtx.moveTo(playedWidth, centerY);
+                waveCtx.lineTo(bufferedWidth, centerY);
+                waveCtx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+                waveCtx.lineWidth = 2.5;
+                waveCtx.stroke();
+            }
+        }
+
+        // 2. Draw Dynamic Squiggly Sine Wave (Android Auto Style)
+        if (playedWidth > 0) {
+            const wavelength = 22; // px per full sine wave cycle
+            const amplitude = 4.2;  // wave peak height in px
+            const isPlaying = audioEl && !audioEl.paused;
+
+            waveCtx.save();
+            waveCtx.beginPath();
+
+            const step = 2; // px resolution for smooth curve
+            for (let x = 0; x <= playedWidth; x += step) {
+                // Smooth envelope: taper amplitude smoothly near the start and right before the scrubber thumb
+                const taperStart = Math.min(1, x / 10);
+                const taperEnd = Math.min(1, (playedWidth - x) / 14);
+                const env = taperStart * taperEnd;
+
+                // Sine harmonic formula
+                const y = centerY + Math.sin((x / wavelength) * (Math.PI * 2) - wavePhase) * (amplitude * env);
+
+                if (x === 0) {
+                    waveCtx.moveTo(x, y);
+                } else {
+                    waveCtx.lineTo(x, y);
+                }
+            }
+
+            // Connect exactly to thumb position
+            waveCtx.lineTo(playedWidth, centerY);
+
+            // Radiant gradient stroke
+            const grad = waveCtx.createLinearGradient(0, 0, playedWidth, 0);
+            grad.addColorStop(0, '#0072f5');
+            grad.addColorStop(1, '#00e5ff');
+
+            waveCtx.strokeStyle = grad;
+            waveCtx.lineWidth = 3.2;
+            waveCtx.lineCap = 'round';
+            waveCtx.lineJoin = 'round';
+            waveCtx.shadowColor = '#00e5ff';
+            waveCtx.shadowBlur = isPlaying ? 8 : 4;
+            waveCtx.stroke();
+            waveCtx.restore();
+        }
+
+        // 3. Draw Concentric Scrubber Thumb Handle
+        const thumbRadius = isSeeking ? 7.5 : 5.8;
+        waveCtx.save();
+        waveCtx.beginPath();
+        waveCtx.arc(playedWidth, centerY, thumbRadius, 0, Math.PI * 2);
+        waveCtx.fillStyle = '#ffffff';
+        waveCtx.shadowColor = '#00e5ff';
+        waveCtx.shadowBlur = 10;
+        waveCtx.fill();
+
+        waveCtx.beginPath();
+        waveCtx.arc(playedWidth, centerY, thumbRadius, 0, Math.PI * 2);
+        waveCtx.strokeStyle = '#00e5ff';
+        waveCtx.lineWidth = 2;
+        waveCtx.stroke();
+        waveCtx.restore();
+    }
+
+    function startWaveLoop() {
+        if (waveAnimId) cancelAnimationFrame(waveAnimId);
+
+        function tick() {
+            if (audioEl && !audioEl.paused) {
+                wavePhase += 0.09; // smooth wave ripple speed
+                drawWaveScrubber();
+            }
+            waveAnimId = requestAnimationFrame(tick);
+        }
+        waveAnimId = requestAnimationFrame(tick);
+    }
+
+    // ── Tracklist UI ──
+    function initAudioTracklist() {
+        const container = document.getElementById('audio-tracklist-items');
+        if (!container) return;
+        container.innerHTML = '';
+
+        geminiTracks.forEach((track, idx) => {
+            const item = document.createElement('div');
+            item.className = `audio-track-item ${idx === currentTrackIndex ? 'active' : ''}`;
+            item.setAttribute('data-track-index', idx);
+            item.onclick = () => window.playTrack(idx);
+
+            item.innerHTML = `
+                <span class="audio-item-num">${(idx + 1) < 10 ? '0' : ''}${idx + 1}</span>
+                <img src="${track.art}" alt="${track.title}" class="audio-item-art" loading="lazy">
+                <div class="audio-item-info">
+                    <span class="audio-item-title">${track.title}</span>
+                    <span class="audio-item-tag">${track.genre}</span>
+                </div>
+                <div class="audio-item-wave" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    // ── Master Player Initializer ──
+    function initMusicPlayer() {
+        if (!audioEl) return;
+
+        audioEl.volume = 0.8;
+        initWaveScrubber();
+        initAudioTracklist();
+
+        // Check for deep-linking: #soundtrack?track=X or ?track=X
+        let initialTrack = 0;
+        const hashMatch = window.location.hash.match(/track=(\d+)/);
+        const searchMatch = window.location.search.match(/track=(\d+)/);
+        if (hashMatch && geminiTracks[parseInt(hashMatch[1], 10)]) {
+            initialTrack = parseInt(hashMatch[1], 10);
+            if (widgetEl) widgetEl.classList.remove('collapsed');
+        } else if (searchMatch && geminiTracks[parseInt(searchMatch[1], 10)]) {
+            initialTrack = parseInt(searchMatch[1], 10);
+            if (widgetEl) widgetEl.classList.remove('collapsed');
+        }
+
+        loadTrack(initialTrack, false);
+        updateLikeUI(initialTrack);
+        fetchLikesFromServer();
+        startWaveLoop();
+
+        // Audio events
+        audioEl.addEventListener('play', () => setPlayingStateUI(true));
+        audioEl.addEventListener('pause', () => {
+            setPlayingStateUI(false);
+            drawWaveScrubber();
+        });
+        audioEl.addEventListener('ended', () => {
+            const nextIdx = (currentTrackIndex + 1) % geminiTracks.length;
+            loadTrack(nextIdx, true);
+        });
+
+        audioEl.addEventListener('timeupdate', () => {
+            const curr = audioEl.currentTime;
+            const currTimeEl = document.getElementById('audio-time-curr');
+            if (currTimeEl) currTimeEl.textContent = formatAudioTime(curr);
+            drawWaveScrubber();
+        });
+
+        audioEl.addEventListener('loadedmetadata', () => {
+            const durTimeEl = document.getElementById('audio-time-dur');
+            if (durTimeEl) durTimeEl.textContent = formatAudioTime(audioEl.duration);
+            drawWaveScrubber();
+        });
+
+        audioEl.addEventListener('progress', () => {
+            drawWaveScrubber();
+        });
+
+        audioEl.addEventListener('error', (e) => {
+            console.warn('Audio decoding / network event error:', e);
+        });
+
+        // Close widget or share menu on outside click
+        document.addEventListener('click', (e) => {
+            const popover = document.getElementById('audio-share-popover');
+            if (popover && popover.classList.contains('active')) {
+                const shareWrap = document.querySelector('.audio-share-wrapper');
+                if (shareWrap && !shareWrap.contains(e.target)) {
+                    popover.classList.remove('active');
+                }
+            }
+
+            if (!widgetEl || widgetEl.classList.contains('collapsed')) return;
+            if (!widgetEl.contains(e.target)) {
+                widgetEl.classList.add('collapsed');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && widgetEl && !widgetEl.classList.contains('collapsed')) {
+                widgetEl.classList.add('collapsed');
+                const popover = document.getElementById('audio-share-popover');
+                if (popover) popover.classList.remove('active');
+            }
+        });
+    }
+
+    initMusicPlayer();
+
 });
+
 

@@ -417,7 +417,7 @@
                         <div class="netflix-tray-section">
                             <div class="netflix-tray-header">
                                 <h3 class="tray-section-title">Expeditions &amp; Prototypes</h3>
-                                <span class="tray-section-count">05 TITLES &bull; SELECT TO FEATURE</span>
+                                <span class="tray-section-count">06 TITLES &bull; SELECT TO FEATURE</span>
                             </div>
 
                             <div class="netflix-tray-track" id="netflix-tray-track">
@@ -435,6 +435,23 @@
                                             <h4 class="card-title">Noble Gnomes</h4>
                                         </div>
                                         <div class="card-tech-sub">Three.js &bull; Workers Edge</div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: Aegis of Ages -->
+                                <div class="netflix-card" data-project="aegis" onclick="selectProject('aegis')">
+                                    <div class="netflix-card-thumb-wrap">
+                                        <img src="assets/aegis_of_ages.webp" alt="Aegis of Ages" class="netflix-card-thumb" loading="lazy">
+                                        <div class="netflix-card-overlay">
+                                            <span class="card-status-chip chip-playable">PLAY ON SPAWN ↗</span>
+                                        </div>
+                                    </div>
+                                    <div class="netflix-card-info">
+                                        <div class="card-title-row">
+                                            <span class="card-icon">🏰</span>
+                                            <h4 class="card-title">Aegis of Ages</h4>
+                                        </div>
+                                        <div class="card-tech-sub">Spawn &bull; 3D Fortress Siege</div>
                                     </div>
                                 </div>
 
@@ -623,19 +640,16 @@
 
             </div>
 
-            <!-- Floating Labeled Nav Dock -->
-            <nav id="bottom-nav">
-                <button class="nav-dock-btn" data-tab="about" aria-label="About Tom" onclick="switchTab('about', event)">
+            <!-- Floating Minimal Nav Dock (Icons Only) -->
+            <nav id="bottom-nav" aria-label="Quick Navigation">
+                <button class="nav-dock-btn" data-tab="about" aria-label="About Tom" title="About" onclick="switchTab('about', event)">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    <span class="nav-btn-label">About</span>
                 </button>
-                <button class="nav-dock-btn" data-tab="projects" aria-label="Projects and Games" onclick="switchTab('projects', event)">
+                <button class="nav-dock-btn" data-tab="projects" aria-label="Projects and Games" title="Projects &amp; Games" onclick="switchTab('projects', event)">
                     <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                    <span class="nav-btn-label">Projects</span>
                 </button>
-                <button class="nav-dock-btn" data-tab="contact" aria-label="Contact" onclick="switchTab('contact', event)">
+                <button class="nav-dock-btn" data-tab="contact" aria-label="Contact" title="Contact" onclick="switchTab('contact', event)">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    <span class="nav-btn-label">Contact</span>
                 </button>
             </nav>
         </main>
@@ -698,7 +712,156 @@
         </div>
     </div>
 
+    <!-- Floating Expandable Audio Player Widget (Bottom Right) -->
+    <div id="audio-player-widget" class="audio-player-widget collapsed" aria-label="Soundtrack Music Player">
+        <!-- Compact Mini-Widget Button / Disc Trigger -->
+        <div class="audio-mini-dock" id="audio-mini-dock" onclick="toggleAudioPlayer(event)" title="Gemini Soundtrack Player" role="button" tabindex="0" aria-label="Toggle Soundtrack Music Player">
+            <div class="audio-mini-disc-wrap">
+                <div class="audio-vinyl-disc" id="audio-mini-vinyl">
+                    <img src="assets/noble_gnomes.png" alt="Vinyl Label" class="audio-disc-art" id="audio-mini-art">
+                    <div class="audio-disc-grooves"></div>
+                    <div class="audio-disc-hole"></div>
+                </div>
+                <!-- Mini Equalizer Soundwave Bars -->
+                <div class="audio-mini-eq" id="audio-mini-eq" aria-hidden="true">
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                </div>
+            </div>
+
+            <!-- Mini Play/Pause Quick-Toggle Button -->
+            <button class="audio-mini-playbtn" id="audio-mini-playbtn" onclick="toggleAudioPlayback(event)" title="Play / Pause Soundtrack" aria-label="Play or pause soundtrack">
+                <svg id="mini-play-icon" viewBox="0 0 24 24"><polygon points="7 4 21 12 7 20 7 4"/></svg>
+                <svg id="mini-pause-icon" viewBox="0 0 24 24" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
+        </div>
+
+        <!-- Expanded Music Deck Panel -->
+        <div class="audio-deck-panel glass-panel" id="audio-deck-panel" onclick="event.stopPropagation()">
+            <!-- Deck Header -->
+            <div class="audio-deck-header">
+                <div class="audio-header-left">
+                    <span class="audio-live-dot"></span>
+                    <div class="audio-header-titles">
+                        <span class="audio-header-badge">GEMINI SOUNDSCAPES</span>
+                        <span class="audio-header-sub">Original AI Composed Audio</span>
+                    </div>
+                </div>
+                <button class="audio-btn-minimize" onclick="toggleAudioPlayer(event)" title="Minimize Player" aria-label="Minimize Player">&times;</button>
+            </div>
+
+            <!-- Now Playing Turntable / Track Visual Area -->
+            <div class="audio-hero-display">
+                <div class="audio-turntable-visual">
+                    <div class="audio-turntable-vinyl" id="audio-deck-vinyl" onclick="toggleAudioPlayback(event)" style="cursor:pointer;" title="Click to Play / Pause">
+                        <img src="assets/noble_gnomes.png" alt="Vinyl Art" class="audio-turntable-art" id="audio-deck-art">
+                        <div class="audio-turntable-grooves"></div>
+                        <div class="audio-turntable-spindle"></div>
+                    </div>
+                </div>
+                <div class="audio-meta-display">
+                    <div class="audio-track-count" id="audio-track-count">TRACK 01 OF 06</div>
+                    <h3 class="audio-track-title" id="audio-track-title">Arrival at the Maw</h3>
+                    <div class="audio-track-artist" id="audio-track-artist">Tom Woodward &bull; Gemini AI</div>
+                    <span class="audio-genre-pill" id="audio-track-genre">Orchestral / Ambient</span>
+                </div>
+            </div>
+
+            <!-- Like & Social Share Action Row -->
+            <div class="audio-deck-actions">
+                <button class="audio-action-btn audio-like-btn" id="audio-like-btn" onclick="toggleAudioLike(event)" title="Like this track" aria-label="Like this track">
+                    <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path class="heart-path" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span class="audio-like-count" id="audio-like-count">128</span>
+                    <div class="audio-like-particles" id="audio-like-particles" aria-hidden="true"></div>
+                </button>
+
+                <div class="audio-share-wrapper">
+                    <button class="audio-action-btn audio-share-btn" id="audio-share-btn" onclick="toggleAudioShareMenu(event)" title="Share track" aria-label="Share track">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                        <span class="share-btn-text">Share</span>
+                    </button>
+
+                    <!-- Share Popover Menu -->
+                    <div class="audio-share-popover" id="audio-share-popover" onclick="event.stopPropagation()">
+                        <button class="share-item-btn" onclick="shareTrackOnX(event)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                            <span>Share on X</span>
+                        </button>
+                        <button class="share-item-btn" onclick="copyTrackLink(event)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                            </svg>
+                            <span id="copy-link-label">Copy Track Link</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Squiggly Wavy Scrubber (Android Auto Style) & Timers -->
+            <div class="audio-timeline-wrap">
+                <div class="audio-wave-container" id="audio-wave-container">
+                    <canvas class="audio-wave-canvas" id="audio-wave-canvas"></canvas>
+                    <div class="audio-wave-hover-line" id="audio-wave-hover-line"></div>
+                    <div class="audio-wave-tooltip" id="audio-wave-tooltip">0:00</div>
+                </div>
+                <div class="audio-time-row">
+                    <span class="audio-time-curr" id="audio-time-curr">0:00</span>
+                    <span class="audio-time-dur" id="audio-time-dur">0:00</span>
+                </div>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="audio-controls-row">
+                <button class="audio-ctrl-btn" onclick="prevAudioTrack()" title="Previous Track" aria-label="Previous Track">
+                    <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+                </button>
+                <button class="audio-play-master-btn" id="audio-play-master" onclick="toggleAudioPlayback(event)" title="Play / Pause" aria-label="Play or pause">
+                    <svg id="deck-play-icon" viewBox="0 0 24 24"><polygon points="7 4 21 12 7 20 7 4"/></svg>
+                    <svg id="deck-pause-icon" viewBox="0 0 24 24" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                </button>
+                <button class="audio-ctrl-btn" onclick="nextAudioTrack()" title="Next Track" aria-label="Next Track">
+                    <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                </button>
+
+                <!-- Volume Group -->
+                <div class="audio-volume-group">
+                    <button class="audio-vol-btn" id="audio-mute-btn" onclick="toggleAudioMute()" title="Mute / Unmute" aria-label="Mute or unmute">
+                        <svg id="vol-high-icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        <svg id="vol-muted-icon" viewBox="0 0 24 24" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                    </button>
+                    <input type="range" class="audio-vol-slider" id="audio-vol-slider" min="0" max="1" step="0.02" value="0.8" oninput="setAudioVolume(this.value)" aria-label="Volume">
+                </div>
+            </div>
+
+            <!-- Tracklist Drawer -->
+            <div class="audio-tracklist-section">
+                <div class="audio-tracklist-header">
+                    <span>TRACKS</span>
+                    <span class="audio-tracklist-sub">6 AUDIO FILES</span>
+                </div>
+                <div class="audio-tracklist-items" id="audio-tracklist-items">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Audio Element -->
+        <audio id="gemini-audio-player" preload="auto" src="assets/audio/Arrival_at_the_Maw.mp3"></audio>
+    </div>
+
     <script src="scripts/starfield.js"></script>
-    <script src="scripts/app.js"></script>
+    <script src="scripts/app.js?v=2.3"></script>
 </body>
 </html>

@@ -7,5 +7,11 @@
   },
   "assets": {
     "directory": "."
-  }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "LIKES_KV",
+      "id": "dbd7178b0a4244cfaee08cc8b8502a97"
+    }
+  ]
 }

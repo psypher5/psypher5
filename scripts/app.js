@@ -795,9 +795,11 @@ document.addEventListener('DOMContentLoaded', () => {
         subpages.forEach(page => page.classList.remove('active'));
         navButtons.forEach(btn => btn.classList.remove('active'));
 
-        // Clear hash on return to home
+        // Clear hash on return to home (preserve soundtrack deep links)
         if (window.history && window.history.replaceState) {
-            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            if (!window.location.hash.includes('soundtrack') && !window.location.hash.includes('track')) {
+                window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
         }
     };
 
@@ -1755,6 +1757,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialHash = window.location.hash.replace('#', '');
     if (['about', 'projects', 'contact'].includes(initialHash)) {
         switchTab(initialHash);
+    } else if (initialHash.includes('soundtrack') || initialHash.includes('track')) {
+        // Stay on home and preserve soundtrack deep link
+        if (appContainer) {
+            appContainer.classList.remove('state-subpage-active');
+            subpages.forEach(page => page.classList.remove('active'));
+            navButtons.forEach(btn => btn.classList.remove('active'));
+        }
     } else {
         goHome();
     }
@@ -2582,6 +2591,15 @@ document.addEventListener('DOMContentLoaded', () => {
         updateLikeUI(initialTrack);
         fetchLikesFromServer();
         startWaveLoop();
+
+        window.addEventListener('hashchange', () => {
+            const hMatch = window.location.hash.match(/track=(\d+)/);
+            if (hMatch && geminiTracks[parseInt(hMatch[1], 10)]) {
+                const targetIdx = parseInt(hMatch[1], 10);
+                loadTrack(targetIdx, false);
+                if (widgetEl) widgetEl.classList.remove('collapsed');
+            }
+        });
 
         // Audio events
         audioEl.addEventListener('play', () => setPlayingStateUI(true));

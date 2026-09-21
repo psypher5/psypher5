@@ -11,3 +11,5 @@ docs/
 *.log
 .agents/
 .claude/
+*.glb
+assets/models/*_comfy*

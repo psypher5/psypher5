@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" width="360" height="80">
+  <g transform="translate(15, 20)">
+    <path d="M5,25 Q15,5 25,25 T45,25" fill="none" stroke="#a855f7" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="45" cy="25" r="4" fill="#00f0ff"/>
+  </g>
+  <text x="72" y="46" fill="#ffffff" font-family="'Segoe UI', sans-serif" font-size="24" font-weight="900" letter-spacing="1.2">SYNOPSYS</text>
+  <text x="216" y="46" fill="#94a3b8" font-family="'Segoe UI', sans-serif" font-size="20" font-weight="400">&amp;</text>
+  <text x="238" y="46" fill="#ffb703" font-family="'Segoe UI', sans-serif" font-size="24" font-weight="900" font-style="italic" letter-spacing="1">Ansys</text>
+  <text x="73" y="62" fill="#00f0ff" font-family="'Consolas', monospace" font-size="9.5" font-weight="700" letter-spacing="2">HPC SIMULATION &amp; DIGITAL TWINS</text>
+</svg>

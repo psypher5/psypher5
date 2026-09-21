@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" width="340" height="80">
+  <defs>
+    <linearGradient id="lrGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(15, 15)">
+    <ellipse cx="32" cy="25" rx="28" ry="18" fill="url(#lrGreen)" stroke="#10b981" stroke-width="2"/>
+    <text x="32" y="23" fill="#fef08a" font-family="'Arial Black', sans-serif" font-size="7.5" font-weight="900" text-anchor="middle" letter-spacing="0.5">LAND</text>
+    <text x="32" y="32" fill="#fef08a" font-family="'Arial Black', sans-serif" font-size="7.5" font-weight="900" text-anchor="middle" letter-spacing="0.5">ROVER</text>
+  </g>
+  <text x="85" y="38" fill="#ffffff" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="19" font-weight="900" letter-spacing="1.8">JAGUAR LAND ROVER</text>
+  <text x="86" y="55" fill="#10b981" font-family="'Consolas', monospace" font-size="10.5" font-weight="700" letter-spacing="2">CONNECT GROUP // TELEMATICS</text>
+</svg>

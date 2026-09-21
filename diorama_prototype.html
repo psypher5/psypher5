@@ -1,0 +1,3822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Diorama &amp; Level Select Prototype Lab // Tom Woodward</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Three.js + OrbitControls + GLTFLoader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <style>
+    :root {
+      --bg: #060813;
+      --card-bg: rgba(13, 17, 34, 0.92);
+      --border: rgba(255, 255, 255, 0.12);
+      --accent-cyan: #00f0ff;
+      --accent-blue: #0072f5;
+      --accent-gold: #facc15;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: #f8fafc;
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Lab Header */
+    .lab-header {
+      background: rgba(9, 12, 24, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .lab-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .lab-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      background: rgba(0, 240, 255, 0.14);
+      border: 1px solid rgba(0, 240, 255, 0.45);
+      color: var(--accent-cyan);
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lab-badge-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+
+    .lab-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    /* Mode Navigation Tabs */
+    .mode-nav {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mode-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+    .mode-btn.active {
+      background: var(--accent-blue);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 0 16px rgba(0, 114, 245, 0.5);
+    }
+
+    .lab-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-lab-sound {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 9px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-lab-sound:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    /* Main Showcase Content */
+    .lab-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .tab-section {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+    }
+    .tab-section.active {
+      display: flex;
+    }
+
+    /* ═════════════════════════════════════════════════════════════
+       MODE 1: 3D LEVEL SELECT OVERWORLD (WEBSITE INTEGRATION)
+       ═════════════════════════════════════════════════════════════ */
+    .level-select-container {
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Topbar Controls */
+    .level-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(13, 17, 34, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0.75rem 1.25rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+      backdrop-filter: blur(16px);
+    }
+
+    .level-badge-col {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .beacon-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00f0ff;
+      box-shadow: 0 0 10px #00f0ff;
+    }
+    .beacon-text {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #00f0ff;
+      letter-spacing: 0.08em;
+    }
+
+    .level-nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-tactile {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #e2e8f0;
+      padding: 6px 14px;
+      border-radius: 9px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .btn-tactile:hover {
+      background: rgba(0, 114, 245, 0.25);
+      border-color: #00f0ff;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .btn-tactile:active { transform: scale(0.95); }
+    .btn-tactile:disabled { opacity: 0.35; pointer-events: none; }
+    .btn-tactile.active {
+      background: rgba(0, 114, 245, 0.4);
+      border-color: #00f0ff;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+    }
+
+    .level-counter-readout {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #fef08a;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      padding: 5px 12px;
+      border-radius: 8px;
+      min-width: 95px;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    /* Horizontal Stage Scrubber / Ribbon */
+    .ribbon-container {
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 240, 255, 0.35) transparent;
+      padding: 4px 0 8px;
+    }
+    .ribbon-track {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: max-content;
+    }
+
+    .ribbon-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 12px;
+      background: rgba(13, 17, 34, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: var(--font-mono);
+    }
+    .ribbon-pill:hover {
+      background: rgba(20, 26, 50, 0.95);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .ribbon-pill:active { transform: scale(0.95); }
+    .ribbon-pill.is-active {
+      background: rgba(0, 114, 245, 0.25);
+      border-color: #00f0ff;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.35), inset 0 0 10px rgba(0, 240, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .pill-lvl { font-size: 0.68rem; font-weight: 800; color: #00f0ff; }
+    .ribbon-pill.is-active .pill-lvl { color: #fef08a; }
+    .pill-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981; }
+    .ribbon-pill.is-classified .pill-dot { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+    .pill-title { font-size: 0.72rem; font-weight: 600; font-family: var(--font-main); white-space: nowrap; }
+    .pill-year { font-size: 0.62rem; color: #64748b; background: rgba(255, 255, 255, 0.06); padding: 1px 5px; border-radius: 4px; }
+    .ribbon-pill.is-active .pill-year { color: #e2e8f0; background: rgba(0, 240, 255, 0.2); }
+
+    /* Bento Matrix Grid Drawer */
+    .matrix-drawer {
+      display: none;
+      width: 100%;
+      background: rgba(10, 14, 28, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(0, 240, 255, 0.35);
+      border-radius: 20px;
+      padding: 1.25rem;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 240, 255, 0.15);
+      animation: drawerSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .matrix-drawer.is-open { display: block; }
+    @keyframes drawerSlideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .matrix-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .matrix-title {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #00f0ff;
+      letter-spacing: 0.08em;
+    }
+    .matrix-sub { font-size: 0.72rem; color: #94a3b8; }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+    @media (max-width: 980px) { .matrix-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .matrix-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .grid-card {
+      background: rgba(15, 20, 40, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.22s cubic-bezier(0.2, 0, 0.2, 1);
+    }
+    .grid-card:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: rgba(0, 240, 255, 0.6);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+    .grid-card.is-active {
+      border-color: #00f0ff;
+      background: rgba(0, 114, 245, 0.18);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 12px rgba(0, 240, 255, 0.15);
+    }
+    .grid-card-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #060914;
+      overflow: hidden;
+    }
+    .grid-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+      display: block;
+    }
+    .grid-card:hover .grid-card-img { transform: scale(1.08); }
+
+    .grid-card-badge {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(6, 9, 20, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      color: #00f0ff;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .grid-card-year {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(6, 9, 20, 0.8);
+      color: #cbd5e1;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .grid-card-body {
+      padding: 0.65rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .grid-card-company {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .grid-card-role {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 3D WebGL Canvas Container */
+    .canvas-box {
+      position: relative;
+      width: 100%;
+      height: 540px;
+      background: radial-gradient(circle at 50% 45%, #151c36 0%, #060813 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(0, 0, 0, 0.8);
+    }
+    #three-diorama-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Orbit Hint */
+    .canvas-hint {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(6, 9, 20, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: #94a3b8;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Pilot Avatar HUD Token */
+    .pilot-hud {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(8, 12, 26, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 16px;
+      padding: 8px 14px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pilot-hud:hover {
+      border-color: #00f0ff;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+      transform: translateY(-2px);
+    }
+    .pilot-speech {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      right: 0;
+      background: rgba(10, 15, 30, 0.95);
+      border: 1.5px solid #00f0ff;
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 240, 255, 0.3);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .pilot-speech::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      right: 20px;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #00f0ff;
+    }
+    .pilot-hud:hover .pilot-speech,
+    .pilot-speech.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pilot-avatar-img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1.5px solid #00f0ff;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+      object-fit: cover;
+    }
+    .pilot-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .pilot-name { font-size: 0.74rem; font-weight: 800; color: #fff; }
+    .pilot-role { font-family: var(--font-mono); font-size: 0.64rem; color: #00f0ff; }
+
+    /* Dossier Briefing Bar */
+    .dossier-bar {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.75rem;
+      flex-wrap: wrap;
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+    }
+
+    .watercolor-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.35;
+      filter: blur(40px);
+      transition: background 0.6s ease;
+      z-index: 0;
+    }
+
+    .dossier-left-col {
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      position: relative;
+      z-index: 1;
+    }
+    .dossier-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+    .badge-pill-lvl {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid #00f0ff;
+      color: #00f0ff;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .badge-pill-period {
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .dossier-role-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+    .dossier-company-tags {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+    .dossier-company-tags strong { color: #fff; }
+    .dossier-quote-text {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      font-style: italic;
+      line-height: 1.45;
+      margin-top: 0.2rem;
+    }
+
+    .dossier-actions-col {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+    .btn-toy {
+      background: rgba(0, 114, 245, 0.22);
+      border: 1.5px solid #00f0ff;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-toy:hover {
+      background: rgba(0, 240, 255, 0.25);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    .btn-toy:active { transform: scale(0.95); }
+
+    .btn-inspect {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #e2e8f0;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-inspect:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .toy-toast {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      right: 0;
+      background: rgba(10, 15, 30, 0.95);
+      border: 1.5px solid #34d399;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #34d399;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), 0 0 16px rgba(52, 211, 153, 0.4);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.22s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toy-toast.visible { opacity: 1; transform: translateY(0); }
+
+    /* ═════════════════════════════════════════════════════════════
+       MODE 2: CONCEPT ART VS 3D MODEL INSPECTOR (SIDE-BY-SIDE)
+       ═════════════════════════════════════════════════════════════ */
+    .inspector-container {
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .inspector-role-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .role-pill-btn {
+      background: rgba(15, 20, 36, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 12px;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .role-pill-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+    .role-pill-btn.active {
+      background: rgba(0, 114, 245, 0.25);
+      border-color: #00f0ff;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+    }
+
+    .split-lab-stage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      min-height: 560px;
+    }
+    @media (max-width: 880px) { .split-lab-stage { grid-template-columns: 1fr; } }
+
+    .split-col {
+      background: rgba(12, 16, 32, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .col-header {
+      padding: 0.85rem 1.25rem;
+      background: rgba(8, 11, 24, 0.9);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .col-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #00f0ff;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .col-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+    }
+
+    .concept-art-wrap {
+      flex: 1;
+      position: relative;
+      background: #04060d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: zoom-in;
+    }
+    .concept-art-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      max-height: 480px;
+      transition: transform 0.3s ease;
+    }
+    .concept-art-wrap:hover .concept-art-img {
+      transform: scale(1.03);
+    }
+    .concept-art-zoom-hint {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 0.68rem;
+      color: #94a3b8;
+    }
+
+    .col-footer-info {
+      padding: 1rem 1.25rem;
+      background: rgba(10, 14, 28, 0.95);
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .col-footer-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .col-footer-desc {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    /* 3D Canvas Box in Inspector */
+    .inspector-canvas-box {
+      flex: 1;
+      position: relative;
+      background: radial-gradient(circle at 50% 45%, #151c36 0%, #060813 100%);
+      min-height: 420px;
+    }
+    #inspector-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ═════════════════════════════════════════════════════════════
+       MODE 3: BENTO CONCEPT GALLERY (OVERVIEW MATRIX)
+       ═════════════════════════════════════════════════════════════ */
+    .gallery-container {
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .gallery-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: rgba(15, 20, 36, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 14px;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+    .filter-btn.active {
+      background: var(--accent-blue);
+      border-color: #00f0ff;
+      color: #fff;
+    }
+
+    .bento-showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 990px) { .bento-showcase-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .bento-showcase-grid { grid-template-columns: 1fr; } }
+
+    .bento-card {
+      background: rgba(14, 18, 36, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .bento-card:hover {
+      transform: translateY(-4px) scale(1.015);
+      border-color: rgba(0, 240, 255, 0.5);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 240, 255, 0.2);
+    }
+    .bento-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #060914;
+      position: relative;
+      overflow: hidden;
+    }
+    .bento-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .bento-card:hover .bento-img { transform: scale(1.08); }
+
+    .bento-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(8, 12, 26, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      color: #00f0ff;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .bento-status-tag {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid #10b981;
+      color: #34d399;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .bento-content {
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .bento-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .bento-sub {
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+    .bento-desc {
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin-top: 0.25rem;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 12, 0.94);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox-modal.active { display: flex; }
+    .lightbox-content {
+      max-width: 92vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 240, 255, 0.3);
+      border: 1.5px solid rgba(0, 240, 255, 0.4);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      text-align: center;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -38px;
+      right: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 800;
+      transition: all 0.2s ease;
+    }
+    .lightbox-close:hover { background: #f43f5e; border-color: #f43f5e; }
+  
+    /* ═════════════════════════════════════════════════════════════
+       MODE: SAGA ADVENTURE MAP (ANGRY BIRDS 2 / MOBILE MAP STYLE)
+       ═════════════════════════════════════════════════════════════ */
+    .saga-container {
+      width: 100%;
+      height: calc(100vh - 75px);
+      min-height: 640px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #1e293b;
+    }
+
+    /* Top Saga Game HUD */
+    .saga-game-hud {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    .saga-hud-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      pointer-events: auto;
+    }
+
+    .hud-pill-game {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid #facc15;
+      border-radius: 999px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.82rem;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    }
+    .hud-pill-game .icon { font-size: 1.15rem; line-height: 1; }
+    .hud-pill-game .val { color: #fef08a; }
+
+    .saga-hud-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .btn-saga-hud {
+      background: rgba(15, 23, 42, 0.88);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 7px 14px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .btn-saga-hud:hover {
+      background: rgba(0, 114, 245, 0.4);
+      border-color: #00f0ff;
+      transform: translateY(-2px);
+    }
+
+    /* Scrollable Saga Map Viewport */
+    .saga-viewport {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      cursor: grab;
+      user-select: none;
+      scrollbar-width: thin;
+      scrollbar-color: #facc15 rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .saga-viewport:active { cursor: grabbing; }
+
+    /* The Expansive Panoramic World */
+    .saga-world {
+      position: relative;
+      width: 2550px;
+      height: 100%;
+      min-height: 600px;
+      background: 
+        radial-gradient(ellipse at 15% 10%, rgba(254, 240, 138, 0.35) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 20%, rgba(56, 189, 248, 0.2) 0%, transparent 70%),
+        linear-gradient(180deg, #475569 0%, #334155 35%, #1e293b 100%);
+      overflow: hidden;
+    }
+
+    /* Sunbeams & Atmosphere */
+    .saga-sunbeams {
+      position: absolute;
+      top: -50px;
+      left: 100px;
+      width: 800px;
+      height: 700px;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(254, 240, 138, 0.08) 0px,
+        rgba(254, 240, 138, 0.08) 35px,
+        transparent 35px,
+        transparent 70px
+      );
+      pointer-events: none;
+      transform: rotate(-15deg);
+      mix-blend-mode: screen;
+      z-index: 1;
+    }
+
+    /* SVG Layer with Terrain, Shoreline, Cliffs, and Road */
+    .saga-svg-terrain {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Interactive Stage Nodes Container */
+    .saga-nodes-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* Individual Stage Node */
+    .saga-node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      pointer-events: auto;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .saga-node:hover {
+      transform: translate(-50%, -55%) scale(1.08);
+    }
+    .saga-node:active {
+      transform: translate(-50%, -48%) scale(0.96);
+    }
+
+    /* Normal Circular Stepping Stone */
+    .node-disc {
+      position: relative;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #fef08a 0%, #eab308 30%, #ca8a04 100%);
+      border: 4px solid #fef9c3;
+      box-shadow: 0 10px 0 #854d0e, 0 14px 22px rgba(0, 0, 0, 0.6), 0 0 15px rgba(250, 204, 21, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-main);
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #713f12;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+      z-index: 5;
+    }
+    .saga-node.is-active .node-disc {
+      border-color: #fff;
+      box-shadow: 0 12px 0 #854d0e, 0 16px 30px rgba(0, 240, 255, 0.6), 0 0 25px #00f0ff;
+    }
+
+    /* 3-Star Rating Crown */
+    .node-stars {
+      display: flex;
+      gap: 2px;
+      margin-bottom: -6px;
+      z-index: 6;
+    }
+    .node-star {
+      font-size: 0.95rem;
+      color: #facc15;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(250, 204, 21, 0.6);
+    }
+
+    /* Milestone / Boss Node (Ornate Pedestal + Miniature Diorama) */
+    .saga-node.is-milestone .node-disc {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #ffffff 0%, #fef08a 25%, #f59e0b 60%, #b45309 100%);
+      border: 5px solid #fff;
+      box-shadow: 0 12px 0 #78350f, 0 18px 30px rgba(0, 0, 0, 0.7), 0 0 30px rgba(245, 158, 11, 0.7);
+      font-size: 1.85rem;
+      color: #451a03;
+    }
+
+    .node-diorama-preview {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      width: 96px;
+      background: rgba(10, 14, 28, 0.92);
+      border: 2px solid #facc15;
+      border-radius: 12px;
+      padding: 3px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(245, 158, 11, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 8;
+      transition: transform 0.2s ease;
+    }
+    .node-diorama-preview:hover {
+      transform: scale(1.1);
+    }
+    .node-diorama-preview img {
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .node-preview-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #fef08a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 90px;
+      margin-top: 2px;
+    }
+
+    /* Vertical Celebratory Light Beacon (Node 10 / Node 12) */
+    .node-beacon-beam {
+      position: absolute;
+      bottom: 20px;
+      width: 70px;
+      height: 380px;
+      background: linear-gradient(to top, rgba(254, 240, 138, 0.6) 0%, rgba(254, 240, 138, 0.25) 40%, transparent 100%);
+      pointer-events: none;
+      z-index: 3;
+      filter: blur(8px);
+      animation: beaconSway 3s ease-in-out infinite alternate;
+    }
+    @keyframes beaconSway {
+      0% { opacity: 0.7; transform: scaleX(0.9); }
+      100% { opacity: 1; transform: scaleX(1.15); }
+    }
+
+    /* Player Avatar ("Tom!") sitting on Active Node */
+    .saga-avatar-pod {
+      position: absolute;
+      width: 58px;
+      height: 58px;
+      transform: translate(-50%, -50%);
+      z-index: 25;
+      pointer-events: none;
+      transition: top 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .avatar-pod-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      animation: avatarFloatBob 2s ease-in-out infinite;
+    }
+    @keyframes avatarFloatBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .avatar-pod-nest {
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52px;
+      height: 18px;
+      background: #78350f;
+      border: 2px solid #b45309;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    }
+    .avatar-token-img {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 3px solid #00f0ff;
+      box-shadow: 0 0 16px #00f0ff, 0 6px 12px rgba(0,0,0,0.8);
+      object-fit: cover;
+      background: #060813;
+    }
+
+    /* Avatar Hopping Keyframes */
+    .saga-avatar-pod.is-hopping {
+      animation: avatarArcHop 0.45s ease-in-out forwards;
+    }
+    @keyframes avatarArcHop {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -85%) scale(1.18); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* Floating Bottom Action Area (Juicy PLAY! Button & Briefing Bubble) */
+    .saga-bottom-deck {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    /* Active Stage Mission Briefing Card */
+    .saga-briefing-card {
+      pointer-events: auto;
+      background: rgba(9, 13, 26, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 2px solid #facc15;
+      border-radius: 18px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(250, 204, 21, 0.3);
+      animation: briefingSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes briefingSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .briefing-thumb {
+      width: 58px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+    }
+    .briefing-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .briefing-stage-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #00f0ff;
+    }
+    .briefing-company {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .briefing-role {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    /* Big Pillowy Angry Birds "PLAY / INSPECT" Button */
+    .btn-saga-play {
+      pointer-events: auto;
+      background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 45%, #d97706 100%);
+      border: 3.5px solid #fef08a;
+      border-radius: 999px;
+      padding: 12px 38px;
+      font-family: var(--font-main);
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #451a03;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+      box-shadow: 0 8px 0 #92400e, 0 16px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(245, 158, 11, 0.6);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .btn-saga-play:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 11px 0 #92400e, 0 20px 35px rgba(0, 0, 0, 0.8), 0 0 35px rgba(250, 204, 21, 0.8);
+      background: linear-gradient(180deg, #fde047 0%, #fbbf24 45%, #ea580c 100%);
+    }
+    .btn-saga-play:active {
+      transform: translateY(5px) scale(0.97);
+      box-shadow: 0 3px 0 #92400e, 0 8px 15px rgba(0, 0, 0, 0.6);
+    }
+
+  
+    /* Zoom Transform on Saga World */
+    .saga-world {
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .saga-world.is-zoomed {
+      transform: scale(1.85);
+    }
+
+    /* Game Job Info Pop-up Modal (Angry Birds Level Briefing Style) */
+    .saga-job-modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(3, 6, 18, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .saga-job-modal-backdrop.active {
+      display: flex !important;
+    }
+
+    .saga-job-modal {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(180deg, #111827 0%, #090d1a 100%);
+      border: 3.5px solid #facc15;
+      border-radius: 26px;
+      padding: 1.75rem 1.75rem 1.5rem;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(250, 204, 21, 0.35);
+      animation: modalGamePopIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: center;
+      color: #fff;
+    }
+    @keyframes modalGamePopIn {
+      0% { transform: scale(0.65) translateY(30px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .saga-modal-close-btn {
+      position: absolute;
+      top: -16px;
+      right: -16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #dc2626;
+      border: 3px solid #fff;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .saga-modal-close-btn:hover {
+      transform: scale(1.15) rotate(90deg);
+      background: #ef4444;
+    }
+
+    .saga-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.6rem;
+    }
+    .saga-modal-badge {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #00f0ff;
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid #00f0ff;
+      padding: 3px 10px;
+      border-radius: 8px;
+    }
+    .saga-modal-period {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    /* Diorama Preview Card in Modal */
+    .saga-modal-diorama-preview {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #060914;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(250, 204, 21, 0.6);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.8);
+      cursor: zoom-in;
+    }
+    .saga-modal-diorama-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .saga-modal-diorama-preview:hover img {
+      transform: scale(1.06);
+    }
+    .modal-diorama-caption {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(6, 9, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 3px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: #fef08a;
+      white-space: nowrap;
+    }
+
+    .saga-modal-company {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-top: 0.2rem;
+    }
+    .saga-modal-role {
+      font-size: 0.88rem;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+    .saga-modal-narrative {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+      font-style: italic;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 14px;
+      border-radius: 10px;
+      border-left: 3px solid #facc15;
+      text-align: left;
+    }
+
+    .saga-modal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin: 0.2rem 0;
+    }
+    .saga-modal-tag-chip {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .saga-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0.3rem;
+    }
+    .btn-saga-toy {
+      flex: 1;
+      background: rgba(0, 114, 245, 0.25);
+      border: 2px solid #00f0ff;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-saga-toy:hover {
+      background: rgba(0, 240, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+    }
+    .btn-saga-deepdive {
+      flex: 1.3;
+      background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+      border: 2px solid #fef08a;
+      color: #451a03;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 0 #92400e, 0 8px 18px rgba(0, 0, 0, 0.6);
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-saga-deepdive:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #92400e, 0 12px 22px rgba(0, 0, 0, 0.7);
+    }
+
+    .btn-saga-back-to-map {
+      background: transparent;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      color: #94a3b8;
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 0.2rem;
+    }
+    .btn-saga-back-to-map:hover {
+      color: #fff;
+      border-color: #00f0ff;
+      background: rgba(0, 240, 255, 0.1);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Lab Navigation Bar -->
+  <header class="lab-header">
+    <div class="lab-title-wrap">
+      <div class="lab-badge">
+        <span class="lab-badge-pulse"></span>
+        <span>PROTOTYPE LAB</span>
+      </div>
+      <h1 class="lab-title">Career Diorama Concept &amp; Level Select Suite</h1>
+    </div>
+
+    <!-- Mode Tabs -->
+    <nav class="mode-nav">
+      <button class="mode-btn active" onclick="switchLabMode('mode-saga-map')">
+        <span>🗺️</span> <span>1. Winding Journey Saga Map (Angry Birds 2 Style)</span>
+      </button>
+      <button class="mode-btn" onclick="switchLabMode('mode-saga-map')">
+        <span>🎮</span> <span>2. Stage Select 3D Studio</span>
+      </button>
+      <button class="mode-btn" onclick="switchLabMode('mode-inspector')">
+        <span>🔍</span> <span>2. Concept vs 3D Inspector</span>
+      </button>
+      <button class="mode-btn" onclick="switchLabMode('mode-gallery')">
+        <span>🖼️</span> <span>3. Bento Concept Matrix</span>
+      </button>
+    </nav>
+
+    <div class="lab-actions-group">
+      <button class="btn-lab-sound" onclick="toggleAudio()" id="sound-btn">
+        <span id="sound-icon">🔊</span> <span id="sound-label">Audio ON</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <main class="lab-main">
+
+    <!-- ═════════════════════════════════════════════════════════
+         MODE 1: 3D LEVEL SELECT OVERWORLD (PRODUCTION CANDIDATE)
+         ═════════════════════════════════════════════════════════ -->
+    
+    <!-- ═════════════════════════════════════════════════════════
+         MODE: SAGA ADVENTURE MAP (ANGRY BIRDS 2 STYLE)
+         ═════════════════════════════════════════════════════════ -->
+    <section class="tab-section active" id="mode-saga-map">
+      <div class="saga-container">
+
+        <!-- Top Game HUD Bar -->
+        <div class="saga-game-hud">
+          <div class="saga-hud-left">
+            <div class="hud-pill-game">
+              <span class="icon">⭐</span>
+              <span>STARS:</span>
+              <span class="val" id="hud-stars-val">36 / 36</span>
+            </div>
+            <div class="hud-pill-game">
+              <span class="icon">💎</span>
+              <span>XP:</span>
+              <span class="val">15,200</span>
+            </div>
+            <div class="hud-pill-game">
+              <span class="icon">❤️</span>
+              <span>LIVES:</span>
+              <span class="val">5 / 5</span>
+            </div>
+          </div>
+
+          <div class="saga-hud-right">
+            <button class="btn-saga-hud" onclick="stepSagaStage(-1)"><span>◀</span> Prev Node</button>
+            <button class="btn-saga-hud" onclick="stepSagaStage(1)">Next Node <span>▶</span></button>
+            <button class="btn-saga-hud" onclick="centerSagaActiveNode()"><span>🎯</span> Center Avatar</button>
+          </div>
+        </div>
+
+        <!-- Scrollable Panoramic Viewport -->
+        <div class="saga-viewport" id="saga-viewport">
+          <div class="saga-world" id="saga-world">
+
+            <!-- Sunbeams -->
+            <div class="saga-sunbeams"></div>
+
+            <!-- SVG Terrain Landscape & Winding Road -->
+            <svg class="saga-svg-terrain" viewBox="0 0 2550 680" preserveAspectRatio="none">
+              <defs>
+                <!-- Water Coastline Gradient -->
+                <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0284c7" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#0369a1" stop-opacity="0.95"/>
+                </linearGradient>
+
+                <!-- Layer 1 Plateau Grass (Deep green) -->
+                <linearGradient id="grassDeep" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#4d7c0f"/>
+                  <stop offset="100%" stop-color="#365314"/>
+                </linearGradient>
+
+                <!-- Layer 2 Plateau Grass (Vibrant sunlit lime) -->
+                <linearGradient id="grassBright" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#a3e635"/>
+                  <stop offset="60%" stop-color="#65a30d"/>
+                  <stop offset="100%" stop-color="#4d7c0f"/>
+                </linearGradient>
+
+                <!-- Rock Cliff Face Texture -->
+                <linearGradient id="cliffFace" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#334155"/>
+                  <stop offset="100%" stop-color="#0f172a"/>
+                </linearGradient>
+
+                <!-- Road Gradient -->
+                <linearGradient id="roadGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#fef08a"/>
+                  <stop offset="50%" stop-color="#eab308"/>
+                  <stop offset="100%" stop-color="#fde047"/>
+                </linearGradient>
+
+                <filter id="roadGlow">
+                  <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <!-- Top Coastline Ocean Water -->
+              <path d="M 0,0 L 2550,0 L 2550,140 Q 2100,210 1700,120 T 1100,160 T 500,110 T 0,140 Z" fill="url(#waterGrad)"/>
+              <path d="M 0,130 Q 500,95 1100,145 T 1700,105 T 2550,125" stroke="#7dd3fc" stroke-width="6" fill="none" opacity="0.6"/>
+
+              <!-- Rolling Background Cliffs & Plateaus -->
+              <!-- Plateau 1: Uni & Ticketmaster Base Camp -->
+              <path d="M 0,220 Q 200,170 380,210 T 600,280 L 600,680 L 0,680 Z" fill="url(#cliffFace)"/>
+              <path d="M -20,210 Q 200,155 380,195 T 620,265 L 620,285 Q 380,215 200,175 T -20,230 Z" fill="url(#grassBright)"/>
+
+              <!-- Plateau 2: CSR Racing & Silver Lining Mid-Lands -->
+              <path d="M 520,380 Q 750,260 980,310 T 1320,390 L 1320,680 L 520,680 Z" fill="url(#cliffFace)"/>
+              <path d="M 500,370 Q 750,245 980,295 T 1340,375 L 1340,395 Q 980,315 750,265 T 500,390 Z" fill="url(#grassBright)"/>
+
+              <!-- Plateau 3: SEGA & Malvern High Terrain -->
+              <path d="M 1240,320 Q 1480,190 1740,240 T 2020,330 L 2020,680 L 1240,680 Z" fill="url(#cliffFace)"/>
+              <path d="M 1220,310 Q 1480,175 1740,225 T 2040,315 L 2040,335 Q 1740,245 1480,195 T 1220,330 Z" fill="url(#grassBright)"/>
+
+              <!-- Plateau 4: Synopsys & Classified Summit Fortress -->
+              <path d="M 1880,180 Q 2150,110 2380,150 T 2550,210 L 2550,680 L 1880,680 Z" fill="url(#cliffFace)"/>
+              <path d="M 1860,170 Q 2150,95 2380,135 T 2570,195 L 2570,215 Q 2380,155 2150,115 T 1860,190 Z" fill="url(#grassBright)"/>
+
+              <!-- Environmental Landmarks: Trees, Towers, Bridges -->
+              <!-- Watchtower at Uni -->
+              <g transform="translate(240, 260)">
+                <rect x="0" y="0" width="8" height="60" fill="#78350f"/>
+                <rect x="28" y="0" width="8" height="60" fill="#78350f"/>
+                <line x1="4" y1="10" x2="32" y2="50" stroke="#78350f" stroke-width="4"/>
+                <rect x="-8" y="-14" width="52" height="16" rx="4" fill="#a16207"/>
+              </g>
+
+              <!-- Finish Line Truss at Zynga CSR -->
+              <g transform="translate(680, 270)">
+                <rect x="0" y="0" width="10" height="90" fill="#cbd5e1"/>
+                <rect x="90" y="0" width="10" height="90" fill="#cbd5e1"/>
+                <rect x="-5" y="-12" width="110" height="18" fill="#ef4444"/>
+                <text x="50" y="2" fill="#fff" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">CSR RACING</text>
+              </g>
+
+              <!-- Sonic Loop Shadow & Silhouette at SEGA -->
+              <g transform="translate(1540, 240)">
+                <ellipse cx="40" cy="80" rx="35" ry="12" fill="rgba(0,0,0,0.4)"/>
+                <circle cx="40" cy="40" r="38" fill="none" stroke="#b45309" stroke-width="14"/>
+              </g>
+
+              <!-- Defence Radar Tower at Summit -->
+              <g transform="translate(2360, 110)">
+                <polygon points="15,0 0,70 30,70" fill="#1e293b"/>
+                <circle cx="15" cy="-6" r="14" fill="#047857" stroke="#10b981" stroke-width="3"/>
+                <line x1="15" y1="-6" x2="24" y2="-15" stroke="#34d399" stroke-width="3"/>
+              </g>
+
+              <!-- ════ THE CONTINUOUS WINDING ADVENTURE ROAD ════ -->
+              <!-- Underlay Ground Shadow -->
+              <path d="M 80,510 C 220,440 280,340 440,360 C 600,380 660,490 840,480 C 1020,470 1080,350 1250,360 C 1420,370 1480,510 1660,490 C 1840,470 1940,350 2100,330 C 2240,310 2360,250 2480,240"
+                    stroke="#14532d" stroke-width="64" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+
+              <!-- Outer Dirt Road Border -->
+              <path d="M 80,500 C 220,430 280,330 440,350 C 600,370 660,480 840,470 C 1020,460 1080,340 1250,350 C 1420,360 1480,500 1660,480 C 1840,460 1940,340 2100,320 C 2240,300 2360,240 2480,230"
+                    stroke="#b45309" stroke-width="50" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+              <!-- Core Sandy Dirt Road -->
+              <path d="M 80,500 C 220,430 280,330 440,350 C 600,370 660,480 840,470 C 1020,460 1080,340 1250,350 C 1420,360 1480,500 1660,480 C 1840,460 1940,340 2100,320 C 2240,300 2360,240 2480,230"
+                    stroke="url(#roadGrad)" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+              <!-- Animated Glowing Dashed Centerline Guide (Super Mario World / Angry Birds style) -->
+              <path id="sagaRoadPath"
+                    d="M 80,500 C 220,430 280,330 440,350 C 600,370 660,480 840,470 C 1020,460 1080,340 1250,350 C 1420,360 1480,500 1660,480 C 1840,460 1940,340 2100,320 C 2240,300 2360,240 2480,230"
+                    stroke="#0284c7" stroke-width="5" stroke-dasharray="10 14" fill="none" filter="url(#roadGlow)" opacity="0.85"/>
+            </svg>
+
+            <!-- Interactive Stage Nodes Layer -->
+            <div class="saga-nodes-layer" id="saga-nodes-layer">
+              <!-- Injected by JavaScript -->
+            </div>
+
+            <!-- Tom Avatar Pod (Red Bird in Nest position) -->
+            <div class="saga-avatar-pod" id="saga-avatar-pod" style="top: 320px; left: 1940px;">
+              <div class="avatar-pod-inner">
+                <div class="avatar-pod-nest"></div>
+                <img src="assets/avatar.png" alt="Tom Woodward" class="avatar-token-img" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=tom';">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Floating Bottom Action Deck: Active Stage Briefing & "PLAY!" Button -->
+        <div class="saga-bottom-deck">
+          <!-- Active Mission Briefing Bubble -->
+          <div class="saga-briefing-card" id="saga-briefing-card" onclick="openActiveStageInspect()">
+            <img id="saga-briefing-thumb" src="assets/models/diorama_concept_synopsys.jpg" alt="Diorama Thumbnail" class="briefing-thumb" onerror="handleImgError(this);" />
+            <div class="briefing-meta">
+              <span class="briefing-stage-num" id="saga-briefing-lvl">STAGE 11 // HPC SIMULATION</span>
+              <span class="briefing-company" id="saga-briefing-company">Synopsys &amp; Ansys</span>
+              <span class="briefing-role" id="saga-briefing-role">Staff R&amp;D Engineer / Technical Architect</span>
+            </div>
+          </div>
+
+          <!-- Big Pillowy Game PLAY! Button -->
+          <button class="btn-saga-play" onclick="openActiveStageInspect()" id="btn-saga-play">
+            <span>🎮</span> <span>INSPECT STAGE!</span> <span>▶</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="tab-section" id="mode-stage-select">
+      <div class="level-select-container">
+
+        <!-- Topbar Controls HUD -->
+        <div class="level-topbar">
+          <div class="level-badge-col">
+            <span class="beacon-dot"></span>
+            <span class="beacon-text">CAREER STAGE SELECT // EXPEDITION</span>
+          </div>
+
+          <div class="level-nav-buttons">
+            <button class="btn-tactile" onclick="stepStage(-1)" id="btn-prev-stage" title="Previous Stage (←)">
+              <span>←</span> <span>Prev</span>
+            </button>
+            <span class="level-counter-readout" id="readout-stage-counter">STAGE 11 / 12</span>
+            <button class="btn-tactile" onclick="stepStage(1)" id="btn-next-stage" title="Next Stage (→)">
+              <span>Next</span> <span>→</span>
+            </button>
+            <button class="btn-tactile" onclick="toggleMatrixDrawer()" id="btn-toggle-matrix" title="Toggle 12-Stage Matrix">
+              <span id="matrix-icon">⊞</span> <span id="matrix-text">All Stages</span>
+            </button>
+            <button class="btn-tactile" onclick="resetOrbit()" title="Reset Camera Orbit">
+              <span>⟲ Orbit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Horizontal Stage Scrubber Ribbon -->
+        <div class="ribbon-container" id="ribbon-container">
+          <div class="ribbon-track" id="ribbon-track">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Expandable Bento Matrix Grid Drawer -->
+        <div class="matrix-drawer" id="matrix-drawer">
+          <div class="matrix-header">
+            <span class="matrix-title">MISSION LOG // 12 CAREER STAGES</span>
+            <span class="matrix-sub">Select any stage card to load its hero 3D diorama &amp; concept telemetry</span>
+          </div>
+          <div class="matrix-grid" id="matrix-grid">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- 3D WebGL Studio Canvas Viewport -->
+        <div class="canvas-box" id="canvas-box">
+          <canvas id="three-diorama-canvas"></canvas>
+          <div class="canvas-hint">
+            <span>🖱️ Drag to Orbit 360° • Scroll to Zoom • Arrow Keys ← → to Step Stages</span>
+          </div>
+
+          <!-- Pilot Avatar HUD ("Me! Tom") -->
+          <div class="pilot-hud" onclick="triggerPilotGreeting()" title="Station Pilot Tom Woodward">
+            <div class="pilot-speech" id="pilot-speech">Surveying Stage 11 // Synopsys &amp; Ansys 🚀</div>
+            <img src="assets/avatar.png" alt="Tom Woodward" class="pilot-avatar-img" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=tom';">
+            <div class="pilot-meta">
+              <span class="pilot-name">TOM WOODWARD</span>
+              <span class="pilot-role" id="pilot-role-tag">STAGE 11</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Mission Dossier Bar -->
+        <div class="dossier-bar" id="dossier-bar">
+          <div class="watercolor-glow" id="watercolor-glow"></div>
+          
+          <div class="dossier-left-col">
+            <div class="dossier-meta-row">
+              <span class="badge-pill-lvl" id="dossier-lvl-pill">LVL 11</span>
+              <span class="badge-pill-period" id="dossier-period-pill">Feb 2023 — Apr 2026</span>
+              <span style="color:#00f0ff;" id="dossier-status-pill">STAGE 11 // CAREER MILESTONE</span>
+            </div>
+            <h2 class="dossier-role-title" id="dossier-role-title">Staff R&amp;D Engineer / Technical Architect</h2>
+            <div class="dossier-company-tags" id="dossier-company-tags">
+              <strong id="dossier-company-name">Synopsys &amp; Ansys</strong> <span>•</span> <span id="dossier-tags-text">HPC Cloud • Agentic AI • Playwright • Cypress</span>
+            </div>
+            <p class="dossier-quote-text" id="dossier-quote-text">
+              "Architected mission-critical test automation foundations for cloud HPC simulation and supersonic digital twins."
+            </p>
+          </div>
+
+          <div class="dossier-actions-col">
+            <button class="btn-toy" onclick="triggerToyInteraction()" id="dossier-toy-btn">
+              <span id="toy-icon">⚡</span> <span id="toy-label">Test Prop</span>
+            </button>
+            <button class="btn-inspect" onclick="openInspectorForActive()" id="dossier-inspect-btn">
+              <span>Inspect Concept Art</span> <span>→</span>
+            </button>
+            <div class="toy-toast" id="toy-toast">Prop Triggered!</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════
+         MODE 2: CONCEPT ART VS 3D MODEL INSPECTOR (SIDE-BY-SIDE)
+         ═════════════════════════════════════════════════════════ -->
+    <section class="tab-section" id="mode-inspector">
+      <div class="inspector-container">
+
+        <!-- Stage Pill Switcher -->
+        <div class="inspector-role-bar" id="inspector-role-bar">
+          <!-- Injected by JS -->
+        </div>
+
+        <!-- Split Stage -->
+        <div class="split-lab-stage">
+          
+          <!-- Left Column: High-Res 2D Concept Art -->
+          <div class="split-col">
+            <div class="col-header">
+              <span class="col-title"><span>🎨</span> 2D AI CONCEPT ARTWORK</span>
+              <span class="col-badge" id="concept-status-badge">High-Craft Benchmark</span>
+            </div>
+            <div class="concept-art-wrap" onclick="openLightboxForCurrent()">
+              <img id="inspector-concept-img" src="assets/models/diorama_concept_synopsys.jpg" alt="Concept Art" class="concept-art-img" onerror="handleImgError(this);" />
+              <div class="concept-art-zoom-hint">🔍 Tap to Zoom Lightbox</div>
+            </div>
+            <div class="col-footer-info">
+              <div class="col-footer-title" id="inspector-concept-title">Synopsys &amp; Ansys Concept</div>
+              <p class="col-footer-desc" id="inspector-concept-notes">
+                Supersonic aerodynamic wind tunnel diorama with jet turbine simulation, aerodynamic vortex ribbons, and clean metallic test chamber.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive 3D WebGL Diorama -->
+          <div class="split-col">
+            <div class="col-header">
+              <span class="col-title"><span>📐</span> 3D HERO WEBGL DIORAMA</span>
+              <span class="col-badge" id="model-status-badge">WebGL 60fps</span>
+            </div>
+            <div class="inspector-canvas-box">
+              <canvas id="inspector-canvas"></canvas>
+            </div>
+            <div class="col-footer-info">
+              <div class="col-footer-title" id="inspector-model-title">Mahogany Plinth &amp; Bespoke Props</div>
+              <p class="col-footer-desc" id="inspector-model-notes">
+                Carved dark mahogany molding pedestal with underside faceted asteroid rock, brass museum exhibit plaque, and studio lighting setup.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════
+         MODE 3: BENTO CONCEPT GALLERY (OVERVIEW MATRIX)
+         ═════════════════════════════════════════════════════════ -->
+    <section class="tab-section" id="mode-gallery">
+      <div class="gallery-container">
+        
+        <!-- Filter Tabs -->
+        <div class="gallery-filter-bar">
+          <button class="filter-btn active" onclick="filterGallery('all')">All 12 Career Stages</button>
+          <button class="filter-btn" onclick="filterGallery('gaming')">Gaming &amp; Entertainment</button>
+          <button class="filter-btn" onclick="filterGallery('enterprise')">Enterprise &amp; Cloud</button>
+          <button class="filter-btn" onclick="filterGallery('deeptech')">Deep Tech &amp; Defence</button>
+        </div>
+
+        <!-- 3-Column Bento Cards Showcase -->
+        <div class="bento-showcase-grid" id="bento-showcase-grid">
+          <!-- Injected by JS -->
+        </div>
+
+      </div>
+    </section>
+
+  
+  <!-- Saga Job Info Pop-up Modal (Angry Birds Level Briefing Dialog) -->
+  <div class="saga-job-modal-backdrop" id="saga-job-modal-backdrop" onclick="closeSagaJobModal()">
+    <div class="saga-job-modal" onclick="event.stopPropagation()">
+      <button class="saga-modal-close-btn" onclick="closeSagaJobModal()" title="Back to Map">✕</button>
+      
+      <div class="saga-modal-header">
+        <span class="saga-modal-badge" id="modal-stage-pill">STAGE 11</span>
+        <span class="saga-modal-period" id="modal-period-pill">Feb 2023 — Apr 2026</span>
+      </div>
+
+      <!-- Diorama Preview Showcase -->
+      <div class="saga-modal-diorama-preview" onclick="openLightboxForCurrentStage()">
+        <img id="modal-diorama-img" src="assets/models/diorama_concept_synopsys.jpg" alt="Diorama Preview" onerror="handleImgError(this);" />
+        <div class="modal-diorama-caption" id="modal-diorama-caption">🔍 Tap to Zoom Concept Art</div>
+      </div>
+
+      <h3 class="saga-modal-company" id="modal-company-name">Synopsys &amp; Ansys</h3>
+      <h4 class="saga-modal-role" id="modal-role-title">Staff R&amp;D Engineer / Technical Architect</h4>
+      <p class="saga-modal-narrative" id="modal-narrative-text">
+        "Architected test automation foundations for cloud HPC simulation and digital twins for global silicon and automotive engineering."
+      </p>
+
+      <div class="saga-modal-tags" id="modal-tags-container">
+        <!-- Injected by JS -->
+      </div>
+
+      <div class="saga-modal-actions">
+        <button class="btn-saga-toy" onclick="triggerModalToy()" id="modal-toy-btn">
+          <span id="modal-toy-icon">⚡</span> <span id="modal-toy-label">Test Prop</span>
+        </button>
+        <button class="btn-saga-deepdive" onclick="openDeepDiveFromModal()">
+          <span>Inspect Scope</span> <span>→</span>
+        </button>
+      </div>
+
+      <button class="btn-saga-back-to-map" onclick="closeSagaJobModal()">
+        <span>🗺️ Back to Map (Zoom Out)</span>
+      </button>
+    </div>
+  </div>
+
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <img id="lightbox-img" src="" alt="Concept Art Fullscreen" class="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption">Concept Artwork Full Resolution</div>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════════
+       SCRIPT: THREE.JS ENGINES, AUDIO SYNTHESIS & LAB INTERACTIONS
+       ═════════════════════════════════════════════════════════════ -->
+  <script>
+    // ═════════════════════════════════════════════════════════════
+    // 1. DATA: 12 CAREER MILESTONES WITH CONCEPTS & PROPS
+    // ═════════════════════════════════════════════════════════════
+    const careerMilestones = [
+      {
+        key: 'defence',
+        lvl: 12,
+        arrayIdx: 0,
+        year: "'26",
+        date: 'Apr 2026 — Present',
+        company: 'Classified Defence Partner',
+        category: 'deeptech',
+        role: 'Principal Architect & Lead Systems Evaluator',
+        tags: ['Defence Systems', 'Official-Sensitive', 'Cyber Security', 'Real-Time Edge'],
+        narrative: 'High-assurance defence computing, autonomous edge resilience, and mission-critical verification architectures.',
+        toyName: 'Phased-Array Radar Sweep',
+        toyAction: '📡 Phased-array AESA radar tracking 360° azimuth at microsecond latency!',
+        sfx: 'radar',
+        meshType: 'radar',
+        color: 0x10b981,
+        conceptImg: 'assets/models/diorama_concept_defence.jpg',
+        conceptTitle: 'Titanium Stealth Bunker & Phased-Array Radar',
+        conceptNotes: 'Brutalist faceted carbon-composite bunker with active AESA phased-array radar, green holographic targeting grid, and security perimeter beacons.'
+      },
+      {
+        key: 'synopsys',
+        lvl: 11,
+        arrayIdx: 1,
+        year: "'23",
+        date: 'Feb 2023 — Apr 2026',
+        company: 'Synopsys & Ansys',
+        category: 'deeptech',
+        role: 'Staff R&D Engineer / Technical Architect',
+        tags: ['HPC Cloud', 'Agentic AI', 'Playwright', 'Cypress', 'TypeScript'],
+        narrative: 'Architected test automation foundations for cloud HPC simulation and digital twins for global silicon and automotive engineering.',
+        toyName: 'Wind Tunnel Vortex Ribbons',
+        toyAction: '⚡ Supersonic HPC wind tunnel engaged! Vortex ribbons streaming at Mach 3!',
+        sfx: 'hypersonic',
+        meshType: 'synopsys',
+        color: 0x00f0ff,
+        conceptImg: 'assets/models/diorama_concept_synopsys.jpg',
+        conceptTitle: 'Supersonic Jet & Digital Twin Wind Tunnel',
+        conceptNotes: 'Sleek aerodynamic supersonic aircraft suspended inside a futuristic cylindrical wind tunnel test chamber with glowing cyan aerodynamic vortex streamlines.'
+      },
+      {
+        key: 'malvern',
+        lvl: 10,
+        arrayIdx: 2,
+        year: "'21",
+        date: 'Feb 2021 — Feb 2023',
+        company: 'Malvern Panalytical',
+        category: 'deeptech',
+        role: 'Principal Quality Assurance Engineer',
+        tags: ['Laser Diffraction', 'Spectroscopy', 'Electron Microscopy', 'Edge AI'],
+        narrative: 'Delivered mission-critical verification for analytical laser diffraction instruments, particle size analyzers, and edge Linux telemetry.',
+        toyName: 'Laser Diffraction Pulse',
+        toyAction: '🔬 Ruby laser diffraction collimated! Sub-micron particle distribution calculated!',
+        sfx: 'laser',
+        meshType: 'laser',
+        color: 0xf43f5e,
+        conceptImg: 'assets/models/diorama_concept_malvern.jpg',
+        conceptTitle: 'Precision Optical Bench & Laser Chamber',
+        conceptNotes: 'Laboratory optical bench featuring a stainless steel laser tube firing a bright red collimated beam through a quartz cuvette into a photodiode detector array.'
+      },
+      {
+        key: 'sega',
+        lvl: 9,
+        arrayIdx: 3,
+        year: "'19",
+        date: 'Jun 2019 — Feb 2021',
+        company: 'SEGA HARDlight',
+        category: 'gaming',
+        role: 'Lead QA Engineer',
+        tags: ['Sonic Forces', 'Sonic Boom', 'Multiplayer Race', 'Telemetry'],
+        narrative: 'Led QA engineering for AAA Sonic mobile franchise titles with 200M+ global downloads, verifying multiplayer matchmaking and high-speed physics.',
+        toyName: 'Sonic Loop & Gold Rings',
+        toyAction: '🌀 Spin dash triggered! Gotta go fast through Green Hill loops!',
+        sfx: 'ring',
+        meshType: 'sega',
+        color: 0x0072f5,
+        conceptImg: 'assets/models/diorama_concept_sega.jpg',
+        conceptTitle: 'Green Hill Loop-de-Loop & Gold Rings',
+        conceptNotes: 'Iconic Sonic the Hedgehog Green Hill zone featuring brown chequered vertical corkscrew loops, lush green hills, sunflower palm trees, and floating gold rings.'
+      },
+      {
+        key: 'jlr',
+        lvl: 8,
+        arrayIdx: 4,
+        year: "'18",
+        date: 'Jan 2018 — Jun 2019',
+        company: 'Jaguar Land Rover',
+        category: 'enterprise',
+        role: 'Software Test Architect & Lead',
+        tags: ['Infotainment (IVI)', 'CAN-bus', 'Ethernet AVB', 'OTA Updates'],
+        narrative: 'Architected connected vehicle test frameworks for in-vehicle infotainment, CAN-bus ECU telemetry, and Over-the-Air software delivery.',
+        toyName: 'CAN-Bus Diagnostic Dyno',
+        toyAction: '🚗 Luxury SUV dynamometer spinning! Telemetry stream syncing over CAN-bus!',
+        sfx: 'ecu',
+        meshType: 'ecu',
+        color: 0x10b981,
+        conceptImg: 'assets/models/diorama_concept_jlr.jpg',
+        conceptTitle: 'Luxury SUV Dyno & Holographic Telemetry HUD',
+        conceptNotes: 'Futuristic luxury Land Rover Defender on an illuminated high-tech dynamometer rolling road with blue wireframe diagnostic telemetry screens.'
+      },
+      {
+        key: 'cubic',
+        lvl: 7,
+        arrayIdx: 5,
+        year: "'16",
+        date: 'Sep 2016 — Dec 2017',
+        company: 'Cubic Motion / Vicon',
+        category: 'gaming',
+        role: 'Computer Vision Test Engineer',
+        tags: ['Facial Mo-Cap', 'Computer Vision', 'AAA Game Production'],
+        narrative: 'Verified automated computer vision pipelines and facial marker tracking algorithms powering award-winning game cinematics.',
+        toyName: 'Mo-Cap Facial Mesh Ping',
+        toyAction: '📡 3D facial topology tracking locked! 120fps markerless telemetry active!',
+        sfx: 'sonar',
+        meshType: 'beacon',
+        color: 0xa855f7,
+        conceptImg: 'assets/models/diorama_concept_silverlining.jpg',
+        conceptTitle: 'Facial Mo-Cap Holographic Rig',
+        conceptNotes: 'High-speed motion capture studio rig with synchronized infrared ring strobe cameras tracking a holographic facial topology point-cloud.'
+      },
+      {
+        key: 'pizzahut',
+        lvl: 6,
+        arrayIdx: 6,
+        year: "'15",
+        date: 'Sep 2015 — Sep 2016',
+        company: 'Pizza Hut Digital Ventures',
+        category: 'enterprise',
+        role: 'Senior QA Automation Lead',
+        tags: ['Cloud POS', 'Mobile App', 'E-Commerce', 'Microservices'],
+        narrative: 'Spearheaded digital transformation and automated validation for high-throughput mobile ordering and loyalty reward systems across hundreds of venues.',
+        toyName: 'Storefront & Loyalty Order Ring',
+        toyAction: '🍕 Order placed! Rewards app points multiplied on mobile stack!',
+        sfx: 'bell',
+        meshType: 'stamp',
+        color: 0xf59e0b,
+        conceptImg: 'assets/models/diorama_concept_pizzahut.jpg',
+        conceptTitle: 'Pizza Hut Storefront & Mobile Loyalty App',
+        conceptNotes: 'Charming vintage red-roof Pizza Hut brick shop frontage with warm interior lights and a giant floating smartphone displaying the loyalty app.'
+      },
+      {
+        key: 'silverlining',
+        lvl: 5,
+        arrayIdx: 7,
+        year: "'15",
+        date: 'Jun 2015 — Sep 2015',
+        company: 'Silver Lining QA',
+        category: 'enterprise',
+        role: 'QA Lead (Co-founder)',
+        tags: ['Startup Operations', 'Dawn of Titans', 'SkyScrappers'],
+        narrative: 'Co-founded an indie game QA agency providing outsource verification and embedded QA leads for award-winning titles including Dawn of Titans.',
+        toyName: 'Floating Cloud QA Shield',
+        toyAction: '☁️ 100% Quality verification passed! Golden heraldic shield shining!',
+        sfx: 'cloud',
+        meshType: 'cloud',
+        color: 0x38bdf8,
+        conceptImg: 'assets/models/diorama_concept_silverlining.jpg',
+        conceptTitle: 'Floating Cloud with Golden QA Shield',
+        conceptNotes: 'Stylized floating fluffy white cloud supporting a gleaming golden heraldic shield with an emerald green checkmark and diamond star sparkles.'
+      },
+      {
+        key: 'zynga',
+        lvl: 4,
+        arrayIdx: 8,
+        year: "'14",
+        date: 'Jul 2014 — May 2015',
+        company: 'Zynga / NaturalMotion',
+        category: 'gaming',
+        role: 'Game Tester',
+        tags: ['CSR Racing Franchise', 'Euphoria Physics Engine', 'Mobile AAA'],
+        narrative: 'Stress-tested AAA mobile drag racer CSR Racing, verifying Euphoria physics engine ragdolls, vehicle customisation, and server multiplayer.',
+        toyName: 'Quarter-Mile Drag Launch',
+        toyAction: '🏎️ Green light drop! 9,000 RPM launch under the CSR finish banner!',
+        sfx: 'dragrace',
+        meshType: 'dragtree',
+        color: 0xef4444,
+        conceptImg: 'assets/models/diorama_concept_zynga.jpg',
+        conceptTitle: 'CSR Drag Race Finish Line Arch',
+        conceptNotes: 'Two detailed custom American muscle cars locked in an intense side-by-side quarter-mile drag race under a glowing CSR Racing finish line banner arch.'
+      },
+      {
+        key: 'outplay',
+        lvl: 3,
+        arrayIdx: 9,
+        year: "'13",
+        date: 'Nov 2013 — Aug 2014',
+        company: 'Tinderstone & Outplay',
+        category: 'gaming',
+        role: '3D Artist & QA Tester',
+        tags: ['3D Retopology', '3ds Max', 'ERP Platforms'],
+        narrative: 'Modelled, textured, and retopologised 3D architectural and mechanical assets in 3ds Max while managing asset pipeline quality.',
+        toyName: 'Wireframe Snap Mesh',
+        toyAction: '📐 Clean quad topology! 0 ngons detected on wireframe cube!',
+        sfx: 'wireframe',
+        meshType: 'cube',
+        color: 0x00f0ff,
+        conceptImg: 'assets/models/diorama_concept_staffs.jpg',
+        conceptTitle: 'Wireframe Geometric Cube & 3ds Max Tools',
+        conceptNotes: 'Glowing cyan isometric wireframe cube surrounded by digital vertex handles and precision 3D modelling drafting rulers.'
+      },
+      {
+        key: 'ticketmaster',
+        lvl: 2,
+        arrayIdx: 10,
+        year: "'13",
+        date: 'Mar 2013 — Sep 2013',
+        company: 'Ticketmaster / LiveNation',
+        category: 'enterprise',
+        role: 'Graduate QA Engineer',
+        tags: ['High-Concurrency', 'Ticketing', 'Queue Systems'],
+        narrative: 'High-concurrency stress testing for global concert tours and festival on-sales. Validated queueing logic and payment gateway integrity.',
+        toyName: 'VIP Turnstile Pass',
+        toyAction: '🎟️ VIP backstage lanyard validated! Gates opened for festival headliner!',
+        sfx: 'electronic',
+        meshType: 'ticket',
+        color: 0x0284c7,
+        conceptImg: 'assets/models/diorama_concept_staffs.jpg',
+        conceptTitle: 'VIP Festival Turnstile & Golden Ticket',
+        conceptNotes: 'Concert venue turnstile gate with neon holographic barcode scanners and floating golden holographic concert tickets.'
+      },
+      {
+        key: 'staffuni',
+        lvl: 1,
+        arrayIdx: 11,
+        year: "'07",
+        date: 'Sep 2007 — Feb 2013',
+        company: 'Staffordshire University',
+        category: 'gaming',
+        role: 'MEng Games Design & 3D Modelling',
+        tags: ["Master's (MEng)", 'Engine Tech', 'C++', 'Shaders'],
+        narrative: 'Five years of game engine engineering, C++ math, HLSL vertex/pixel shaders, physics simulation, and 3D environment modelling.',
+        toyName: 'Graduation Hall & Mortarboard',
+        toyAction: '🎓 Graduation honors achieved! MEng Game Design unlocked!',
+        sfx: 'academic',
+        meshType: 'uni',
+        color: 0x991b1b,
+        conceptImg: 'assets/models/diorama_concept_staffs.jpg',
+        conceptTitle: 'Collegiate Books, Controller & Crest',
+        conceptNotes: 'Single neat pile of textbooks titled "Game Design 101", "3D Modelling", and "Mo-Cap", topped with a matte black console controller and the Staffordshire University crest sign.'
+      }
+    ];
+
+    let currentActiveIdx = 1; // Default to Synopsys & Ansys (Level 11)
+    let isAudioMuted = false;
+
+    // Helper: handle fallback image paths
+    function handleImgError(img) {
+      if (!img.src.includes('diorama_concept_')) {
+        img.src = 'assets/models/diorama_concept_synopsys.jpg';
+      }
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 2. WEB AUDIO API SYNTHESIS ENGINE
+    // ═════════════════════════════════════════════════════════════
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    const DioramaAudio = {
+      play(type) {
+        if (isAudioMuted) return;
+        try {
+          const ctx = getAudioContext();
+          const t = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          switch (type) {
+            case 'hop':
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(320, t);
+              osc.frequency.exponentialRampToValueAtTime(640, t + 0.12);
+              gain.gain.setValueAtTime(0.2, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+              osc.start(t);
+              osc.stop(t + 0.13);
+              break;
+
+            case 'arrival':
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(540, t);
+              osc.frequency.exponentialRampToValueAtTime(440, t + 0.18);
+              gain.gain.setValueAtTime(0.25, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+              osc.start(t);
+              osc.stop(t + 0.23);
+              break;
+
+            case 'shimmer':
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(800, t);
+              osc.frequency.linearRampToValueAtTime(1400, t + 0.2);
+              gain.gain.setValueAtTime(0.18, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+              osc.start(t);
+              osc.stop(t + 0.26);
+              break;
+
+            case 'ring': // SEGA
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(987.77, t);
+              osc.frequency.setValueAtTime(1318.51, t + 0.08);
+              gain.gain.setValueAtTime(0.22, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+              osc.start(t);
+              osc.stop(t + 0.36);
+              break;
+
+            case 'dragrace': // Zynga CSR
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(120, t);
+              osc.frequency.exponentialRampToValueAtTime(480, t + 0.3);
+              gain.gain.setValueAtTime(0.25, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.38);
+              osc.start(t);
+              osc.stop(t + 0.4);
+              break;
+
+            case 'laser': // Malvern
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(1600, t);
+              osc.frequency.exponentialRampToValueAtTime(300, t + 0.22);
+              gain.gain.setValueAtTime(0.2, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+              osc.start(t);
+              osc.stop(t + 0.26);
+              break;
+
+            case 'hypersonic': // Synopsys
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(240, t);
+              osc.frequency.exponentialRampToValueAtTime(880, t + 0.25);
+              gain.gain.setValueAtTime(0.28, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+              osc.start(t);
+              osc.stop(t + 0.36);
+              break;
+
+            case 'radar': // Defence
+              osc.type = 'square';
+              osc.frequency.setValueAtTime(440, t);
+              osc.frequency.setValueAtTime(880, t + 0.1);
+              gain.gain.setValueAtTime(0.18, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+              osc.start(t);
+              osc.stop(t + 0.3);
+              break;
+
+            default:
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(520, t);
+              gain.gain.setValueAtTime(0.18, t);
+              gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+              osc.start(t);
+              osc.stop(t + 0.2);
+              break;
+          }
+        } catch (e) {
+          // Audio blocked until user interaction
+        }
+      }
+    };
+
+    function toggleAudio() {
+      isAudioMuted = !isAudioMuted;
+      document.getElementById('sound-icon').textContent = isAudioMuted ? '🔇' : '🔊';
+      document.getElementById('sound-label').textContent = isAudioMuted ? 'Audio MUTED' : 'Audio ON';
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 3. THREE.JS 3D DIORAMA BUILDER & STUDIO SCENE
+    // ═════════════════════════════════════════════════════════════
+    let scene1, camera1, renderer1, controls1;
+    let clock1 = new THREE.Clock();
+    let currentDiorama1 = null;
+    const dioramaCache1 = {};
+    let isTransitioning1 = false;
+
+    // Helper: Canvas-rendered Museum Exhibit Plaque Texture
+    function createPlaqueTexture(m, lvlNumber) {
+      const cvs = document.createElement('canvas');
+      cvs.width = 512;
+      cvs.height = 256;
+      const ctx = cvs.getContext('2d');
+      const tex = new THREE.CanvasTexture(cvs);
+
+      ctx.fillStyle = '#0a0f1d';
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(12, 12, 488, 232, 24);
+      else ctx.rect(12, 12, 488, 232);
+      ctx.fill();
+
+      // Border glow
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = '#' + (m.color ? m.color.toString(16).padStart(6, '0') : '00f0ff');
+      ctx.stroke();
+
+      // Header
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = 'bold 24px monospace';
+      ctx.fillText(`LVL ${String(lvlNumber).padStart(2, '0')}`, 32, 54);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '700 20px monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText(m.year || '', 480, 54);
+      ctx.textAlign = 'left';
+
+      // Divider
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(32, 68);
+      ctx.lineTo(480, 68);
+      ctx.stroke();
+
+      // Company Name
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 30px sans-serif';
+      ctx.fillText(m.company.length > 22 ? m.company.substring(0, 20) + '...' : m.company, 32, 115);
+
+      // Role
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = '600 17px sans-serif';
+      ctx.fillText(m.role.length > 36 ? m.role.substring(0, 34) + '...' : m.role, 32, 150);
+
+      // Date Period
+      ctx.fillStyle = '#64748b';
+      ctx.font = '600 15px monospace';
+      ctx.fillText(m.date, 32, 185);
+
+      // Footer badge
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 13px monospace';
+      ctx.fillText(`[ ${m.toyName.toUpperCase()} ]`, 32, 222);
+
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    // Build the Isolated 3D Stage Diorama
+    function buildDioramaGroup(m) {
+      const g = new THREE.Group();
+      g.userData = { milestone: m };
+
+      // 1. Underside Faceted Asteroid Core
+      const rockGeo = new THREE.CylinderGeometry(5.0, 0.5, 3.6, 7);
+      const rockMat = new THREE.MeshStandardMaterial({ color: 0x090d16, roughness: 0.95, flatShading: true });
+      const rockMesh = new THREE.Mesh(rockGeo, rockMat);
+      rockMesh.position.y = -1.8;
+      rockMesh.receiveShadow = true;
+      g.add(rockMesh);
+
+      // Floating mini rock satellites
+      [[-3.8, -2.4, 2.2, 0.45], [4.1, -2.1, -1.8, 0.55], [-2.2, -2.8, -3.4, 0.4]].forEach(([rx, ry, rz, s]) => {
+        const sat = new THREE.Mesh(new THREE.DodecahedronGeometry(s, 0), rockMat);
+        sat.position.set(rx, ry, rz);
+        sat.name = 'floatingCap';
+        g.add(sat);
+      });
+
+      // 2. Carved Dark Mahogany / Obsidian Plinth
+      const plinthGeo = new THREE.CylinderGeometry(5.6, 6.0, 1.2, 36);
+      const plinthMat = new THREE.MeshStandardMaterial({ color: 0x121724, roughness: 0.4, metalness: 0.25 });
+      const plinthMesh = new THREE.Mesh(plinthGeo, plinthMat);
+      plinthMesh.position.y = 0.6;
+      plinthMesh.castShadow = true;
+      plinthMesh.receiveShadow = true;
+      g.add(plinthMesh);
+
+      // Upper Molded Chamfer Step
+      const chamferGeo = new THREE.CylinderGeometry(5.3, 5.6, 0.22, 36);
+      const chamferMat = new THREE.MeshStandardMaterial({ color: 0x1a2133, roughness: 0.35, metalness: 0.3 });
+      const chamfer = new THREE.Mesh(chamferGeo, chamferMat);
+      chamfer.position.y = 1.25;
+      g.add(chamfer);
+
+      // Polished Stage Floor Disc
+      const floorGeo = new THREE.CylinderGeometry(5.1, 5.1, 0.08, 36);
+      const floorMat = new THREE.MeshStandardMaterial({ color: 0x0a0f1d, roughness: 0.2, metalness: 0.55 });
+      const floor = new THREE.Mesh(floorGeo, floorMat);
+      floor.position.y = 1.38;
+      floor.receiveShadow = true;
+      g.add(floor);
+
+      // Glowing Stage Neon Trim Ring
+      const ringGeo = new THREE.TorusGeometry(5.25, 0.07, 8, 48);
+      ringGeo.rotateX(Math.PI / 2);
+      const ringMat = new THREE.MeshBasicMaterial({ color: m.color || 0x00f0ff, transparent: true, opacity: 0.85 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.y = 1.36;
+      g.add(ring);
+
+      // 3. Front Easel Museum Plaque
+      const plaqueGroup = new THREE.Group();
+      plaqueGroup.position.set(0, 0.7, 5.2);
+      plaqueGroup.rotation.x = -0.16;
+
+      const boardGeo = new THREE.BoxGeometry(2.6, 1.4, 0.08);
+      const boardMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.5 });
+      const board = new THREE.Mesh(boardGeo, boardMat);
+      board.position.y = 0.95;
+      plaqueGroup.add(board);
+
+      const faceGeo = new THREE.PlaneGeometry(2.45, 1.28);
+      const faceMat = new THREE.MeshBasicMaterial({ map: createPlaqueTexture(m, m.lvl), transparent: true });
+      const face = new THREE.Mesh(faceGeo, faceMat);
+      face.position.set(0, 0.95, 0.05);
+      plaqueGroup.add(face);
+
+      g.add(plaqueGroup);
+
+      // 4. Hero Prop Container
+      const propContainer = new THREE.Group();
+      propContainer.position.y = 1.42;
+      propContainer.name = 'stageHeroProps';
+
+      // Procedural props based on meshType
+      switch (m.meshType) {
+        case 'sega': {
+          // If GLTFLoader is available, try loading sega_diorama.glb
+          if (typeof THREE.GLTFLoader !== 'undefined') {
+            const loader = new THREE.GLTFLoader();
+            loader.load('assets/models/sega_diorama.glb', gltf => {
+              const model = gltf.scene;
+              model.scale.set(1.4, 1.4, 1.4);
+              model.position.set(0, 0, 0);
+              propContainer.add(model);
+              const fallback = propContainer.getObjectByName('proceduralProp');
+              if (fallback) fallback.visible = false;
+            }, undefined, err => {
+              console.log('[Diorama] sega_diorama.glb fallback kept:', err);
+            });
+          }
+
+          // Fallback procedural Sonic loop
+          const sonicGroup = new THREE.Group();
+          sonicGroup.name = 'proceduralProp';
+          const loopGeo = new THREE.TorusGeometry(1.6, 0.35, 12, 32, Math.PI * 1.5);
+          const loopMat = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.4 });
+          const loop = new THREE.Mesh(loopGeo, loopMat);
+          loop.position.set(-0.5, 1.7, 0);
+          loop.rotation.z = Math.PI * 0.15;
+          sonicGroup.add(loop);
+
+          // Golden Rings
+          [-0.8, 0, 0.8].forEach((rx, idx) => {
+            const rGeo = new THREE.TorusGeometry(0.28, 0.06, 8, 20);
+            const rMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.9, roughness: 0.1 });
+            const ringMesh = new THREE.Mesh(rGeo, rMat);
+            ringMesh.position.set(rx, 2.4 + idx * 0.2, 0.8);
+            ringMesh.name = 'rotatingProp';
+            sonicGroup.add(ringMesh);
+          });
+          propContainer.add(sonicGroup);
+          break;
+        }
+
+        case 'synopsys': {
+          // Supersonic Aircraft
+          const jetGroup = new THREE.Group();
+          jetGroup.name = 'proceduralProp';
+          const jetMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.9, roughness: 0.2 });
+          const cyanGlowMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+
+          const fuselage = new THREE.Mesh(new THREE.ConeGeometry(0.5, 3.4, 16), jetMat);
+          fuselage.rotation.x = Math.PI / 2;
+          fuselage.position.set(0, 1.6, 0);
+          jetGroup.add(fuselage);
+
+          // Delta wings
+          const wing = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.06, 1.4), jetMat);
+          wing.position.set(0, 1.55, -0.2);
+          jetGroup.add(wing);
+
+          // Vortex Rings
+          for (let i = 0; i < 3; i++) {
+            const vr = new THREE.Mesh(new THREE.TorusGeometry(1.2 + i * 0.3, 0.05, 8, 24), cyanGlowMat);
+            vr.position.set(0, 1.6, 1.2 - i * 1.2);
+            vr.name = 'rotatingRing';
+            jetGroup.add(vr);
+          }
+          propContainer.add(jetGroup);
+          break;
+        }
+
+        case 'radar': {
+          // Titanium Stealth Bunker & AESA Radar
+          const bunkerGroup = new THREE.Group();
+          bunkerGroup.name = 'proceduralProp';
+          const bunkerMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.3, metalness: 0.85 });
+          const greenMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+
+          const bunker = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 3.0, 1.4, 6), bunkerMat);
+          bunker.position.y = 0.7;
+          bunkerGroup.add(bunker);
+
+          // Radar dish
+          const radar = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.1, 0.2), bunkerMat);
+          radar.position.set(0, 2.0, 0);
+          radar.rotation.x = -0.2;
+          radar.name = 'rotatingProp';
+          bunkerGroup.add(radar);
+
+          const grid = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.9, 0.05), greenMat);
+          grid.position.set(0, 2.0, 0.12);
+          grid.rotation.x = -0.2;
+          grid.name = 'rotatingProp';
+          bunkerGroup.add(grid);
+          propContainer.add(bunkerGroup);
+          break;
+        }
+
+        case 'laser': {
+          // Optical Bench
+          const optGroup = new THREE.Group();
+          optGroup.name = 'proceduralProp';
+          const benchMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.3, metalness: 0.85 });
+          const bench = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.3, 1.8), benchMat);
+          bench.position.y = 0.4;
+          optGroup.add(bench);
+
+          const laserTube = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 1.8, 16), new THREE.MeshStandardMaterial({ color: 0x090d16, metalness: 0.9 }));
+          laserTube.rotation.z = Math.PI / 2;
+          laserTube.position.set(-1.0, 1.1, 0);
+          optGroup.add(laserTube);
+
+          const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.4, 8), new THREE.MeshBasicMaterial({ color: 0xff0044 }));
+          beam.rotation.z = Math.PI / 2;
+          beam.position.set(0.2, 1.1, 0);
+          optGroup.add(beam);
+
+          const detector = new THREE.Mesh(new THREE.TorusGeometry(0.8, 0.1, 12, 24), benchMat);
+          detector.rotation.y = Math.PI / 2;
+          detector.position.set(1.4, 1.1, 0);
+          detector.name = 'rotatingProp';
+          optGroup.add(detector);
+          propContainer.add(optGroup);
+          break;
+        }
+
+        case 'ecu': {
+          // Luxury SUV chassis
+          const carGroup = new THREE.Group();
+          carGroup.name = 'proceduralProp';
+          const carMat = new THREE.MeshStandardMaterial({ color: 0x047857, metalness: 0.8, roughness: 0.2 });
+          const body = new THREE.Mesh(new THREE.BoxGeometry(2.8, 1.1, 1.5), carMat);
+          body.position.y = 1.0;
+          carGroup.add(body);
+
+          const hudRing = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.05, 8, 32), new THREE.MeshBasicMaterial({ color: 0x10b981 }));
+          hudRing.rotation.x = Math.PI / 2;
+          hudRing.position.y = 1.8;
+          hudRing.name = 'rotatingRing';
+          carGroup.add(hudRing);
+          propContainer.add(carGroup);
+          break;
+        }
+
+        case 'dragtree': {
+          // CSR drag cars
+          const dragGroup = new THREE.Group();
+          dragGroup.name = 'proceduralProp';
+          const c1 = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.7, 0.9), new THREE.MeshStandardMaterial({ color: 0xdc2626, metalness: 0.8 }));
+          c1.position.set(-0.65, 0.8, 0.5);
+          dragGroup.add(c1);
+
+          const c2 = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.7, 0.9), new THREE.MeshStandardMaterial({ color: 0x1d4ed8, metalness: 0.8 }));
+          c2.position.set(-0.65, 0.8, -0.5);
+          dragGroup.add(c2);
+
+          const arch = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.5, 2.6), new THREE.MeshStandardMaterial({ color: 0xfacc15 }));
+          arch.position.set(1.1, 1.5, 0);
+          dragGroup.add(arch);
+          propContainer.add(dragGroup);
+          break;
+        }
+
+        case 'cloud': {
+          // Silver Lining QA Cloud & Shield
+          const cloudGroup = new THREE.Group();
+          cloudGroup.name = 'proceduralProp';
+          const cloudMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.9 });
+          [
+            [0, 1.0, 0, 1.1], [-0.8, 0.9, 0.2, 0.8], [0.8, 0.9, -0.1, 0.85],
+            [-0.4, 1.5, 0, 0.75], [0.4, 1.45, 0.1, 0.7]
+          ].forEach(([cx, cy, cz, cr]) => {
+            const sp = new THREE.Mesh(new THREE.SphereGeometry(cr, 12, 12), cloudMat);
+            sp.position.set(cx, cy, cz);
+            cloudGroup.add(sp);
+          });
+
+          const shield = new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.2, 0.12), new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.9 }));
+          shield.position.set(0, 2.3, 0.3);
+          shield.name = 'rotatingProp';
+          cloudGroup.add(shield);
+          propContainer.add(cloudGroup);
+          break;
+        }
+
+        case 'uni': {
+          // Staffs Uni Books & Controller
+          const uniGroup = new THREE.Group();
+          uniGroup.name = 'proceduralProp';
+          const bookMat1 = new THREE.MeshStandardMaterial({ color: 0x991b1b });
+          const bookMat2 = new THREE.MeshStandardMaterial({ color: 0x1e3a8a });
+          const bookMat3 = new THREE.MeshStandardMaterial({ color: 0x065f46 });
+
+          const b1 = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.35, 1.7), bookMat1);
+          b1.position.y = 0.5;
+          uniGroup.add(b1);
+
+          const b2 = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.35, 1.6), bookMat2);
+          b2.position.set(0.1, 0.85, 0);
+          b2.rotation.y = 0.1;
+          uniGroup.add(b2);
+
+          const b3 = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.35, 1.5), bookMat3);
+          b3.position.set(-0.1, 1.2, 0);
+          b3.rotation.y = -0.12;
+          uniGroup.add(b3);
+
+          // Game Controller
+          const pad = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.25, 0.7), new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.3 }));
+          pad.position.set(0, 1.55, 0.1);
+          pad.name = 'floatingCap';
+          uniGroup.add(pad);
+          propContainer.add(uniGroup);
+          break;
+        }
+
+        default: {
+          const defMesh = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.6, 1.6), new THREE.MeshStandardMaterial({ color: m.color || 0x00f0ff, metalness: 0.5, roughness: 0.3 }));
+          defMesh.position.y = 1.0;
+          defMesh.name = 'rotatingProp';
+          propContainer.add(defMesh);
+          break;
+        }
+      }
+
+      g.add(propContainer);
+      return g;
+    }
+
+    // Initialize Mode 1 (3D Stage Select)
+    function initMode1() {
+      const container = document.getElementById('canvas-box');
+      const canvas = document.getElementById('three-diorama-canvas');
+      if (!container || !canvas) return;
+
+      const width = container.clientWidth;
+      const height = container.clientHeight || 540;
+
+      scene1 = new THREE.Scene();
+
+      camera1 = new THREE.PerspectiveCamera(40, width / height, 0.5, 200);
+      camera1.position.set(0, 7.0, 14.5);
+
+      renderer1 = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer1.setSize(width, height);
+      renderer1.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer1.shadowMap.enabled = true;
+      renderer1.shadowMap.type = THREE.PCFSoftShadowMap;
+
+      controls1 = new THREE.OrbitControls(camera1, canvas);
+      controls1.enableDamping = true;
+      controls1.dampingFactor = 0.06;
+      controls1.maxPolarAngle = Math.PI / 2 - 0.05;
+      controls1.minDistance = 8.0;
+      controls1.maxDistance = 25.0;
+      controls1.target.set(0, 1.2, 0);
+
+      // Studio Lights
+      const ambLight = new THREE.AmbientLight(0xffffff, 0.75);
+      scene1.add(ambLight);
+
+      const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
+      keyLight.position.set(12, 18, 14);
+      keyLight.castShadow = true;
+      keyLight.shadow.mapSize.width = 1024;
+      keyLight.shadow.mapSize.height = 1024;
+      scene1.add(keyLight);
+
+      const rimLight = new THREE.DirectionalLight(0x00f0ff, 0.85);
+      rimLight.position.set(-14, 12, -12);
+      scene1.add(rimLight);
+
+      const underLight = new THREE.PointLight(0x00f0ff, 1.8, 14);
+      underLight.position.set(0, -1.0, 0);
+      scene1.add(underLight);
+
+      // Contact shadow disc
+      const shadowDiscGeo = new THREE.CircleGeometry(7.5, 36);
+      shadowDiscGeo.rotateX(-Math.PI / 2);
+      const shadowDiscMat = new THREE.MeshBasicMaterial({ color: 0x030610, transparent: true, opacity: 0.55 });
+      const shadowDisc = new THREE.Mesh(shadowDiscGeo, shadowDiscMat);
+      shadowDisc.position.y = -3.8;
+      scene1.add(shadowDisc);
+
+      // Floating dust particles
+      const pGeom = new THREE.BufferGeometry();
+      const pPos = new Float32Array(70 * 3);
+      for (let i = 0; i < 70 * 3; i += 3) {
+        pPos[i] = (Math.random() - 0.5) * 28;
+        pPos[i + 1] = Math.random() * 14 - 3;
+        pPos[i + 2] = (Math.random() - 0.5) * 28;
+      }
+      pGeom.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      const dust = new THREE.Points(pGeom, new THREE.PointsMaterial({ color: 0x00f0ff, size: 0.35, transparent: true, opacity: 0.45 }));
+      scene1.add(dust);
+
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+        const delta = clock1.getDelta();
+        dust.rotation.y += delta * 0.04;
+
+        if (currentDiorama1) {
+          const rotProp = currentDiorama1.getObjectByName('rotatingProp');
+          if (rotProp) rotProp.rotation.y += delta * 1.5;
+
+          const rotRing = currentDiorama1.getObjectByName('rotatingRing');
+          if (rotRing) {
+            rotRing.rotation.x += delta * 2.0;
+            rotRing.rotation.y += delta * 1.2;
+          }
+
+          const floatCap = currentDiorama1.getObjectByName('floatingCap');
+          if (floatCap) floatCap.rotation.y += delta * 0.8;
+        }
+
+        controls1.update();
+        renderer1.render(scene1, camera1);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        if (w > 0 && h > 0) {
+          camera1.aspect = w / h;
+          camera1.updateProjectionMatrix();
+          renderer1.setSize(w, h);
+        }
+      });
+
+      renderRibbon();
+      renderMatrixGrid();
+      loadStage1(currentActiveIdx, false);
+    }
+
+    // Load Stage in Mode 1 with Spring Physics
+    function loadStage1(arrayIdx, animate = true) {
+      if (arrayIdx < 0 || arrayIdx >= careerMilestones.length) return;
+      currentActiveIdx = arrayIdx;
+      const m = careerMilestones[arrayIdx];
+
+      let nextDiorama = dioramaCache1[arrayIdx];
+      if (!nextDiorama) {
+        nextDiorama = buildDioramaGroup(m);
+        dioramaCache1[arrayIdx] = nextDiorama;
+      }
+
+      if (animate && currentDiorama1 && currentDiorama1 !== nextDiorama) {
+        isTransitioning1 = true;
+        DioramaAudio.play('hop');
+
+        const outgoing = currentDiorama1;
+        const incoming = nextDiorama;
+        const start = performance.now();
+
+        function step(now) {
+          const p = (now - start) / 140;
+          if (p < 1) {
+            const s = Math.max(0, 1 - p * p);
+            outgoing.scale.set(s, s, s);
+            outgoing.position.y = -p * 1.5;
+            requestAnimationFrame(step);
+          } else {
+            scene1.remove(outgoing);
+            outgoing.scale.set(1, 1, 1);
+            outgoing.position.y = 0;
+
+            incoming.scale.set(0.01, 0.01, 0.01);
+            incoming.position.y = -1.2;
+            scene1.add(incoming);
+            currentDiorama1 = incoming;
+
+            DioramaAudio.play('arrival');
+
+            const start2 = performance.now();
+            function step2(now2) {
+              const p2 = Math.min(1, (now2 - start2) / 280);
+              const bounce = 1 + Math.sin(p2 * Math.PI) * 0.18 * (1 - p2);
+              const s = p2 * bounce;
+              incoming.scale.set(s, s, s);
+              incoming.position.y = (1 - p2) * -1.2;
+
+              if (p2 < 1) {
+                requestAnimationFrame(step2);
+              } else {
+                incoming.scale.set(1, 1, 1);
+                incoming.position.y = 0;
+                isTransitioning1 = false;
+              }
+            }
+            requestAnimationFrame(step2);
+          }
+        }
+        requestAnimationFrame(step);
+      } else {
+        if (currentDiorama1) scene1.remove(currentDiorama1);
+        nextDiorama.scale.set(1, 1, 1);
+        nextDiorama.position.y = 0;
+        scene1.add(nextDiorama);
+        currentDiorama1 = nextDiorama;
+      }
+
+      updateDossierUI(m);
+      updateRibbonUI(arrayIdx);
+      updateMatrixUI(arrayIdx);
+    }
+
+    function updateDossierUI(m) {
+      document.getElementById('readout-stage-counter').textContent = `STAGE ${String(m.lvl).padStart(2, '0')} / 12`;
+      document.getElementById('dossier-lvl-pill').textContent = `LVL ${String(m.lvl).padStart(2, '0')}`;
+      document.getElementById('dossier-period-pill').textContent = m.date;
+      document.getElementById('dossier-status-pill').textContent = `STAGE ${String(m.lvl).padStart(2, '0')} // ${m.company.toUpperCase()}`;
+      document.getElementById('dossier-role-title').textContent = m.role;
+      document.getElementById('dossier-company-name').textContent = m.company;
+      document.getElementById('dossier-tags-text').textContent = m.tags.join(' • ');
+      document.getElementById('dossier-quote-text').textContent = `"${m.narrative}"`;
+      document.getElementById('toy-label').textContent = m.toyName;
+
+      // Icon map
+      const iconMap = { radar: '📡', synopsys: '⚡', laser: '🔬', sega: '🌀', ecu: '🚗', beacon: '📡', stamp: '🍕', cloud: '☁️', dragtree: '🏎️', cube: '📐', ticket: '🎟️', uni: '🎓' };
+      document.getElementById('toy-icon').textContent = iconMap[m.meshType] || '✨';
+
+      // Button states
+      document.getElementById('btn-prev-stage').disabled = (m.lvl === 1);
+      document.getElementById('btn-next-stage').disabled = (m.lvl === 12);
+
+      // Pilot speech
+      document.getElementById('pilot-role-tag').textContent = `STAGE ${String(m.lvl).padStart(2, '0')}`;
+      document.getElementById('pilot-speech').textContent = `Surveying Stage ${m.lvl} // ${m.company} 🚀`;
+
+      // Watercolor glow
+      const glow = document.getElementById('watercolor-glow');
+      if (glow) {
+        glow.style.background = '#' + (m.color ? m.color.toString(16).padStart(6, '0') : '00f0ff');
+      }
+    }
+
+    // Ribbon Track Builder
+    function renderRibbon() {
+      const track = document.getElementById('ribbon-track');
+      if (!track) return;
+      track.innerHTML = '';
+
+      for (let k = 0; k < 12; k++) {
+        const arrayIdx = 11 - k; // Stage 01 at k=0, Stage 12 at k=11
+        const m = careerMilestones[arrayIdx];
+        const isClassified = (m.meshType === 'radar');
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `ribbon-pill ${arrayIdx === currentActiveIdx ? 'is-active' : ''} ${isClassified ? 'is-classified' : ''}`;
+        btn.id = `ribbon-pill-${arrayIdx}`;
+        btn.innerHTML = `
+          <span class="pill-lvl">LVL ${String(m.lvl).padStart(2, '0')}</span>
+          <span class="pill-dot"></span>
+          <span class="pill-title">${m.company}</span>
+          <span class="pill-year">${m.year}</span>
+        `;
+        btn.onclick = () => loadStage1(arrayIdx, true);
+        track.appendChild(btn);
+      }
+    }
+
+    function updateRibbonUI(activeIdx) {
+      const track = document.getElementById('ribbon-track');
+      if (!track) return;
+      track.querySelectorAll('.ribbon-pill').forEach(p => p.classList.remove('is-active'));
+      const activePill = document.getElementById(`ribbon-pill-${activeIdx}`);
+      if (activePill) {
+        activePill.classList.add('is-active');
+        activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+
+    // Matrix Grid Builder
+    function renderMatrixGrid() {
+      const grid = document.getElementById('matrix-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      for (let k = 0; k < 12; k++) {
+        const arrayIdx = 11 - k;
+        const m = careerMilestones[arrayIdx];
+
+        const card = document.createElement('div');
+        card.className = `grid-card ${arrayIdx === currentActiveIdx ? 'is-active' : ''}`;
+        card.id = `matrix-card-${arrayIdx}`;
+        card.innerHTML = `
+          <div class="grid-card-thumb">
+            <img src="${m.conceptImg}" alt="${m.company}" class="grid-card-img" onerror="handleImgError(this);" />
+            <span class="grid-card-badge">STAGE ${String(m.lvl).padStart(2, '0')}</span>
+            <span class="grid-card-year">${m.year}</span>
+          </div>
+          <div class="grid-card-body">
+            <div class="grid-card-company">${m.company}</div>
+            <div class="grid-card-role">${m.role}</div>
+          </div>
+        `;
+        card.onclick = () => {
+          loadStage1(arrayIdx, true);
+          toggleMatrixDrawer(false);
+        };
+        grid.appendChild(card);
+      }
+    }
+
+    function updateMatrixUI(activeIdx) {
+      const grid = document.getElementById('matrix-grid');
+      if (!grid) return;
+      grid.querySelectorAll('.grid-card').forEach(c => c.classList.remove('is-active'));
+      const activeCard = document.getElementById(`matrix-card-${activeIdx}`);
+      if (activeCard) activeCard.classList.add('is-active');
+    }
+
+    function stepStage(dir) {
+      // dir = 1 -> Next stage (+1 lvl, arrayIdx - 1)
+      // dir = -1 -> Prev stage (-1 lvl, arrayIdx + 1)
+      let next = currentActiveIdx - dir;
+      if (next < 0) next = 0;
+      if (next >= careerMilestones.length) next = careerMilestones.length - 1;
+      loadStage1(next, true);
+    }
+
+    function toggleMatrixDrawer(force) {
+      const drawer = document.getElementById('matrix-drawer');
+      const btn = document.getElementById('btn-toggle-matrix');
+      const icon = document.getElementById('matrix-icon');
+      const text = document.getElementById('matrix-text');
+      if (!drawer) return;
+
+      const isOpen = (typeof force === 'boolean') ? force : !drawer.classList.contains('is-open');
+      drawer.classList.toggle('is-open', isOpen);
+      btn.classList.toggle('active', isOpen);
+      icon.textContent = isOpen ? '✕' : '⊞';
+      text.textContent = isOpen ? 'Close Matrix' : 'All Stages';
+      DioramaAudio.play('shimmer');
+    }
+
+    function resetOrbit() {
+      if (!controls1 || !camera1) return;
+      DioramaAudio.play('shimmer');
+      controls1.reset();
+      camera1.position.set(0, 7.0, 14.5);
+      controls1.target.set(0, 1.2, 0);
+    }
+
+    function triggerToyInteraction() {
+      const m = careerMilestones[currentActiveIdx];
+      DioramaAudio.play(m.sfx);
+
+      if (currentDiorama1) {
+        const props = currentDiorama1.getObjectByName('stageHeroProps') || currentDiorama1;
+        const start = performance.now();
+        function bounce(now) {
+          const p = (now - start) / 360;
+          if (p <= 1) {
+            const s = 1 + Math.sin(p * Math.PI) * 0.28;
+            props.scale.set(s, s, s);
+            requestAnimationFrame(bounce);
+          } else {
+            props.scale.set(1, 1, 1);
+          }
+        }
+        requestAnimationFrame(bounce);
+      }
+
+      const toast = document.getElementById('toy-toast');
+      if (toast) {
+        toast.textContent = m.toyAction;
+        toast.classList.add('visible');
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => toast.classList.remove('visible'), 2600);
+      }
+    }
+
+    function triggerPilotGreeting() {
+      DioramaAudio.play('shimmer');
+      const bubble = document.getElementById('pilot-speech');
+      const m = careerMilestones[currentActiveIdx];
+      const greetings = [
+        `Howdo! Station Pilot Tom here. Surveying Stage ${String(m.lvl).padStart(2, '0')} // ${m.company}! 👋`,
+        `Systems nominal! Drag to inspect 360° or tap the toy button for telemetry! 🚀`,
+        `Diorama rendered at 60fps WebGL with studio Three.js lighting! ✨`,
+        `Switch to Mode 2 to inspect high-res concept art side-by-side! 🎨`
+      ];
+      bubble.textContent = greetings[Math.floor(Math.random() * greetings.length)];
+      bubble.classList.add('visible');
+      setTimeout(() => bubble.classList.remove('visible'), 3200);
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 4. MODE 2: CONCEPT ART VS 3D INSPECTOR
+    // ═════════════════════════════════════════════════════════════
+    let scene2, camera2, renderer2, controls2;
+    let clock2 = new THREE.Clock();
+    let currentDiorama2 = null;
+    let inspectorActiveIdx = 1; // Synopsys & Ansys
+
+    function initMode2() {
+      renderInspectorRoles();
+
+      const container = document.querySelector('.inspector-canvas-box');
+      const canvas = document.getElementById('inspector-canvas');
+      if (!container || !canvas) return;
+
+      const width = container.clientWidth;
+      const height = container.clientHeight || 420;
+
+      scene2 = new THREE.Scene();
+      camera2 = new THREE.PerspectiveCamera(40, width / height, 0.5, 200);
+      camera2.position.set(0, 6.5, 13.5);
+
+      renderer2 = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer2.setSize(width, height);
+      renderer2.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer2.shadowMap.enabled = true;
+
+      controls2 = new THREE.OrbitControls(camera2, canvas);
+      controls2.enableDamping = true;
+      controls2.dampingFactor = 0.06;
+      controls2.maxPolarAngle = Math.PI / 2 - 0.05;
+      controls2.target.set(0, 1.2, 0);
+
+      const amb = new THREE.AmbientLight(0xffffff, 0.8);
+      scene2.add(amb);
+
+      const key = new THREE.DirectionalLight(0xffffff, 1.3);
+      key.position.set(10, 16, 12);
+      key.castShadow = true;
+      scene2.add(key);
+
+      const rim = new THREE.DirectionalLight(0x00f0ff, 0.9);
+      rim.position.set(-12, 10, -10);
+      scene2.add(rim);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const delta = clock2.getDelta();
+        if (currentDiorama2) {
+          const rotProp = currentDiorama2.getObjectByName('rotatingProp');
+          if (rotProp) rotProp.rotation.y += delta * 1.5;
+
+          const rotRing = currentDiorama2.getObjectByName('rotatingRing');
+          if (rotRing) {
+            rotRing.rotation.x += delta * 2.0;
+            rotRing.rotation.y += delta * 1.2;
+          }
+
+          const floatCap = currentDiorama2.getObjectByName('floatingCap');
+          if (floatCap) floatCap.rotation.y += delta * 0.8;
+        }
+        controls2.update();
+        renderer2.render(scene2, camera2);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        if (w > 0 && h > 0) {
+          camera2.aspect = w / h;
+          camera2.updateProjectionMatrix();
+          renderer2.setSize(w, h);
+        }
+      });
+
+      loadInspectorStage(inspectorActiveIdx);
+    }
+
+    function renderInspectorRoles() {
+      const bar = document.getElementById('inspector-role-bar');
+      if (!bar) return;
+      bar.innerHTML = '';
+
+      careerMilestones.forEach((m, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `role-pill-btn ${idx === inspectorActiveIdx ? 'active' : ''}`;
+        btn.id = `inspect-pill-${idx}`;
+        btn.innerHTML = `<span>STG ${String(m.lvl).padStart(2, '0')}</span> <span>${m.company}</span>`;
+        btn.onclick = () => loadInspectorStage(idx);
+        bar.appendChild(btn);
+      });
+    }
+
+    function loadInspectorStage(arrayIdx) {
+      inspectorActiveIdx = arrayIdx;
+      const m = careerMilestones[arrayIdx];
+
+      // Update active pill
+      const bar = document.getElementById('inspector-role-bar');
+      if (bar) {
+        bar.querySelectorAll('.role-pill-btn').forEach(b => b.classList.remove('active'));
+        const activeBtn = document.getElementById(`inspect-pill-${arrayIdx}`);
+        if (activeBtn) {
+          activeBtn.classList.add('active');
+          activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }
+
+      // Update 2D Column
+      const img = document.getElementById('inspector-concept-img');
+      img.src = m.conceptImg;
+      document.getElementById('inspector-concept-title').textContent = `${m.company} // Stage ${String(m.lvl).padStart(2, '0')}`;
+      document.getElementById('inspector-concept-notes').textContent = m.conceptNotes;
+
+      // Update 3D Column
+      if (scene2) {
+        if (currentDiorama2) scene2.remove(currentDiorama2);
+        const diorama = buildDioramaGroup(m);
+        scene2.add(diorama);
+        currentDiorama2 = diorama;
+      }
+      document.getElementById('inspector-model-title').textContent = `${m.company} // 3D Miniature`;
+      document.getElementById('inspector-model-notes').textContent = `3D pedestal diorama featuring ${m.toyName} on dark mahogany base with front exhibit plaque.`;
+
+      DioramaAudio.play('shimmer');
+    }
+
+    function openInspectorForActive() {
+      switchLabMode('mode-inspector');
+      loadInspectorStage(currentActiveIdx);
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 5. MODE 3: BENTO GALLERY MATRIX
+    // ═════════════════════════════════════════════════════════════
+    function renderGallery(filter = 'all') {
+      const grid = document.getElementById('bento-showcase-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      careerMilestones.forEach(m => {
+        if (filter !== 'all' && m.category !== filter) return;
+
+        const card = document.createElement('div');
+        card.className = 'bento-card';
+        card.innerHTML = `
+          <div class="bento-thumb">
+            <img src="${m.conceptImg}" alt="${m.company}" class="bento-img" onerror="handleImgError(this);" />
+            <span class="bento-tag">STAGE ${String(m.lvl).padStart(2, '0')} // ${m.year}</span>
+            <span class="bento-status-tag">CONCEPT READY</span>
+          </div>
+          <div class="bento-content">
+            <div class="bento-title">${m.company}</div>
+            <div class="bento-sub">${m.role} (${m.date})</div>
+            <div class="bento-desc">${m.conceptNotes}</div>
+          </div>
+        `;
+        card.onclick = () => {
+          openLightbox(m.conceptImg, `${m.company} (Stage ${m.lvl}) — ${m.conceptTitle}`);
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    function filterGallery(cat) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      renderGallery(cat);
+      DioramaAudio.play('shimmer');
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 6. LIGHTBOX MODAL
+    // ═════════════════════════════════════════════════════════════
+    function openLightbox(imgUrl, caption) {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      img.src = imgUrl;
+      cap.textContent = caption || 'High-Resolution Concept Artwork';
+      modal.classList.add('active');
+      DioramaAudio.play('shimmer');
+    }
+
+    function openLightboxForCurrent() {
+      const m = careerMilestones[inspectorActiveIdx];
+      openLightbox(m.conceptImg, `${m.company} (Stage ${m.lvl}) — ${m.conceptTitle}`);
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').classList.remove('active');
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 7. LAB MODE SWITCHER
+    // ═════════════════════════════════════════════════════════════
+    let mode2Initialized = false;
+    let mode3Initialized = false;
+
+    function switchLabMode(modeId) {
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+
+      const targetSection = document.getElementById(modeId);
+      if (targetSection) targetSection.classList.add('active');
+
+      const activeBtn = Array.from(document.querySelectorAll('.mode-btn')).find(b => b.getAttribute('onclick').includes(modeId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (modeId === 'mode-inspector' && !mode2Initialized) {
+        setTimeout(() => {
+          initMode2();
+          mode2Initialized = true;
+        }, 50);
+      } else if (modeId === 'mode-inspector') {
+        setTimeout(() => {
+          const container = document.querySelector('.inspector-canvas-box');
+          if (container && renderer2 && camera2) {
+            camera2.aspect = container.clientWidth / container.clientHeight;
+            camera2.updateProjectionMatrix();
+            renderer2.setSize(container.clientWidth, container.clientHeight);
+          }
+        }, 50);
+      }
+
+      if (modeId === 'mode-gallery' && !mode3Initialized) {
+        renderGallery('all');
+        mode3Initialized = true;
+      }
+
+      DioramaAudio.play('shimmer');
+    }
+
+    // Keyboard Arrow navigation
+    window.addEventListener('keydown', (e) => {
+      const selectTab = document.getElementById('mode-stage-select');
+      if (selectTab && selectTab.classList.contains('active')) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          stepStage(1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          stepStage(-1);
+        } else if (e.key === ' ') {
+          e.preventDefault();
+          triggerToyInteraction();
+        }
+      }
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+
+    // Startup
+    
+    // ═════════════════════════════════════════════════════════════
+    // SAGA ADVENTURE MAP (ANGRY BIRDS 2 STYLE) CONTROLLER
+    // ═════════════════════════════════════════════════════════════
+    // Node Coordinates along the winding road (2550px width x 680px height)
+    // Ordered from Stage 01 (Staffs Uni) to Stage 12 (Defence)
+    const sagaNodeCoords = [
+      { lvl: 1,  arrayIdx: 11, x: 120,  y: 495, isMilestone: true,  title: "Staffs Uni" },
+      { lvl: 2,  arrayIdx: 10, x: 260,  y: 400, isMilestone: false, title: "Ticketmaster" },
+      { lvl: 3,  arrayIdx: 9,  x: 420,  y: 350, isMilestone: false, title: "Outplay" },
+      { lvl: 4,  arrayIdx: 8,  x: 640,  y: 410, isMilestone: true,  title: "Zynga CSR" },
+      { lvl: 5,  arrayIdx: 7,  x: 820,  y: 470, isMilestone: false, title: "Silver Lining" },
+      { lvl: 6,  arrayIdx: 6,  x: 1020, y: 440, isMilestone: true,  title: "Pizza Hut" },
+      { lvl: 7,  arrayIdx: 5,  x: 1180, y: 350, isMilestone: false, title: "Cubic Motion" },
+      { lvl: 8,  arrayIdx: 4,  x: 1350, y: 375, isMilestone: true,  title: "Jaguar Land Rover" },
+      { lvl: 9,  arrayIdx: 3,  x: 1540, y: 470, isMilestone: true,  title: "SEGA HARDlight" },
+      { lvl: 10, arrayIdx: 2,  x: 1720, y: 475, isMilestone: true,  title: "Malvern Panalytical" },
+      { lvl: 11, arrayIdx: 1,  x: 1940, y: 345, isMilestone: true,  title: "Synopsys & Ansys" },
+      { lvl: 12, arrayIdx: 0,  x: 2360, y: 245, isMilestone: true,  title: "Classified Defence" }
+    ];
+
+    let currentSagaStage = 11; // Default to Stage 11 (Synopsys)
+
+    function initSagaMap() {
+      const layer = document.getElementById('saga-nodes-layer');
+      if (!layer) return;
+      layer.innerHTML = '';
+
+      sagaNodeCoords.forEach(node => {
+        const m = careerMilestones[node.arrayIdx];
+        const el = document.createElement('div');
+        el.className = `saga-node ${node.isMilestone ? 'is-milestone' : ''} ${node.lvl === currentSagaStage ? 'is-active' : ''}`;
+        el.style.left = node.x + 'px';
+        el.style.top = node.y + 'px';
+        el.id = `saga-node-${node.lvl}`;
+
+        let dioramaPreviewHTML = '';
+        if (node.isMilestone) {
+          dioramaPreviewHTML = `
+            <div class="node-diorama-preview">
+              <img src="${m.conceptImg}" alt="${m.company}" onerror="handleImgError(this);" />
+              <span class="node-preview-label">${m.company}</span>
+            </div>
+          `;
+        }
+
+        let beaconBeamHTML = '';
+        if (node.lvl === 10 || node.lvl === 12) {
+          beaconBeamHTML = '<div class="node-beacon-beam"></div>';
+        }
+
+        el.innerHTML = `
+          ${beaconBeamHTML}
+          ${dioramaPreviewHTML}
+          <div class="node-stars">
+            <span class="node-star">★</span>
+            <span class="node-star">★</span>
+            <span class="node-star">★</span>
+          </div>
+          <div class="node-disc">${node.lvl}</div>
+        `;
+
+        el.onclick = () => selectSagaStage(node.lvl);
+        layer.appendChild(el);
+      });
+
+      setupSagaDragScroll();
+      updateSagaAvatarPosition(currentSagaStage, false);
+      updateSagaBriefing(currentSagaStage);
+      setTimeout(centerSagaActiveNode, 100);
+    }
+
+    function selectSagaStage(lvl, animate = true) {
+      currentSagaStage = lvl;
+      const node = sagaNodeCoords.find(n => n.lvl === lvl);
+      if (!node) return;
+
+      currentActiveIdx = node.arrayIdx; // sync with Mode 1 & 2
+
+      // Play hop / arrival audio
+      DioramaAudio.play(lvl === 12 || lvl === 10 ? 'shimmer' : 'hop');
+
+      // Update node styles
+      document.querySelectorAll('.saga-node').forEach(n => n.classList.remove('is-active'));
+      const activeNodeEl = document.getElementById(`saga-node-${lvl}`);
+      if (activeNodeEl) activeNodeEl.classList.add('is-active');
+
+      updateSagaAvatarPosition(lvl, animate);
+      updateSagaBriefing(lvl);
+
+      // Perform smooth zoom-in onto the selected node
+      zoomIntoNode(node);
+
+      // Open the Job Info Pop-up Modal
+      setTimeout(() => {
+        openSagaJobModal(lvl);
+      }, 480);
+    }
+
+    function zoomIntoNode(node) {
+      const world = document.getElementById('saga-world');
+      const viewport = document.getElementById('saga-viewport');
+      if (!world || !viewport) return;
+
+      // Set transform origin centered on node
+      world.style.transformOrigin = `${node.x}px ${node.y}px`;
+      world.classList.add('is-zoomed');
+
+      const targetScroll = node.x - viewport.clientWidth / 2;
+      viewport.scrollTo({ left: targetScroll, behavior: 'smooth' });
+    }
+
+    function zoomOutSagaMap() {
+      const world = document.getElementById('saga-world');
+      if (world) {
+        world.classList.remove('is-zoomed');
+      }
+    }
+
+    function openSagaJobModal(lvl) {
+      const node = sagaNodeCoords.find(n => n.lvl === lvl);
+      if (!node) return;
+      const m = careerMilestones[node.arrayIdx];
+
+      document.getElementById('modal-stage-pill').textContent = `STAGE ${String(m.lvl).padStart(2, '0')}`;
+      document.getElementById('modal-period-pill').textContent = m.date;
+      document.getElementById('modal-diorama-img').src = m.conceptImg;
+      document.getElementById('modal-company-name').textContent = m.company;
+      document.getElementById('modal-role-title').textContent = m.role;
+      document.getElementById('modal-narrative-text').textContent = `"${m.narrative}"`;
+      document.getElementById('modal-toy-label').textContent = m.toyName;
+
+      const iconMap = { radar: '📡', synopsys: '⚡', laser: '🔬', sega: '🌀', ecu: '🚗', beacon: '📡', stamp: '🍕', cloud: '☁️', dragtree: '🏎️', cube: '📐', ticket: '🎟️', uni: '🎓' };
+      document.getElementById('modal-toy-icon').textContent = iconMap[m.meshType] || '✨';
+
+      const tagsContainer = document.getElementById('modal-tags-container');
+      tagsContainer.innerHTML = '';
+      m.tags.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'saga-modal-tag-chip';
+        span.textContent = t;
+        tagsContainer.appendChild(span);
+      });
+
+      const modal = document.getElementById('saga-job-modal-backdrop');
+      if (modal) modal.classList.add('active');
+
+      DioramaAudio.play('shimmer');
+    }
+
+    function closeSagaJobModal() {
+      const modal = document.getElementById('saga-job-modal-backdrop');
+      if (modal) modal.classList.remove('active');
+      zoomOutSagaMap();
+      centerSagaActiveNode();
+    }
+
+    function triggerModalToy() {
+      const node = sagaNodeCoords.find(n => n.lvl === currentSagaStage);
+      if (!node) return;
+      const m = careerMilestones[node.arrayIdx];
+      DioramaAudio.play(m.sfx);
+
+      const btn = document.getElementById('modal-toy-btn');
+      if (btn) {
+        btn.style.transform = 'scale(1.15)';
+        setTimeout(() => btn.style.transform = '', 200);
+      }
+    }
+
+    function openDeepDiveFromModal() {
+      closeSagaJobModal();
+      openActiveStageInspect();
+    }
+
+    function openLightboxForCurrentStage() {
+      const node = sagaNodeCoords.find(n => n.lvl === currentSagaStage);
+      if (node) {
+        const m = careerMilestones[node.arrayIdx];
+        openLightbox(m.conceptImg, `${m.company} (Stage ${m.lvl}) — ${m.conceptTitle}`);
+      }
+    }
+
+    function updateSagaAvatarPosition(lvl, animate = true) {
+      const node = sagaNodeCoords.find(n => n.lvl === lvl);
+      const avatar = document.getElementById('saga-avatar-pod');
+      if (!node || !avatar) return;
+
+      if (animate) {
+        avatar.classList.add('is-hopping');
+        setTimeout(() => avatar.classList.remove('is-hopping'), 450);
+      }
+
+      avatar.style.left = node.x + 'px';
+      avatar.style.top = (node.y - 12) + 'px';
+    }
+
+    function updateSagaBriefing(lvl) {
+      const node = sagaNodeCoords.find(n => n.lvl === lvl);
+      if (!node) return;
+      const m = careerMilestones[node.arrayIdx];
+
+      const thumb = document.getElementById('saga-briefing-thumb');
+      const lvlLabel = document.getElementById('saga-briefing-lvl');
+      const company = document.getElementById('saga-briefing-company');
+      const role = document.getElementById('saga-briefing-role');
+
+      if (thumb) thumb.src = m.conceptImg;
+      if (lvlLabel) lvlLabel.textContent = `STAGE ${String(m.lvl).padStart(2, '0')} // ${(m.company).toUpperCase()}`;
+      if (company) company.textContent = m.company;
+      if (role) role.textContent = m.role;
+    }
+
+    function stepSagaStage(dir) {
+      let nextLvl = currentSagaStage + dir;
+      if (nextLvl < 1) nextLvl = 1;
+      if (nextLvl > 12) nextLvl = 12;
+      selectSagaStage(nextLvl, true);
+    }
+
+    function centerSagaActiveNode() {
+      const node = sagaNodeCoords.find(n => n.lvl === currentSagaStage);
+      const viewport = document.getElementById('saga-viewport');
+      if (!node || !viewport) return;
+
+      const targetScroll = node.x - viewport.clientWidth / 2;
+      viewport.scrollTo({ left: targetScroll, behavior: 'smooth' });
+    }
+
+    function openActiveStageInspect() {
+      DioramaAudio.play('shimmer');
+      // Switch to Mode 1 (3D Diorama Stage Studio) and load this stage
+      switchLabMode('mode-stage-select');
+      const node = sagaNodeCoords.find(n => n.lvl === currentSagaStage);
+      if (node) {
+        loadStage1(node.arrayIdx, true);
+      }
+    }
+
+    // Touch and Mouse Drag to Scroll with inertia
+    function setupSagaDragScroll() {
+      const slider = document.getElementById('saga-viewport');
+      if (!slider) return;
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+      slider.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.saga-node') || e.target.closest('button')) return;
+        isDown = true;
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+      });
+
+      slider.addEventListener('mouseleave', () => { isDown = false; });
+      slider.addEventListener('mouseup', () => { isDown = false; });
+
+      slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.6;
+        slider.scrollLeft = scrollLeft - walk;
+      });
+    }
+
+    // Initialize Saga Map on startup
+    window.addEventListener('DOMContentLoaded', () => {
+      initSagaMap();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initMode1();
+    });
+  </script>
+</body>
+</html>

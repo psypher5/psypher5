@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <rect x="12" y="10" width="60" height="60" rx="10" fill="#e11d48"/>
+  <g transform="translate(18, 16) scale(0.85)">
+    <!-- Zynga Bulldog Silhouette -->
+    <path d="M12 28 C12 22, 16 18, 22 18 C24 18, 25 16, 28 14 C31 16, 33 18, 33 22 C37 21, 41 23, 44 26 C47 30, 46 36, 42 38 L38 35 L35 38 L30 38 L25 35 L22 38 Z" fill="#ffffff"/>
+    <circle cx="20" cy="24" r="2" fill="#e11d48"/>
+  </g>
+  <text x="86" y="52" fill="#ffffff" font-family="'Arial Black', 'Segoe UI Black', sans-serif" font-size="38" font-weight="900" letter-spacing="-1">zynga</text>
+  <text x="228" y="32" fill="#e11d48" font-family="sans-serif" font-size="14" font-weight="900">®</text>
+</svg>

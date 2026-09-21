@@ -11,7 +11,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0072f5">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/main.css?v=4.9">
 </head>
 <body class="has-hero">
     <canvas id="starfield"></canvas>
@@ -33,21 +33,34 @@
                     
                     <!-- Under-Logo Navigation Icons with Hover Labels -->
                     <nav class="hero-nav-dock" aria-label="Explore Sections">
-                        <button class="hero-nav-btn" data-tab="about" onclick="switchTab('about', event)" aria-label="About">
+                        <button class="hero-nav-btn" onclick="scrollToSection('content-container')" aria-label="About Tom">
                             <svg class="hero-nav-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                             <span class="hero-nav-label">About</span>
                         </button>
                         
-                        <button class="hero-nav-btn" data-tab="projects" onclick="switchTab('projects', event)" aria-label="Projects">
-                            <svg class="hero-nav-icon" viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                            <span class="hero-nav-label">Projects</span>
+                        <button class="hero-nav-btn" onclick="scrollToSection('career-wave-strip-wrapper')" aria-label="Career Timeline">
+                            <svg class="hero-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2.5" fill="currentColor"/><circle cx="16" cy="12" r="2.5" fill="currentColor"/><circle cx="10" cy="18" r="2.5" fill="currentColor"/></svg>
+                            <span class="hero-nav-label">Career</span>
                         </button>
                         
-                        <button class="hero-nav-btn" data-tab="contact" onclick="switchTab('contact', event)" aria-label="Contact">
+                        <a href="https://starsanctuary.uk/" target="_blank" rel="noopener noreferrer" class="hero-nav-btn" aria-label="Experience Studio" title="Visit Star Sanctuary ↗">
+                            <svg class="hero-nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/></svg>
+                            <span class="hero-nav-label">Studio ↗</span>
+                        </a>
+
+                        <button class="hero-nav-btn" onclick="scrollToSection('section-contact')" aria-label="Contact">
                             <svg class="hero-nav-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                             <span class="hero-nav-label">Contact</span>
                         </button>
                     </nav>
+
+                    <!-- Scroll Down Prompt -->
+                    <div class="hero-scroll-prompt" onclick="scrollToSection('content-container')" title="Scroll to explore">
+                        <span class="scroll-prompt-text">SCROLL TO EXPLORE</span>
+                        <div class="scroll-prompt-chevron">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -90,24 +103,24 @@
                             <h2 class="open-section-label">Interests</h2>
                             <div class="interests-blocks-row" id="interests-blocks">
 
-                                <!-- Block 1: Hobby Game Dev -->
+                                <!-- Block 1: Experience Studio (Star Sanctuary) -->
                                 <div class="interest-block active" data-interest="0" onclick="selectInterest(0)">
                                     <div class="interest-block-compact">
                                         <span class="interest-block-num">01</span>
-                                        <span class="interest-block-icon">🛸</span>
-                                        <h3 class="interest-block-title">Hobby Game Dev</h3>
-                                        <span class="interest-block-badge">Godot 4 // Three.js</span>
+                                        <span class="interest-block-icon">✨</span>
+                                        <h3 class="interest-block-title">Experience Studio</h3>
+                                        <span class="interest-block-badge">Star Sanctuary</span>
                                     </div>
                                     <div class="interest-block-expanded centered-exp">
                                         <div class="interest-exp-header">
-                                            <span class="interest-exp-tag">INDIE DEVELOPMENT</span>
+                                            <span class="interest-exp-tag highlight-blue">CREATIVE LAB &amp; PROTOTYPES</span>
                                             <span class="interest-exp-num">01</span>
                                         </div>
-                                        <h4>Hobby Game Dev</h4>
-                                        <p class="interest-main-desc">Keeping my passion for game-dev alive with personal projects, diorama physics prototypes, and interactive 3D web experiments!</p>
-                                        <button class="btn-interest-project-link" onclick="switchTab('projects'); event.stopPropagation();">
-                                            Explore Games ↗
-                                        </button>
+                                        <h4>Experience Studio</h4>
+                                        <p class="interest-main-desc">A sanctuary for creativity. Home to my personal game development projects, interactive 3D WebGL experiences, diorama physics prototypes, and creative engineering sandbox.</p>
+                                        <a href="https://starsanctuary.uk/" target="_blank" rel="noopener noreferrer" class="btn-interest-project-link" onclick="event.stopPropagation();" title="Visit Star Sanctuary (External)">
+                                            Visit Star Sanctuary ↗
+                                        </a>
                                     </div>
                                 </div>
 
@@ -161,10 +174,10 @@
                             </div>
                         </div>
 
-                        <!-- ═══ SECTION: CAREER (With Holographic Peeled CV Sticker & Winding Timeline) ═══ -->
+                        <!-- ═══ SECTION: CAREER (Traditional Level Select with 3D Miniature Dioramas) ═══ -->
                         <div class="open-section">
                             <div class="career-section-header-wrap">
-                                <h2 class="open-section-label">Career</h2>
+                                <h2 class="open-section-label">Career Stage Select</h2>
                                 <a href="assets/Tom_Woodward_CV.pdf" download class="holo-cv-sticker" title="Download CV (PDF)">
                                     <div class="holo-foil-layer"></div>
                                     <div class="holo-curl-corner"></div>
@@ -173,31 +186,134 @@
                                 </a>
                             </div>
 
-                            <div class="career-unified-wrapper">
-                                <!-- Scrollable Winding Cyber Wave Track & Alternating Eras -->
-                                <div class="career-wave-track-box">
-                                    <div class="career-scrubber-rail-wrapper" id="career-scrubber-rail-wrapper">
-                                        <svg class="career-wave-svg" viewBox="0 0 1600 120" preserveAspectRatio="none" aria-hidden="true">
-                                            <path class="wave-path-glow" d="M 0,60 C 70,12 110,12 180,60 C 250,108 290,108 360,60 C 430,12 470,12 540,60 C 610,108 650,108 720,60 C 790,12 830,12 900,60 C 970,108 1010,108 1080,60 C 1150,12 1190,12 1260,60 C 1330,108 1370,108 1440,60 L 1600,60" fill="none" />
-                                            <path class="wave-path-main" d="M 0,60 C 70,12 110,12 180,60 C 250,108 290,108 360,60 C 430,12 470,12 540,60 C 610,108 650,108 720,60 C 790,12 830,12 900,60 C 970,108 1010,108 1080,60 C 1150,12 1190,12 1260,60 C 1330,108 1370,108 1440,60 L 1600,60" fill="none" />
-                                        </svg>
-                                        <div class="career-scrubber-rail" id="career-scrubber-rail" role="tablist" aria-label="Career Timeline Eras">
-                                            <!-- JS generates clickable year nodes with undulating wave offsets & sonar-ring on active -->
+                            <!-- ═══ CYBERNETIC WAVE STRIP CAREER TIMELINE (SINUOUS DIORAMA RUNWAY) ═══ -->
+                            <div class="career-wave-strip-wrapper" id="career-wave-strip-wrapper">
+
+                                <!-- Top Controls & Timeline Metadata Bar -->
+                                <div class="career-wave-controls">
+                                    <div class="wave-controls-left">
+                                        <div class="wave-hud-pill">
+                                            <span class="wave-beacon-dot"></span>
+                                            <span class="wave-stage-num" id="wave-active-stage-badge">STAGE 11 // SYNOPSYS &amp; ANSYS</span>
                                         </div>
+                                        <span class="wave-date-range" id="wave-active-date-range">Feb 2023 — Apr 2026</span>
+                                    </div>
+
+                                    <div class="wave-controls-right">
+                                        <button type="button" class="btn-wave-nav" onclick="stepWaveStage(-1)" title="Previous Milestone (←)">
+                                            <span>◀</span> <span>Prev</span>
+                                        </button>
+                                        <button type="button" class="btn-wave-nav" onclick="stepWaveStage(1)" title="Next Milestone (→)">
+                                            <span>Next</span> <span>▶</span>
+                                        </button>
+                                        <button type="button" class="btn-wave-nav btn-wave-sound" onclick="toggleAudio()" id="wave-sound-btn" title="Toggle Sound">
+                                            <span id="wave-sound-icon">🔊</span>
+                                        </button>
                                     </div>
                                 </div>
 
-                                <!-- Horizontal Time-Deck Runway: Active Card Center, Peeking Faded Cards to the Right -->
-                                <div class="career-time-deck-container">
-                                    <button class="career-arrow-btn" id="career-prev" onclick="stepCareer(-1)" aria-label="Previous milestone">&#8592;</button>
+                                <!-- Middle Stage Area (Contains scrolling viewport + fixed centered inline inspector) -->
+                                <div class="career-wave-stage-area">
+                                    <!-- Horizontal Scrollable Viewport -->
+                                    <div class="career-wave-viewport" id="career-wave-viewport">
+                                        <div class="career-wave-track" id="career-wave-track">
 
-                                    <div class="career-deck-stage" id="career-deck-stage">
-                                        <div class="career-deck-runway" id="career-deck-runway">
-                                            <!-- JS populates cards once; CSS transforms handle fluid horizontal time navigation -->
+                                        <!-- Background Ambient Glow & Grid Lines -->
+                                        <div class="wave-track-ambient"></div>
+
+                                        <!-- Sinuous Continuous SVG Wave Line -->
+                                        <svg class="career-wave-svg" viewBox="0 0 2500 480" preserveAspectRatio="none">
+                                            <defs>
+                                                <!-- Inverted Gradient: Present (Emerald/Cyan) to University Origins (Purple) -->
+                                                <linearGradient id="waveLineGrad" x1="0" y1="0" x2="1" y2="0">
+                                                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.95"/>
+                                                    <stop offset="30%" stop-color="#00f0ff" stop-opacity="0.95"/>
+                                                    <stop offset="70%" stop-color="#0072f5" stop-opacity="0.95"/>
+                                                    <stop offset="100%" stop-color="#a855f7" stop-opacity="0.85"/>
+                                                </linearGradient>
+
+                                                <!-- Filter for Deep Ambient Wave Glow -->
+                                                <filter id="waveGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                                    <feGaussianBlur stdDeviation="8" result="blur"/>
+                                                    <feMerge>
+                                                        <feMergeNode in="blur"/>
+                                                        <feMergeNode in="SourceGraphic"/>
+                                                    </feMerge>
+                                                </filter>
+                                            </defs>
+
+                                            <!-- Subtle Baseline Guide -->
+                                            <line x1="0" y1="240" x2="2500" y2="240" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="4 8" stroke-width="1"/>
+
+                                            <!-- Wide Diffused Glow Wave -->
+                                            <path class="wave-path-ambient-glow"
+                                                  d="M 40,240 C 90,170 90,170 140,170 C 240,170 250,310 350,310 C 450,310 460,170 560,170 C 660,170 670,310 770,310 C 870,310 880,170 980,170 C 1080,170 1090,310 1190,310 C 1290,310 1300,170 1400,170 C 1500,170 1510,310 1610,310 C 1710,310 1720,170 1820,170 C 1920,170 1930,310 2030,310 C 2130,310 2140,170 2240,170 C 2330,170 2360,280 2420,280 L 2480,280"
+                                                  stroke="url(#waveLineGrad)" stroke-width="16" fill="none" opacity="0.3" filter="url(#waveGlow)"/>
+
+                                            <!-- Sharp Electric Main Path -->
+                                            <path class="wave-path-core"
+                                                  d="M 40,240 C 90,170 90,170 140,170 C 240,170 250,310 350,310 C 450,310 460,170 560,170 C 660,170 670,310 770,310 C 870,310 880,170 980,170 C 1080,170 1090,310 1190,310 C 1290,310 1300,170 1400,170 C 1500,170 1510,310 1610,310 C 1710,310 1720,170 1820,170 C 1920,170 1930,310 2030,310 C 2130,310 2140,170 2240,170 C 2330,170 2360,280 2420,280 L 2480,280"
+                                                  stroke="url(#waveLineGrad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+                                            <!-- Dashed Harmonic Telemetry Path -->
+                                            <path class="wave-path-dash"
+                                                  d="M 40,240 C 90,170 90,170 140,170 C 240,170 250,310 350,310 C 450,310 460,170 560,170 C 660,170 670,310 770,310 C 870,310 880,170 980,170 C 1080,170 1090,310 1190,310 C 1290,310 1300,170 1400,170 C 1500,170 1510,310 1610,310 C 1710,310 1720,170 1820,170 C 1920,170 1930,310 2030,310 C 2130,310 2140,170 2240,170 C 2330,170 2360,280 2420,280 L 2480,280"
+                                                  stroke="#ffffff" stroke-width="1.5" stroke-dasharray="6 10" fill="none" opacity="0.6"/>
+                                        </svg>
+
+                                        <!-- Interactive Wave Nodes Layer (Injected dynamically) -->
+                                        <div class="career-wave-nodes-layer" id="career-wave-nodes-layer"></div>
+
+                                        <!-- Station Pilot Indicator Avatar Token -->
+                                        <div class="career-wave-avatar" id="career-wave-avatar" style="top: 170px; left: 140px;">
+                                            <div class="wave-avatar-pulse"></div>
+                                            <img src="assets/avatar.png" alt="Tom Woodward" class="wave-avatar-img" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=tom';">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                    <!-- Inline Milestone Inspector (Side-by-Side Diorama & Job Info in the same space) -->
+                                    <div class="career-wave-inline-inspector" id="career-wave-inline-inspector" onclick="closeWaveInlineInspectorOnBackdrop(event)">
+                                        <div class="inline-inspector-container" onclick="event.stopPropagation()">
+                                            
+                                            <!-- Left Panel: Large 3D Diorama Showcase -->
+                                            <div class="inline-diorama-panel">
+                                                <div class="inline-panel-header">
+                                                    <span class="inline-stage-pill" id="inline-stage-pill">STAGE 11</span>
+                                                    <span class="inline-period-pill" id="inline-period-pill">Feb 2023 — Apr 2026</span>
+                                                </div>
+
+                                                <div class="inline-diorama-img-wrap">
+                                                    <img id="inline-diorama-img" src="assets/models/diorama_concept_synopsys.jpg" alt="Diorama Preview" onerror="this.src='assets/commercial/covers/sonicforces_landscape.jpg';" />
+                                                    <div class="inline-diorama-badge">🔍 Interactive Diorama</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Right Panel: Deep-Dive Job Dossier -->
+                                            <div class="inline-dossier-panel">
+                                                <button type="button" class="inline-close-btn" onclick="closeWaveInlineInspector()" title="Close Inspector">✕</button>
+
+                                                <div class="inline-dossier-header">
+                                                    <h2 class="inline-dossier-title" id="inline-dossier-title">Staff R&amp;D Engineer / Technical Architect</h2>
+                                                    <div class="inline-dossier-company" id="inline-dossier-company">SYNOPSYS &amp; ANSYS</div>
+                                                    <div class="inline-dossier-meta-row">
+                                                        <span class="inline-meta-badge badge-period" id="inline-dossier-period">FEB 2023 — APR 2026</span>
+                                                        <span class="inline-meta-badge badge-loc" id="inline-dossier-location">REMOTE / GLASGOW, UK</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="inline-dossier-body">
+                                                    <ul class="inline-bullet-list" id="inline-dossier-bullets"></ul>
+                                                    <div class="inline-skills-section">
+                                                        <div class="inline-skills-title">SKILLS &amp; TECHNOLOGIES</div>
+                                                        <div class="inline-skills-tokens" id="inline-dossier-skills"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
-
-                                    <button class="career-arrow-btn" id="career-next" onclick="stepCareer(1)" aria-label="Next milestone">&#8594;</button>
                                 </div>
                             </div>
                         </div>
@@ -205,7 +321,7 @@
                         <!-- ═══ SECTION: COMMERCIAL TITLES ═══ -->
                         <div class="open-section">
                             <h2 class="open-section-label">Commercial Titles</h2>
-                            <p class="section-sub-label">Tap an app icon to load its QA &amp; engineering scope — right inside the phone</p>
+                            <p class="section-sub-label">Tap an app icon to load its QA &amp; engineering scope</p>
 
                             <!-- All-in-One Immersive Smartphone Showcase -->
                             <div class="interactive-phone-showcase">
@@ -368,287 +484,64 @@
                             </div><!-- /interactive-phone-showcase -->
                         </div>
 
+                        <!-- ═══ SECTION: CONTACT (Tactile Retro-Modern Console) ═══ -->
+                        <div class="open-section" id="section-contact">
+                            <h2 class="open-section-label">Get In Touch</h2>
+
+                            <!-- Tactile Retro-Modern Inset Console (Homage to First Website) -->
+                            <div class="retro-contact-chassis">
+                                <div class="retro-chassis-header">
+                                    <span class="retro-chassis-status"><span class="sonar-ring-small"></span>SELECT CHANNEL</span>
+                                </div>
+
+                                <!-- Debossed Inset Icon Dock -->
+                                <div class="retro-icons-row" role="tablist" aria-label="Contact Channels">
+                                    <button type="button" class="inset-icon-btn active" data-channel="email" onclick="selectContactChannel('email')" title="Email (tom@psypher5.co.uk)">
+                                        <span class="inset-letter">M</span>
+                                    </button>
+                                    <button type="button" class="inset-icon-btn" data-channel="twitter" onclick="selectContactChannel('twitter')" title="X / Twitter (@psypher5)">
+                                        <span class="inset-letter">t</span>
+                                    </button>
+                                    <button type="button" class="inset-icon-btn" data-channel="linkedin" onclick="selectContactChannel('linkedin')" title="LinkedIn (in/psypher5)">
+                                        <span class="inset-letter">in</span>
+                                    </button>
+                                    <button type="button" class="inset-icon-btn" data-channel="github" onclick="selectContactChannel('github')" title="GitHub (@psypher5)">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                                    </button>
+                                    <button type="button" class="inset-icon-btn" data-channel="twitch" onclick="selectContactChannel('twitch')" title="Twitch (twitch.tv/psypher5)">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M11.64 5.93h1.43v4.28h-1.43m3.93-4.28H17v4.28h-1.43M5.93 2.36L3.07 5.21v13.57h4.29V23.1l2.85-2.86h3.58l5.71-5.71V2.36H5.93m11.43 10.71l-2.86 2.86h-3.57l-2.86 2.86v-2.86H5.21V3.79h12.15v9.28z"/></svg>
+                                    </button>
+                                    <button type="button" class="inset-icon-btn" data-channel="steam" onclick="selectContactChannel('steam')" title="Steam (psypher5)">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12s-5.373-12-12-12zM8.077 17.077c-.848 0-1.536-.688-1.536-1.536s.688-1.536 1.536-1.536 1.536.688 1.536 1.536-.688 1.536-1.536 1.536zm7.865-5.393c-1.53 0-2.77-1.24-2.77-2.77s1.24-2.77 2.77-2.77 2.77 1.24 2.77 2.77-1.24 2.77-2.77 2.77z"/></svg>
+                                    </button>
+                                </div>
+
+                                <!-- Glowing Cyber Terminal Readout -->
+                                <div class="retro-readout-display">
+                                    <a href="mailto:tom@psypher5.co.uk" class="retro-readout-url" id="retro-readout-url">tom@psypher5.co.uk</a>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-                <!-- ══════════════════════════════════════════ -->
-                <!-- SUBPAGE 2: PROJECTS & GAMES (Showcase Carousel) -->
-                <!-- ══════════════════════════════════════════ -->
-                <div id="subpage-projects" class="subpage glass-panel">
-                    <div class="netflix-showcase-container">
-                        
-                        <!-- 1. Cinematic Featured Billboard -->
-                        <div class="netflix-billboard" id="netflix-billboard">
-                            <div class="billboard-backdrop-wrap">
-                                <img id="billboard-backdrop-img" src="assets/noble_gnomes.png" alt="Noble Gnomes" class="billboard-backdrop-img">
-                                <div class="billboard-vignette-scrim"></div>
-                            </div>
-                            
-                            <div class="billboard-content">
-                                <div class="billboard-meta-strip">
-                                    <span class="billboard-kicker" id="billboard-kicker">PSYPHER5 ORIGINAL // THREE.JS &amp; CLOUDFLARE WORKERS</span>
-                                    <div class="billboard-badges">
-                                        <span id="billboard-status-badge" class="status-badge-chip status-playable">LIVE PLAYABLE 3D</span>
-                                        <span id="billboard-engine-badge" class="engine-badge-chip">Three.js / WebGL</span>
-                                    </div>
-                                </div>
-                                
-                                <h1 class="billboard-title" id="billboard-title">Noble Gnomes</h1>
-                                <div class="billboard-tagline" id="billboard-tagline">Steam-Powered Pond Exploration &amp; Slime Arcana</div>
-                                <p class="billboard-desc" id="billboard-desc">A whimsical and vibrant 3D fantasy aquatic adventure! Captain the steam-powered "Puddlehopper" exploration vessel across an enchanted lilypad pond with a stalwart crew of gnomes, confronting ancient glowing moss slime behemoths with arcane shield runes.</p>
-                                
-                                <div class="billboard-actions">
-                                    <button type="button" class="btn-billboard-play" id="btn-billboard-play" onclick="launchActiveGame()">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                                        <span id="btn-billboard-play-label">Play Noble Gnomes in Browser</span>
-                                    </button>
-                                    <button type="button" class="btn-billboard-newtab" onclick="openTheaterNewTab()" title="Open in dedicated browser tab">
-                                        <span>↗ New Tab</span>
-                                    </button>
-                                    <button type="button" class="btn-billboard-info" onclick="scrollToSpecsDrawer()" title="View technical architecture">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                                        <span>Architecture &amp; Specs</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 2. "Other Projects" Horizontal Tray (Always in view!) -->
-                        <div class="netflix-tray-section">
-                            <div class="netflix-tray-header">
-                                <h3 class="tray-section-title">Expeditions &amp; Prototypes</h3>
-                                <span class="tray-section-count">06 TITLES &bull; SELECT TO FEATURE</span>
-                            </div>
-
-                            <div class="netflix-tray-track" id="netflix-tray-track">
-                                <!-- Card 1: Noble Gnomes -->
-                                <div class="netflix-card active" data-project="noblegnomes" onclick="selectProject('noblegnomes')">
-                                    <div class="netflix-card-thumb-wrap">
-                                        <img src="assets/noble_gnomes.png" alt="Noble Gnomes" class="netflix-card-thumb" loading="lazy">
-                                        <div class="netflix-card-overlay">
-                                            <span class="card-status-chip chip-playable">PLAYABLE 3D</span>
-                                        </div>
-                                    </div>
-                                    <div class="netflix-card-info">
-                                        <div class="card-title-row">
-                                            <span class="card-icon">🍄</span>
-                                            <h4 class="card-title">Noble Gnomes</h4>
-                                        </div>
-                                        <div class="card-tech-sub">Three.js &bull; Workers Edge</div>
-                                    </div>
-                                </div>
-
-                                <!-- Card 2: Aegis of Ages -->
-                                <div class="netflix-card" data-project="aegis" onclick="selectProject('aegis')">
-                                    <div class="netflix-card-thumb-wrap">
-                                        <img src="assets/aegis_of_ages.webp" alt="Aegis of Ages" class="netflix-card-thumb" loading="lazy">
-                                        <div class="netflix-card-overlay">
-                                            <span class="card-status-chip chip-playable">PLAY ON SPAWN ↗</span>
-                                        </div>
-                                    </div>
-                                    <div class="netflix-card-info">
-                                        <div class="card-title-row">
-                                            <span class="card-icon">🏰</span>
-                                            <h4 class="card-title">Aegis of Ages</h4>
-                                        </div>
-                                        <div class="card-tech-sub">Spawn &bull; 3D Fortress Siege</div>
-                                    </div>
-                                </div>
-
-                                <!-- Card 2: Moments -->
-                                <div class="netflix-card" data-project="moments" onclick="selectProject('moments')">
-                                    <div class="netflix-card-thumb-wrap">
-                                        <img src="assets/merlin.jpg" alt="Moments" class="netflix-card-thumb" loading="lazy">
-                                        <div class="netflix-card-overlay">
-                                            <span class="card-status-chip chip-playable">PLAYABLE 3D</span>
-                                        </div>
-                                    </div>
-                                    <div class="netflix-card-info">
-                                        <div class="card-title-row">
-                                            <span class="card-icon">🐾</span>
-                                            <h4 class="card-title">Moments</h4>
-                                        </div>
-                                        <div class="card-tech-sub">Three.js &bull; WebGL &bull; Audio</div>
-                                    </div>
-                                </div>
-
-                                <!-- Card 3: ewe-FO -->
-                                <div class="netflix-card" data-project="ewefo" onclick="selectProject('ewefo')">
-                                    <div class="netflix-card-thumb-wrap">
-                                        <img src="assets/psypher53-2-WE5f5c30150a (1).png" alt="ewe-FO" class="netflix-card-thumb" loading="lazy">
-                                        <div class="netflix-card-overlay">
-                                            <span class="card-status-chip chip-playable">PLAYABLE 3D</span>
-                                        </div>
-                                    </div>
-                                    <div class="netflix-card-info">
-                                        <div class="card-title-row">
-                                            <span class="card-icon">🛸</span>
-                                            <h4 class="card-title">ewe-FO</h4>
-                                        </div>
-                                        <div class="card-tech-sub">Three.js &bull; Godot 4 &bull; Physics</div>
-                                    </div>
-                                </div>
-
-                                <!-- Card 4: Adventures of Wick -->
-                                <div class="netflix-card" data-project="wick" onclick="selectProject('wick')">
-                                    <div class="netflix-card-thumb-wrap">
-                                        <img src="assets/art-web/digital/Out_of_the_mist__by_Psypher5.webp" alt="Adventures of Wick" class="netflix-card-thumb" loading="lazy">
-                                        <div class="netflix-card-overlay">
-                                            <span class="card-status-chip chip-engine">C++ ENGINE</span>
-                                        </div>
-                                    </div>
-                                    <div class="netflix-card-info">
-                                        <div class="card-title-row">
-                                            <span class="card-icon">🕯️</span>
-                                            <h4 class="card-title">Adventures of Wick</h4>
-                                        </div>
-                                        <div class="card-tech-sub">Custom C++17 &bull; SDL2 &bull; OpenGL</div>
-                                    </div>
-                                </div>
-
-                                <!-- Card 5: Void Warden -->
-                                <div class="netflix-card" data-project="voidwarden" onclick="selectProject('voidwarden')">
-                                    <div class="netflix-card-thumb-wrap">
-                                        <img src="assets/art-web/digital/peng back.webp" alt="Void Warden" class="netflix-card-thumb" loading="lazy">
-                                        <div class="netflix-card-overlay">
-                                            <span class="card-status-chip chip-proto">UNITY C#</span>
-                                        </div>
-                                    </div>
-                                    <div class="netflix-card-info">
-                                        <div class="card-title-row">
-                                            <span class="card-icon">🛡️</span>
-                                            <h4 class="card-title">Void Warden</h4>
-                                        </div>
-                                        <div class="card-tech-sub">Unity Engine &bull; Tactical RTS</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 3. Deep Architecture & PSR Specs Drawer -->
-                        <div class="netflix-specs-drawer" id="netflix-specs-drawer">
-                            <div class="psr-framework-box" id="psr-framework-box">
-                                <div class="psr-header">
-                                    <span class="psr-badge">PSR CASE STUDY</span>
-                                    <span class="psr-sub">Architecture &amp; Engineering Decisions</span>
-                                </div>
-                                <div class="psr-grid">
-                                    <div class="psr-item psr-problem">
-                                        <span class="psr-tag">PROBLEM</span>
-                                        <p id="psr-problem-text">Delivering rich interactive 3D water shaders, dynamic boat wake ripples, and spatial pond acoustics instantly on mobile web without heavy pre-load waits.</p>
-                                    </div>
-                                    <div class="psr-item psr-solution">
-                                        <span class="psr-tag">SOLUTION</span>
-                                        <p id="psr-solution-text">Deployed on Cloudflare Workers edge network with compressed asset streaming, instanced pond lilypad geometry, and a procedural Web Audio acoustic synthesizer.</p>
-                                    </div>
-                                    <div class="psr-item psr-result">
-                                        <span class="psr-tag">RESULT</span>
-                                        <p id="psr-result-text">Instant global cold-start loading (&lt;150ms), buttery smooth 60 FPS mobile WebGL rendering, and an enchanting interactive sandbox.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pillars & Tech Grid -->
-                            <div class="project-pillars-tech-grid">
-                                <div class="project-pillars-col">
-                                    <h4>Core Pillars &amp; Mechanics</h4>
-                                    <ul id="project-pillars-list">
-                                        <li>Steam-powered boat navigation across enchanted garden waters with real-time wake physics.</li>
-                                        <li>Tactical arcane battles with magical sigils against colossal glowing pond entities.</li>
-                                        <li>Procedural Web Audio soundscapes paired with custom stylized lilypad &amp; flora shaders.</li>
-                                    </ul>
-                                </div>
-                                <div class="project-tech-col">
-                                    <h4>Engine Tech Stack</h4>
-                                    <div class="project-card-tech" id="project-tech-tags">
-                                        <span class="tech-tag">Three.js</span>
-                                        <span class="tech-tag">WebGL</span>
-                                        <span class="tech-tag">Web Audio API</span>
-                                        <span class="tech-tag">Cloudflare Workers</span>
-                                        <span class="tech-tag">Edge Architecture</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Concept Art Strip -->
-                            <div class="indie-concept-section" id="project-concept-section">
-                                <div class="indie-concept-header">
-                                    <h4>Visual Development &amp; Assets</h4>
-                                    <span class="concept-hint-tag">Tap thumbnail to inspect full resolution ↗</span>
-                                </div>
-                                <div class="indie-concept-gallery" id="indie-concept-gallery">
-                                    <!-- Populated dynamically by JS -->
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div><!-- /subpage-projects -->
-
-                <!-- SUBPAGE 3: CONTACT (Homage Inset Console Deck) -->
-                <div id="subpage-contact" class="subpage glass-panel">
-                    <div class="contact-page-container">
-                        <h1 class="section-title">Get In Touch</h1>
-                        <p class="contact-intro-text">Open to exciting engineering challenges, game development collaborations, or simply connecting about distributed systems and testing architectures.</p>
-                        
-                        <!-- Tactile Retro-Modern Inset Console (Homage to First Website) -->
-                        <div class="retro-contact-chassis">
-                            <div class="retro-chassis-header">
-                                <span class="retro-chassis-status"><span class="sonar-ring-small"></span>COMM LINK ONLINE</span>
-                                <span class="retro-chassis-sub">SELECT CHANNEL</span>
-                            </div>
-
-                            <!-- Debossed Inset Icon Dock -->
-                            <div class="retro-icons-row" role="tablist" aria-label="Contact Channels">
-                                <button type="button" class="inset-icon-btn active" data-channel="email" onclick="selectContactChannel('email')" title="Email (tom@psypher5.co.uk)">
-                                    <span class="inset-letter">M</span>
-                                </button>
-                                <button type="button" class="inset-icon-btn" data-channel="twitter" onclick="selectContactChannel('twitter')" title="X / Twitter (@psypher5)">
-                                    <span class="inset-letter">t</span>
-                                </button>
-                                <button type="button" class="inset-icon-btn" data-channel="linkedin" onclick="selectContactChannel('linkedin')" title="LinkedIn (in/psypher5)">
-                                    <span class="inset-letter">in</span>
-                                </button>
-                                <button type="button" class="inset-icon-btn" data-channel="github" onclick="selectContactChannel('github')" title="GitHub (@psypher5)">
-                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
-                                </button>
-                                <button type="button" class="inset-icon-btn" data-channel="twitch" onclick="selectContactChannel('twitch')" title="Twitch (twitch.tv/psypher5)">
-                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M11.64 5.93h1.43v4.28h-1.43m3.93-4.28H17v4.28h-1.43M5.93 2.36L3.07 5.21v13.57h4.29V23.1l2.85-2.86h3.58l5.71-5.71V2.36H5.93m11.43 10.71l-2.86 2.86h-3.57l-2.86 2.86v-2.86H5.21V3.79h12.15v9.28z"/></svg>
-                                </button>
-                                <button type="button" class="inset-icon-btn" data-channel="steam" onclick="selectContactChannel('steam')" title="Steam (psypher5)">
-                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12s-5.373-12-12-12zM8.077 17.077c-.848 0-1.536-.688-1.536-1.536s.688-1.536 1.536-1.536 1.536.688 1.536 1.536-.688 1.536-1.536 1.536zm7.865-5.393c-1.53 0-2.77-1.24-2.77-2.77s1.24-2.77 2.77-2.77 2.77 1.24 2.77 2.77-1.24 2.77-2.77 2.77z"/></svg>
-                                </button>
-                            </div>
-
-                            <!-- Glowing Cyber Terminal Readout -->
-                            <div class="retro-readout-display">
-                                <div class="retro-readout-label" id="retro-readout-label">TRANSMISSION TARGET // DIRECT EMAIL</div>
-                                <div class="retro-readout-url" id="retro-readout-url">tom@psypher5.co.uk</div>
-                                <div class="retro-readout-actions">
-                                    <a href="mailto:tom@psypher5.co.uk" id="retro-action-open" class="retro-action-btn retro-btn-open">
-                                        <span id="retro-action-open-label">Launch Email ↗</span>
-                                    </a>
-                                    <button type="button" id="retro-action-copy" class="retro-action-btn retro-btn-copy" onclick="copyCurrentContactHandle(event)">
-                                        <span id="retro-copy-label">Copy to Clipboard</span>
-                                    </button>
-                                </div>
-                                <span id="retro-copy-toast" class="retro-copy-toast" aria-live="polite"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
             <!-- Floating Minimal Nav Dock (Icons Only) -->
             <nav id="bottom-nav" aria-label="Quick Navigation">
-                <button class="nav-dock-btn" data-tab="about" aria-label="About Tom" title="About" onclick="switchTab('about', event)">
+                <button class="nav-dock-btn" onclick="scrollToTop()" aria-label="Return to Top" title="Top">
+                    <svg viewBox="0 0 24 24"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg>
+                </button>
+                <button class="nav-dock-btn" onclick="scrollToSection('content-container')" aria-label="About Tom" title="About">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </button>
-                <button class="nav-dock-btn" data-tab="projects" aria-label="Projects and Games" title="Projects &amp; Games" onclick="switchTab('projects', event)">
-                    <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                <button class="nav-dock-btn" onclick="scrollToSection('career-wave-strip-wrapper')" aria-label="Career Timeline" title="Career Timeline">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2.5" fill="currentColor"/><circle cx="16" cy="12" r="2.5" fill="currentColor"/><circle cx="10" cy="18" r="2.5" fill="currentColor"/></svg>
                 </button>
-                <button class="nav-dock-btn" data-tab="contact" aria-label="Contact" title="Contact" onclick="switchTab('contact', event)">
+                <a href="https://starsanctuary.uk/" target="_blank" rel="noopener noreferrer" class="nav-dock-btn" aria-label="Experience Studio" title="Visit Star Sanctuary ↗">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/></svg>
+                </a>
+                <button class="nav-dock-btn" onclick="scrollToSection('section-contact')" aria-label="Contact" title="Contact">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 </button>
             </nav>
@@ -711,6 +604,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- Floating Expandable Audio Player Widget (Bottom Right) -->
     <div id="audio-player-widget" class="audio-player-widget collapsed" aria-label="Soundtrack Music Player">
@@ -862,6 +757,9 @@
     </div>
 
     <script src="scripts/starfield.js"></script>
-    <script src="scripts/app.js?v=2.3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="scripts/app.js?v=4.9"></script>
 </body>
 </html>

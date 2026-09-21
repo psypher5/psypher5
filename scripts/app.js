@@ -731,49 +731,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // 4. SPA Morphing Tabs State Management
+    // 4. One-Pager Navigation & Smooth Scroll Controller
     const appContainer = document.getElementById('app-container');
-    const subpages = document.querySelectorAll('.subpage');
-    const navButtons = document.querySelectorAll('.nav-dock-btn, .hero-nav-btn');
+
+    window.scrollToSection = function(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView();
+        }
+    };
+
+    window.scrollToTop = function() {
+        window.scrollTo(0, 0);
+    };
 
     window.switchTab = function(tabId, e) {
         const evt = e || window.event;
         if (evt && typeof evt.stopPropagation === 'function') {
             evt.stopPropagation();
         }
-        if (!appContainer) return;
 
-        // Guarantee all modals and overlays are dismissed when switching tabs
+        // Dismiss any active modals or overlays
         if (typeof closeModal === 'function') closeModal();
         if (typeof closeArtLightbox === 'function') closeArtLightbox();
         if (typeof closeGameTheater === 'function') closeGameTheater();
-        
-        const targetBtn = document.querySelector(`.nav-dock-btn[data-tab="${tabId}"], .hero-nav-btn[data-tab="${tabId}"]`);
-        if (targetBtn && targetBtn.classList.contains('active') && appContainer.classList.contains('state-subpage-active')) {
-            goHome(evt);
+        if (typeof closeSagaJobModal === 'function') closeSagaJobModal();
+        if (typeof closeWaveInlineInspector === 'function') closeWaveInlineInspector();
+
+        if (tabId === 'home' || !tabId) {
+            window.scrollToTop();
             return;
         }
-        
-        appContainer.classList.add('state-subpage-active');
-        
-        subpages.forEach(page => {
-            if (page.id === `subpage-${tabId}`) {
-                page.classList.add('active');
-                page.scrollTop = 0;
-            } else {
-                page.classList.remove('active');
-            }
-        });
-        
-        navButtons.forEach(btn => {
-            if (btn.getAttribute('data-tab') === tabId) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
 
-        // Update URL hash smoothly without jump
+        if (tabId === 'about') {
+            window.scrollToSection('content-container');
+        } else if (tabId === 'career') {
+            window.scrollToSection('career-wave-strip-wrapper');
+        } else if (tabId === 'projects') {
+            window.open('https://starsanctuary.uk/', '_blank');
+        } else if (tabId === 'contact') {
+            window.scrollToSection('section-contact');
+        }
+
         if (window.history && window.history.replaceState) {
             window.history.replaceState(null, '', '#' + tabId);
         }
@@ -784,16 +783,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (evt && typeof evt.stopPropagation === 'function') {
             evt.stopPropagation();
         }
-        if (!appContainer) return;
 
-        // Guarantee all modals and overlays are dismissed when returning home
         if (typeof closeModal === 'function') closeModal();
         if (typeof closeArtLightbox === 'function') closeArtLightbox();
         if (typeof closeGameTheater === 'function') closeGameTheater();
+        if (typeof closeSagaJobModal === 'function') closeSagaJobModal();
+        if (typeof closeWaveInlineInspector === 'function') closeWaveInlineInspector();
 
-        appContainer.classList.remove('state-subpage-active');
-        subpages.forEach(page => page.classList.remove('active'));
-        navButtons.forEach(btn => btn.classList.remove('active'));
+        window.scrollToTop();
 
         // Clear hash on return to home (preserve soundtrack deep links)
         if (window.history && window.history.replaceState) {
@@ -803,22 +800,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Click outside active subpage to return to homepage
-    document.addEventListener('click', function(e) {
-        if (!appContainer || !appContainer.classList.contains('state-subpage-active')) return;
-        // Ignore clicks from elements that were removed from the DOM during event handling (e.g. timeline node re-rendering)
-        if (!document.body.contains(e.target)) return;
-
-        const isSubpage = e.target.closest('.subpage');
-        const isNavDock = e.target.closest('#bottom-nav');
-        const isHeroNav = e.target.closest('.hero-nav-dock') || e.target.closest('#hero');
-        const isModal = e.target.closest('.modal-wrapper') || e.target.closest('.modal-overlay') || e.target.closest('#art-lightbox') || e.target.closest('#game-theater-modal');
-        const isHeader = e.target.closest('#site-header') || e.target.closest('.header-brand');
-
-        if (!isSubpage && !isNavDock && !isHeroNav && !isModal && !isHeader) {
-            window.goHome(e);
+    // Responsive Scroll Listener: Header brand & floating bottom HUD visibility
+    function handleScrollIndicator() {
+        const currentScroll = window.scrollY || (document.documentElement ? document.documentElement.scrollTop : 0) || (document.body ? document.body.scrollTop : 0);
+        const isScrolled = currentScroll > 120;
+        if (isScrolled) {
+            document.body.classList.add('scrolled-past-hero');
+        } else {
+            document.body.classList.remove('scrolled-past-hero');
         }
-    });
+    }
+    window.addEventListener('scroll', handleScrollIndicator, { passive: true });
+    document.addEventListener('scroll', handleScrollIndicator, { passive: true });
+    handleScrollIndicator();
 
     // 5. Interactive Smartphone OS & App Lifecycle Controller
     let currentAppKey = null;
@@ -925,6 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeIndieKey = 'noblegnomes';
 
     window.selectProject = function(boxKey) {
+        if (!document.getElementById('netflix-billboard')) return;
         const data = indieBoxes[boxKey];
         if (!data) return;
         activeIndieKey = boxKey;
@@ -1537,235 +1532,2888 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     })();
 
-    // 12. Career Timeline & Wave Nodes Manager
+    // Lightweight Web Audio Synth SFX for Diorama Micro-Toys & Overworld Map
+    const DioramaAudio = (function() {
+        let ctx = null;
+        let effectsMuted = false;
+
+        function getContext() {
+            if (!ctx) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (AudioCtx) ctx = new AudioCtx();
+            }
+            if (ctx && ctx.state === 'suspended') {
+                ctx.resume();
+            }
+            return ctx;
+        }
+
+        function isMuted() {
+            if (effectsMuted) return true;
+            const player = document.getElementById('gemini-audio-player');
+            return player ? player.muted : false;
+        }
+
+        return {
+            toggleMute() {
+                effectsMuted = !effectsMuted;
+                return effectsMuted;
+            },
+            isEffectsMuted() {
+                return effectsMuted;
+            },
+            playHop() {
+                if (isMuted()) return;
+                const c = getContext();
+                if (!c) return;
+                try {
+                    const now = c.currentTime;
+                    const osc = c.createOscillator();
+                    const gain = c.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(260, now);
+                    osc.frequency.exponentialRampToValueAtTime(520, now + 0.12);
+                    gain.gain.setValueAtTime(0.16, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+                    osc.connect(gain);
+                    gain.connect(c.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.14);
+                } catch(e) {}
+            },
+            playArrival() {
+                if (isMuted()) return;
+                const c = getContext();
+                if (!c) return;
+                try {
+                    const now = c.currentTime;
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                        gain.gain.setValueAtTime(0.1, now + idx * 0.05);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.2);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now + idx * 0.05);
+                        osc.stop(now + idx * 0.05 + 0.22);
+                    });
+                } catch(e) {}
+            },
+            play(type) {
+                if (isMuted()) return;
+                const c = getContext();
+                if (!c) return;
+
+                if (type === 'hop') {
+                    this.playHop();
+                    return;
+                }
+                if (type === 'arrival') {
+                    this.playArrival();
+                    return;
+                }
+
+                try {
+                    const now = c.currentTime;
+                    if (type === 'ring') {
+                        // Sonic golden ring chime (two high crystalline harmonic bells)
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(987.77, now);
+                        osc.frequency.setValueAtTime(1318.51, now + 0.08);
+                        gain.gain.setValueAtTime(0.2, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.45);
+                    } else if (type === 'sonar') {
+                        // Sonar radar echo ping
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(800, now);
+                        gain.gain.setValueAtTime(0.25, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.65);
+                    } else if (type === 'laser') {
+                        // Laser diffraction sweep and optical harmonic ping
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(1400, now);
+                        osc.frequency.exponentialRampToValueAtTime(320, now + 0.24);
+                        gain.gain.setValueAtTime(0.14, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.26);
+                    } else if (type === 'windtunnel') {
+                        // Aerodynamic wind tunnel whoosh + digital compute surge
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(160, now);
+                        osc.frequency.linearRampToValueAtTime(520, now + 0.18);
+                        osc.frequency.exponentialRampToValueAtTime(110, now + 0.42);
+                        gain.gain.setValueAtTime(0.2, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.42);
+                        // Followed by compute AI surge
+                        const osc2 = c.createOscillator();
+                        const gain2 = c.createGain();
+                        osc2.type = 'sine';
+                        osc2.frequency.setValueAtTime(1760, now + 0.1);
+                        gain2.gain.setValueAtTime(0.12, now + 0.1);
+                        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+                        osc2.connect(gain2);
+                        gain2.connect(c.destination);
+                        osc2.start(now + 0.1);
+                        osc2.stop(now + 0.32);
+                    } else if (type === 'shimmer') {
+                        // Delicate crystalline silver bells
+                        [1046.5, 1318.5, 1567.9, 2093.0].forEach((freq, idx) => {
+                            const osc = c.createOscillator();
+                            const gain = c.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, now + idx * 0.045);
+                            gain.gain.setValueAtTime(0.12, now + idx * 0.045);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.045 + 0.35);
+                            osc.connect(gain);
+                            gain.connect(c.destination);
+                            osc.start(now + idx * 0.045);
+                            osc.stop(now + idx * 0.045 + 0.35);
+                        });
+                    } else if (type === 'academic') {
+                        // Triumphant graduation collegiate fanfare
+                        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                            const osc = c.createOscillator();
+                            const gain = c.createGain();
+                            osc.type = 'triangle';
+                            osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+                            gain.gain.setValueAtTime(0.15, now + idx * 0.06);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.42);
+                            osc.connect(gain);
+                            gain.connect(c.destination);
+                            osc.start(now + idx * 0.06);
+                            osc.stop(now + idx * 0.06 + 0.42);
+                        });
+                    } else if (type === 'server' || type === 'telemetry') {
+                        // High-tech digital bleeps
+                        [0, 0.07].forEach((delay, idx) => {
+                            const osc = c.createOscillator();
+                            const gain = c.createGain();
+                            osc.type = 'triangle';
+                            osc.frequency.setValueAtTime(idx === 0 ? 1200 : 1600, now + delay);
+                            gain.gain.setValueAtTime(0.15, now + delay);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.06);
+                            osc.connect(gain);
+                            gain.connect(c.destination);
+                            osc.start(now + delay);
+                            osc.stop(now + delay + 0.06);
+                        });
+                    } else if (type === 'arcade') {
+                        // 8-bit coin arpeggio
+                        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                            const osc = c.createOscillator();
+                            const gain = c.createGain();
+                            osc.type = 'square';
+                            osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                            gain.gain.setValueAtTime(0.08, now + idx * 0.05);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.08);
+                            osc.connect(gain);
+                            gain.connect(c.destination);
+                            osc.start(now + idx * 0.05);
+                            osc.stop(now + idx * 0.05 + 0.08);
+                        });
+                    } else if (type === 'launch') {
+                        // Drag launch rev
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(220, now);
+                        osc.frequency.linearRampToValueAtTime(880, now + 0.25);
+                        gain.gain.setValueAtTime(0.15, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.3);
+                    } else {
+                        // Clean tactile blip
+                        const osc = c.createOscillator();
+                        const gain = c.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(650, now);
+                        osc.frequency.exponentialRampToValueAtTime(250, now + 0.12);
+                        gain.gain.setValueAtTime(0.15, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                        osc.connect(gain);
+                        gain.connect(c.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.12);
+                    }
+                } catch (e) {
+                    // Autoplay policy or unsupported audio
+                }
+            }
+        };
+    })();
+
+    // 12. Career Timeline & Diorama Wave Nodes Manager
     const careerMilestones = [
-        { key: 'classified-defence', date: 'Present', year: "'26", role: 'Senior Engineer - Software Engineering (Assurance)', company: '[CLASSIFIED]', tags: [], isMystery: true },
-        { key: 'synopsys-ansys',     date: 'Feb 2023 — Apr 2026', year: "'23", role: 'Staff R&D Engineer / Tech Architect', company: 'Synopsys & Ansys',          tags: ['HPC Cloud','Agentic AI','Playwright','Cypress'] },
-        { key: 'malvern',            date: 'Sep 2018 — Feb 2023', year: "'18", role: 'Software Test Engineer',             company: 'Malvern Panalytical',          tags: ['Ranorex','UX Systems','Azure DevOps'] },
-        { key: 'sega',               date: 'Aug 2017 — Apr 2018', year: "'17", role: 'QA Tester',                          company: 'SEGA Hardlight',               tags: ['Sonic Franchise','PC QA','Mobile SDKs'] },
-        { key: 'connect',            date: 'Oct 2016 — Jul 2017', year: "'16", role: 'QA & Automation Tester',             company: 'Connect Group (JLR)',           tags: ['Java','Cucumber BDD','Selenium'] },
-        { key: 'ndevr',              date: 'Aug 2016 — Sep 2016', year: "'16", role: 'Associate Project Manager',          company: 'ndevr Ltd',                    tags: ['Agile Scrum','IoT Incubator'] },
-        { key: 'adactus',            date: 'Oct 2015 — Jul 2016', year: "'15", role: 'Junior QA Tester',                   company: 'Adactus & EDM Group',          tags: ['Pizza Hut Loyalty','Cross-Browser'] },
-        { key: 'silverlining',       date: 'Jun 2015 — Sep 2015', year: "'15", role: 'QA Lead (Co-founder)',               company: 'Silver Lining QA',          tags: ['Dawn of Titans','SkyScrappers'] },
-        { key: 'zynga',              date: 'Jul 2014 — May 2015', year: "'14", role: 'Game Tester',                        company: 'Zynga / NaturalMotion',        tags: ['CSR Racing','Euphoria Physics'] },
-        { key: 'tinderstone',        date: 'Nov 2013 — Aug 2014', year: "'13", role: '3D Artist & QA Tester',              company: 'Tinderstone & Syscom',         tags: ['3D Retopology','3ds Max'] },
-        { key: 'ticketmaster',       date: 'Mar 2013 — Sep 2013', year: "'13", role: 'Graduate QA Engineer',               company: 'Ticketmaster / LiveNation',    tags: ['Agile QA','LiveNation'] },
-        { key: 'staffuni',           date: 'Sep 2007 — Feb 2013', year: "'07", role: 'MEng Games Design & 3D Modelling',  company: 'Staffordshire University',     tags: ["Master's (MEng)",'Engine Tech'] }
+        {
+            key: 'classified-defence',
+            date: 'Present',
+            year: "'26",
+            role: 'Senior Engineer - Software Engineering (Assurance)',
+            company: '[CLASSIFIED] Defence & Security',
+            tags: ['Defence Systems', 'Telemetry Assurance', 'Sub-Surface QA'],
+            isMystery: true,
+            stamp: '📡 PING! SUB-SURFACE',
+            stampClass: 'stamp-emerald',
+            narrative: 'Classified mission-critical assurance and sub-surface telemetry systems. Building hardened automated test foundations where zero defect leakage is tolerated.',
+            sfx: 'sonar',
+            toyName: 'Stealth Submarine Scale Model',
+            toyAction: '⚓ Executive naval scale model resting on polished brass mounts!',
+            meshType: 'radar',
+            color: 0x10b981,
+            conceptImg: 'assets/models/diorama_concept_defence.jpg',
+            logoImg: 'assets/commercial/logos/classified.svg',
+            companyLogoSvg: `
+                <svg viewBox="0 0 115 24" class="logo-classified" fill="none">
+                    <rect x="2" y="2" width="111" height="20" rx="10" fill="rgba(6, 78, 59, 0.45)" stroke="rgba(16, 185, 129, 0.6)" stroke-width="1.2"/>
+                    <circle cx="14" cy="12" r="4.5" fill="none" stroke="#34d399" stroke-width="1.2"/>
+                    <circle cx="14" cy="12" r="1.8" fill="#10b981"/>
+                    <line x1="14" y1="5" x2="14" y2="19" stroke="#34d399" stroke-width="0.8" stroke-dasharray="1 1"/>
+                    <line x1="7" y1="12" x2="21" y2="12" stroke="#34d399" stroke-width="0.8" stroke-dasharray="1 1"/>
+                    <text x="25" y="15" fill="#ecfdf5" font-family="monospace" font-size="8.5" font-weight="900" letter-spacing="1.2">CLASSIFIED</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-radar-dome">
+                    <div class="radar-ping-ring"></div>
+                    <div class="radar-screen">
+                        <div class="radar-blip"></div>
+                        <div class="radar-sweep-line"></div>
+                    </div>
+                </div>
+            `
+        },
+        {
+            key: 'synopsys-ansys',
+            date: 'Feb 2023 — Apr 2026',
+            year: "'23",
+            role: 'Staff R&D Engineer / Tech Architect',
+            company: 'Synopsys & Ansys',
+            tags: ['HPC Cloud', 'Agentic AI', 'Playwright', 'Cypress'],
+            stamp: '⚡ SCALE UP!',
+            stampClass: 'stamp-cyan',
+            narrative: 'Architected test foundations for cloud HPC simulation and digital twins. Spearheaded agentic AI quality passes and high-concurrency browser automation clusters.',
+            sfx: 'windtunnel',
+            toyName: 'Wind Tunnel & Server Racks',
+            toyAction: '⚡ Mach 1 wind tunnel streamlines & GPU cluster synced!',
+            meshType: 'synopsys',
+            color: 0x00f0ff,
+            conceptImg: 'assets/models/diorama_concept_synopsys.jpg',
+            logoImg: 'assets/commercial/logos/synopsys_ansys.svg',
+            companyLogoSvg: `
+                <svg viewBox="0 0 125 24" class="logo-synopsys-ansys" fill="none">
+                    <rect x="2" y="2" width="121" height="20" rx="10" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(0, 240, 255, 0.45)" stroke-width="1"/>
+                    <path d="M9 13 C12 7, 15 17, 18 11" stroke="#00f0ff" stroke-width="2" stroke-linecap="round"/>
+                    <text x="23" y="14.5" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-size="8.5" font-weight="800" letter-spacing="0.4">SYNOPSYS</text>
+                    <text x="73" y="14.5" fill="#64748b" font-family="'Segoe UI', sans-serif" font-size="8">&amp;</text>
+                    <text x="83" y="14.5" fill="#fbbf24" font-family="'Segoe UI', sans-serif" font-size="8.5" font-weight="900" font-style="italic" letter-spacing="0.6">Ansys</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-wind-tunnel-cluster">
+                    <div class="server-blade-rack rack-left">
+                        <div class="rack-unit"><span class="rack-led l-cyan"></span><span class="rack-led l-blue"></span></div>
+                        <div class="rack-unit"><span class="rack-led l-emerald"></span><span class="rack-led l-cyan"></span></div>
+                        <div class="rack-unit"><span class="rack-led l-blue"></span><span class="rack-led l-emerald"></span></div>
+                    </div>
+                    <div class="wind-tunnel-chamber">
+                        <div class="tunnel-glass-tube">
+                            <div class="aero-test-model"></div>
+                            <div class="cfd-streamlines">
+                                <div class="streamline line-top"></div>
+                                <div class="streamline line-mid"></div>
+                                <div class="streamline line-bot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="server-blade-rack rack-right">
+                        <div class="rack-unit"><span class="rack-led l-emerald"></span><span class="rack-led l-cyan"></span></div>
+                        <div class="rack-unit"><span class="rack-led l-cyan"></span><span class="rack-led l-blue"></span></div>
+                        <div class="rack-unit"><span class="rack-led l-blue"></span><span class="rack-led l-cyan"></span></div>
+                    </div>
+                </div>
+            `
+        },
+        {
+            key: 'malvern',
+            date: 'Sep 2018 — Feb 2023',
+            year: "'18",
+            role: 'Software Test Engineer',
+            company: 'Malvern Panalytical',
+            tags: ['Ranorex', 'UX Systems', 'Azure DevOps'],
+            stamp: '🔬 LASER FOCUS!',
+            stampClass: 'stamp-rose',
+            narrative: 'Engineered automated validation for physical particle sizing and laser diffraction instruments. Bridged scientific hardware calibration with high-precision UI testing.',
+            sfx: 'laser',
+            toyName: 'Laser Diffraction Chamber',
+            toyAction: '🔬 Laser diffraction optics calibrated to 0.1 nanometers!',
+            meshType: 'laser',
+            color: 0xf43f5e,
+            conceptImg: 'assets/models/diorama_concept_malvern.jpg',
+            logoImg: 'assets/commercial/logos/malvern.svg',
+            companyLogoSvg: `
+                <svg viewBox="0 0 120 24" class="logo-malvern" fill="none">
+                    <rect x="2" y="2" width="116" height="20" rx="10" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(244, 63, 94, 0.45)" stroke-width="1"/>
+                    <circle cx="12" cy="9" r="2.5" fill="#f43f5e"/>
+                    <circle cx="18" cy="15" r="2.5" fill="#00f0ff"/>
+                    <circle cx="18" cy="9" r="1.8" fill="#94a3b8"/>
+                    <circle cx="12" cy="15" r="1.8" fill="#38bdf8"/>
+                    <line x1="12" y1="9" x2="18" y2="15" stroke="#f43f5e" stroke-width="1"/>
+                    <text x="25" y="12" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-size="7.5" font-weight="800" letter-spacing="0.4">MALVERN</text>
+                    <text x="25" y="18" fill="#fda4af" font-family="'Segoe UI', sans-serif" font-size="6" font-weight="700" letter-spacing="0.8">PANALYTICAL</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-laser-diffraction">
+                    <div class="laser-diode-mount">
+                        <div class="diode-lens"></div>
+                        <div class="collimated-red-beam"></div>
+                    </div>
+                    <div class="quartz-particle-cell">
+                        <div class="cuvette-liquid">
+                            <div class="micro-particle p1"></div>
+                            <div class="micro-particle p2"></div>
+                            <div class="micro-particle p3"></div>
+                            <div class="micro-particle p4"></div>
+                        </div>
+                    </div>
+                    <div class="diffraction-scatter-fan">
+                        <div class="diffraction-ring ring-inner"></div>
+                        <div class="diffraction-ring ring-mid"></div>
+                        <div class="diffraction-ring ring-outer"></div>
+                    </div>
+                </div>
+            `
+        },
+        {
+            key: 'sega',
+            date: 'Aug 2017 — Apr 2018',
+            year: "'17",
+            role: 'QA Tester',
+            company: 'SEGA Hardlight',
+            tags: ['Sonic Franchise', 'PC QA', 'Mobile SDKs'],
+            stamp: '🌀 GOTTA GO FAST!',
+            stampClass: 'stamp-amber',
+            narrative: 'Shipped Sonic Forces, Sonic Dash 2, and Sonic Boom. Validated high-speed gameplay feel, physics tunnels, and monetization flows across mobile and PC.',
+            sfx: 'ring',
+            toyName: 'Sonic Loop & Gold Ring',
+            toyAction: '✨ Sonic loop cleared! +100 Rings Collected!',
+            meshType: 'sega',
+            color: 0x0284c7,
+            conceptImg: 'assets/models/diorama_concept_sega.jpg',
+            logoImg: 'assets/commercial/logos/sega.png',
+            companyLogoSvg: `
+                <svg viewBox="0 0 115 24" class="logo-sega" fill="none">
+                    <rect x="2" y="2" width="111" height="20" rx="10" fill="rgba(10, 14, 26, 0.85)" stroke="rgba(245, 158, 11, 0.55)" stroke-width="1"/>
+                    <text x="9" y="15" fill="#0284c7" font-family="'Arial Black', sans-serif" font-size="11.5" font-weight="900" letter-spacing="1">SEGA</text>
+                    <rect x="49" y="5" width="58" height="14" rx="3" fill="rgba(245, 158, 11, 0.2)" stroke="#f59e0b" stroke-width="1"/>
+                    <text x="53" y="15" fill="#fef08a" font-family="monospace" font-size="7.2" font-weight="800" letter-spacing="0.5">HARDLIGHT</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-sonic-loop">
+                    <div class="sonic-loop-track-wrap">
+                        <div class="sonic-loop-track">
+                            <div class="sonic-grass-crest"></div>
+                            <div class="sonic-track-checker"></div>
+                        </div>
+                        <div class="sonic-loop-ring">
+                            <div class="sonic-golden-ring">
+                                <div class="inner-sheen"></div>
+                            </div>
+                        </div>
+                        <div class="sonic-dash-streak"></div>
+                    </div>
+                </div>
+            `
+        },
+        {
+            key: 'connect',
+            date: 'Oct 2016 — Jul 2017',
+            year: "'16",
+            role: 'QA & Automation Tester',
+            company: 'Connect Group (JLR)',
+            tags: ['Java', 'Cucumber BDD', 'Selenium'],
+            stamp: '🚗 TELEMETRY SYNC!',
+            stampClass: 'stamp-cyan',
+            narrative: 'Engineered BDD automation in Java & Cucumber for Jaguar Land Rover connected vehicle telemetry, tracking sensor pipelines from ECU to dealer.',
+            sfx: 'telemetry',
+            toyName: 'JLR Telemetry ECU',
+            toyAction: '🚗 JLR telematics bus synced at 500kbps!',
+            meshType: 'ecu',
+            color: 0x10b981,
+            conceptImg: 'assets/models/diorama_concept_jlr.jpg',
+            logoImg: 'assets/commercial/logos/jlr.svg',
+            companyLogoSvg: `
+                <svg viewBox="0 0 115 24" class="logo-jlr" fill="none">
+                    <rect x="2" y="2" width="111" height="20" rx="10" fill="rgba(6, 78, 59, 0.35)" stroke="rgba(16, 185, 129, 0.55)" stroke-width="1"/>
+                    <rect x="6" y="5" width="28" height="14" rx="7" fill="#064e3b" stroke="#34d399" stroke-width="1"/>
+                    <text x="10" y="15" fill="#fef08a" font-family="'Segoe UI', sans-serif" font-size="7.5" font-weight="900" font-style="italic">JLR</text>
+                    <text x="39" y="14.5" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-size="8" font-weight="800" letter-spacing="0.5">CONNECT</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-auto-ecu">
+                    <div class="ecu-title"><span class="dot"></span><span>CAN-BUS</span></div>
+                    <div class="ecu-bus">
+                        <div class="ecu-pin"></div>
+                        <div class="ecu-pin" style="animation-delay:0.2s"></div>
+                        <div class="ecu-pin" style="animation-delay:0.4s"></div>
+                        <div class="ecu-pin" style="animation-delay:0.6s"></div>
+                    </div>
+                </div>
+            `
+        },
+        {
+            key: 'ndevr',
+            date: 'Aug 2016 — Sep 2016',
+            year: "'16",
+            role: 'Associate Project Manager',
+            company: 'ndevr Ltd',
+            tags: ['Agile Scrum', 'IoT Incubator'],
+            stamp: '📡 IOT BROADCAST!',
+            stampClass: 'stamp-purple',
+            narrative: 'Project-managed hardware/software IoT incubator prototypes for international exchange students, coordinating agile sprints across sensor telemetry, microcontrollers, and robotics.',
+            sfx: 'server',
+            toyName: 'IoT Lab & Exchange Globe',
+            toyAction: '📡 International IoT exchange telemetry linked!',
+            meshType: 'beacon',
+            color: 0xa855f7,
+            conceptImg: 'assets/models/diorama_concept_ndevr.jpg',
+            logoImg: 'assets/commercial/logos/ndevr.svg',
+            companyLogoSvg: `
+                <svg viewBox="0 0 100 24" class="logo-ndevr" fill="none">
+                    <rect x="2" y="2" width="96" height="20" rx="10" fill="rgba(88, 28, 135, 0.35)" stroke="rgba(168, 85, 247, 0.55)" stroke-width="1"/>
+                    <circle cx="14" cy="12" r="4" fill="rgba(168, 85, 247, 0.4)" stroke="#c084fc" stroke-width="1.2"/>
+                    <circle cx="14" cy="12" r="1.5" fill="#f3e8ff"/>
+                    <text x="24" y="15" fill="#f5d0fe" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="800" letter-spacing="0.8">ndevr</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-iot-beacon">
+                    <div class="beacon-wave"></div>
+                    <div class="beacon-tower">
+                        <div class="beacon-light"></div>
+                        <div class="beacon-mast"></div>
+                    </div>
+                </div>
+            `
+        },
+        {
+            key: 'adactus',
+            date: 'Oct 2015 — Jul 2016',
+            year: "'15",
+            role: 'Junior QA Tester',
+            company: 'Adactus & EDM Group',
+            tags: ['Pizza Hut Loyalty', 'Cross-Browser'],
+            stamp: '🍕 ORDER UP!',
+            stampClass: 'stamp-amber',
+            narrative: 'Rigorous cross-browser and mobile web verification for high-volume loyalty platforms including Pizza Hut Rewards.',
+            sfx: 'launch',
+            toyName: 'Loyalty Ticket Stamp',
+            toyAction: '🍕 Loyalty voucher generated and validated!',
+            meshType: 'stamp',
+            color: 0xf59e0b,
+            conceptImg: 'assets/models/diorama_concept_pizzahut.jpg',
+            logoImg: 'assets/commercial/logos/pizzahut.png',
+            companyLogoSvg: `
+                <svg viewBox="0 0 115 24" class="logo-adactus" fill="none">
+                    <rect x="2" y="2" width="111" height="20" rx="10" fill="rgba(69, 26, 3, 0.35)" stroke="rgba(245, 158, 11, 0.55)" stroke-width="1"/>
+                    <path d="M8 15 L15 7 L22 15 Z" fill="#ef4444"/>
+                    <rect x="10" y="15" width="10" height="2" fill="#fbbf24"/>
+                    <text x="27" y="13" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-size="7.5" font-weight="800" letter-spacing="0.4">ADACTUS</text>
+                    <text x="27" y="19" fill="#fca5a5" font-family="monospace" font-size="6" font-weight="700">PIZZA HUT</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-loyalty-stamp">
+                    <span class="stamp-icon">🍕</span>
+                    <div class="stamp-seal">PASS ✓</div>
+                </div>
+            `
+        },
+        {
+            key: 'silverlining',
+            date: 'Jun 2015 — Sep 2015',
+            year: "'15",
+            role: 'QA Lead (Co-founder)',
+            company: 'Silver Lining QA',
+            tags: ['Dawn of Titans', 'SkyScrappers'],
+            stamp: '🛡️ SQUAD ASSEMBLED!',
+            stampClass: 'stamp-cyan',
+            narrative: 'Co-founded an indie QA agency providing embedded QA testing for titles like Dawn of Titans and SkyScrappers.',
+            sfx: 'shimmer',
+            toyName: 'Silver Cloud & QA Shield',
+            toyAction: '☁️ Silver Lining QA pass deployed: 100% bug free!',
+            meshType: 'cloud',
+            color: 0x00a0e3,
+            conceptImg: 'assets/models/diorama_concept_silverlining.jpg',
+            logoImg: 'assets/commercial/logos/silverlining.png',
+            companyLogoSvg: `
+                <div class="logo-silverlining-wrap" title="Silver Lining QA">
+                    <img src="assets/commercial/icons/silverlining_logo.png" alt="Silver Lining QA Logo" class="logo-silverlining-img" />
+                </div>
+            `,
+            propSvg: `
+                <div class="prop-silver-cloud">
+                    <div class="cloud-ribbon-stage">
+                        <img src="assets/commercial/icons/silverlining_cloud.png" alt="Silver Lining QA Cloud" class="cloud-ribbon-emblem" />
+                        <div class="cloud-glow-underlay"></div>
+                    </div>
+                    <div class="cloud-sparkles">
+                        <span class="c-spark sp-1">✦</span>
+                        <span class="c-spark sp-2">✧</span>
+                    </div>
+                </div>
+            `
+        },
+        {
+            key: 'zynga',
+            date: 'Jul 2014 — May 2015',
+            year: "'14",
+            role: 'Game Tester',
+            company: 'Zynga / NaturalMotion',
+            tags: ['CSR Racing', 'Euphoria Physics'],
+            stamp: '🏎️ GREEN LIGHT!',
+            stampClass: 'stamp-rose',
+            narrative: 'Stress-tested AAA mobile drag racer CSR Racing, verifying Euphoria physics engine ragdolls, vehicle customisation, and server multiplayer.',
+            sfx: 'launch',
+            toyName: 'Drag Strip Staging Tree',
+            toyAction: '🏎️ RPM pinned! Perfect launch 0.001s RT!',
+            meshType: 'dragtree',
+            color: 0xef4444,
+            conceptImg: 'assets/models/diorama_concept_zynga.jpg',
+            logoImg: 'assets/commercial/logos/zynga.svg',
+            companyLogoSvg: `
+                <svg viewBox="0 0 100 24" class="logo-zynga" fill="none">
+                    <rect x="2" y="2" width="96" height="20" rx="10" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(239, 68, 68, 0.55)" stroke-width="1"/>
+                    <path d="M7 14 C7 11.5, 9.5 9, 12 9 C13 9, 13.5 8, 14.5 7 C15.5 8.5, 17 9.5, 17 11 C17 11, 19.5 10.5, 20 12 C20.5 13.5, 19 15, 17.5 15 L15.5 13.5 L14 15 L11.5 15 L9 13.5 L7.5 15 Z" fill="#ef4444"/>
+                    <text x="26" y="16" fill="#f8fafc" font-family="'Arial Black', sans-serif" font-size="11.5" font-weight="900" letter-spacing="-0.4">zynga</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-drag-tree">
+                    <div class="tree-light tree-amber-1"></div>
+                    <div class="tree-light tree-amber-2"></div>
+                    <div class="tree-light tree-green"></div>
+                </div>
+            `
+        },
+        {
+            key: 'tinderstone',
+            date: 'Nov 2013 — Aug 2014',
+            year: "'13",
+            role: '3D Artist & QA Tester',
+            company: 'Tinderstone & Syscom',
+            tags: ['3D Retopology', '3ds Max'],
+            stamp: '📐 VERTEX SNAP!',
+            stampClass: 'stamp-cyan',
+            narrative: 'Digitised high-end retail furniture for DFS using a 360° DSLR photogrammetry rig, converting multi-angle photography into optimized 3D textured assets and clean quad topology.',
+            sfx: 'server',
+            toyName: '360° Photogrammetry Rig & Wireframe Sofa',
+            toyAction: '📐 DFS 3D sofa digitized: 0 ngons, clean photogrammetry quad mesh!',
+            meshType: 'cube',
+            color: 0x00f0ff,
+            conceptImg: 'assets/models/diorama_concept_tinderstone.jpg',
+            logoImg: 'assets/commercial/logos/tinderstone.svg',
+            companyLogoSvg: `
+                <svg viewBox="0 0 115 24" class="logo-tinderstone" fill="none">
+                    <rect x="2" y="2" width="111" height="20" rx="10" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(0, 240, 255, 0.45)" stroke-width="1"/>
+                    <polygon points="12,4 20,8 16,18 8,18 4,8" fill="rgba(0, 240, 255, 0.2)" stroke="#00f0ff" stroke-width="1"/>
+                    <line x1="12" y1="4" x2="16" y2="18" stroke="#38bdf8" stroke-width="0.8"/>
+                    <text x="26" y="12" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-size="7.5" font-weight="800" letter-spacing="0.4">TINDERSTONE</text>
+                    <text x="26" y="18" fill="#7dd3fc" font-family="monospace" font-size="6" font-weight="700">3D &amp; SYSCOM</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-wireframe-cube">
+                    <div class="wireframe-box">
+                        <div class="vert-dot v-tl"></div>
+                        <div class="vert-dot v-tr"></div>
+                        <div class="vert-dot v-bl"></div>
+                        <div class="vert-dot v-br"></div>
+                        <span class="wireframe-label">XYZ</span>
+                    </div>
+                </div>
+            `
+        },
+        {
+            key: 'ticketmaster',
+            date: 'Mar 2013 — Sep 2013',
+            year: "'13",
+            role: 'Graduate QA Engineer',
+            company: 'Ticketmaster / LiveNation',
+            tags: ['Sports Ticketing', 'LiveNation'],
+            stamp: '🎟️ MATCHDAY PASS!',
+            stampClass: 'stamp-amber',
+            narrative: 'QA and validation for high-volume football and rugby sports ticketing infrastructure, turnstile access gateways, venue capacity metrics, and queueing logic.',
+            sfx: 'laser',
+            toyName: 'Matchday Kiosk & Stadium Turnstile',
+            toyAction: '🎟️ Turnstile cleared: Sports Matchday Pass Validated!',
+            meshType: 'ticket',
+            color: 0x0284c7,
+            conceptImg: 'assets/models/diorama_concept_ticketmaster.jpg',
+            logoImg: 'assets/commercial/logos/ticketmaster.png',
+            companyLogoSvg: `
+                <svg viewBox="0 0 120 24" class="logo-ticketmaster" fill="none">
+                    <rect x="2" y="2" width="116" height="20" rx="10" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(2, 132, 199, 0.55)" stroke-width="1"/>
+                    <circle cx="13" cy="12" r="8" fill="#0284c7" stroke="#38bdf8" stroke-width="1"/>
+                    <text x="10" y="16.5" fill="#fff" font-family="Georgia, serif" font-size="12" font-weight="bold" font-style="italic">t</text>
+                    <text x="26" y="15" fill="#f8fafc" font-family="'Arial Rounded MT Bold', sans-serif" font-size="8.5" font-weight="700" letter-spacing="0.2">ticketmaster</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-vip-ticket">
+                    <div class="ticket-header"><span>VIP</span><span>#01</span></div>
+                    <div class="ticket-barcode">
+                        <div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="bar b4"></div>
+                        <div class="bar b1"></div><div class="bar b3"></div>
+                    </div>
+                    <div class="laser-scanner-line"></div>
+                </div>
+            `
+        },
+        {
+            key: 'staffuni',
+            date: 'Sep 2007 — Feb 2013',
+            year: "'07",
+            role: 'MEng Games Design & 3D Modelling',
+            company: 'Staffordshire University',
+            tags: ["Master's (MEng)", 'Engine Tech'],
+            stamp: '🎓 GRADUATED MEng',
+            stampClass: 'stamp-purple',
+            narrative: 'Five years of game engine engineering, C++ math, HLSL vertex/pixel shaders, physics simulation, and 3D environment modelling.',
+            sfx: 'academic',
+            toyName: 'Uni Hall & Mortarboard Cap',
+            toyAction: '🎓 Graduation honors achieved! MEng Game Design unlocked!',
+            meshType: 'uni',
+            color: 0x991b1b,
+            conceptImg: 'assets/models/diorama_concept_staffs.jpg',
+            logoImg: 'assets/commercial/logos/staffsuni.svg',
+            companyLogoSvg: `
+                <svg viewBox="0 0 120 24" class="logo-staffs" fill="none">
+                    <rect x="2" y="2" width="116" height="20" rx="10" fill="rgba(69, 10, 10, 0.4)" stroke="rgba(239, 68, 68, 0.55)" stroke-width="1"/>
+                    <path d="M6 5 L18 5 C18 12, 14 16, 12 18 C10 16, 6 12, 6 5 Z" fill="#991b1b" stroke="#ef4444" stroke-width="1"/>
+                    <circle cx="12" cy="10" r="2.5" fill="none" stroke="#fef08a" stroke-width="1"/>
+                    <text x="24" y="12" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-size="7.5" font-weight="800" letter-spacing="0.4">STAFFORDSHIRE</text>
+                    <text x="24" y="18" fill="#fca5a5" font-family="monospace" font-size="6" font-weight="700" letter-spacing="0.6">UNIVERSITY</text>
+                </svg>
+            `,
+            propSvg: `
+                <div class="prop-uni-building">
+                    <div class="uni-roof-pediment">
+                        <div class="uni-triangle-roof"></div>
+                        <div class="uni-clock"></div>
+                    </div>
+                    <div class="uni-mortarboard-cap">
+                        <div class="mortar-diamond">
+                            <div class="mortar-center-button"></div>
+                            <div class="mortar-tassel-wrap">
+                                <div class="mortar-tassel-string"></div>
+                                <div class="mortar-tassel-fringe"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uni-building-body">
+                        <div class="uni-columns-row">
+                            <div class="uni-col"></div>
+                            <div class="uni-col"></div>
+                            <div class="uni-door-arch">
+                                <div class="uni-door-inner"></div>
+                            </div>
+                            <div class="uni-col"></div>
+                            <div class="uni-col"></div>
+                        </div>
+                        <div class="uni-steps-base"></div>
+                    </div>
+                </div>
+            `
+        }
     ];
 
-    let careerIndex = 0;
+    // ═════════════════════════════════════════════════════════════
+    // 12. TRADITIONAL LEVEL SELECT 3D CAREER DIORAMA CONTROLLER
+    // ═════════════════════════════════════════════════════════════
+    let careerIndex = 1; // Default to Synopsys & Ansys (Level 11)
+    let dioramaScene, dioramaCamera, dioramaRenderer, dioramaControls;
+    let dioramaClock = null;
+    let isDioramaInitialized = false;
+    let currentDioramaMesh = null;
+    const dioramaCache = {}; // Cached groups: { [arrayIdx]: THREE.Group }
+    let isTransitioningDiorama = false;
 
-    // 12. Career Time-Deck Runway & Scrubber Controller
-    function renderCareerScrubber() {
-        const rail = document.getElementById('career-scrubber-rail');
-        if (!rail) return;
-        rail.innerHTML = '';
-
-        careerMilestones.forEach((m, i) => {
-            const btn = document.createElement('button');
-            btn.className = `career-era-node${i === careerIndex ? ' active' : ''}${m.isMystery ? ' node-mystery' : ''}`;
-            btn.type = 'button';
-            btn.setAttribute('role', 'tab');
-            btn.setAttribute('aria-selected', i === careerIndex ? 'true' : 'false');
-            btn.setAttribute('aria-label', `${m.company} (${m.year})`);
-            btn.innerHTML = `<span class="era-dot"><span class="sonar-ring"></span></span><span class="era-year">${m.year}</span>`;
-            btn.onclick = (e) => {
-                if (e) e.stopPropagation();
-                careerIndex = i;
-                updateCareerDeck();
-            };
-            rail.appendChild(btn);
-        });
+    // Helper: Map meshType to emoji icon and smear theme
+    function getIconForType(type) {
+        const map = {
+            radar: '📡', synopsys: '⚡', laser: '🔬', sega: '🌀',
+            ecu: '🚗', beacon: '📡', stamp: '🍕', cloud: '☁️',
+            dragtree: '🏎️', cube: '📐', ticket: '🎟️', uni: '🎓'
+        };
+        return map[type] || '✨';
     }
 
-    let lastCareerSwipeTime = 0;
+    function getThemeClassForType(type) {
+        const map = {
+            radar: 'smear-emerald', synopsys: 'smear-cyan', laser: 'smear-rose',
+            sega: 'smear-blue', ecu: 'smear-emerald', beacon: 'smear-purple',
+            stamp: 'smear-amber', cloud: 'smear-cyan', dragtree: 'smear-rose',
+            cube: 'smear-cyan', ticket: 'smear-amber', uni: 'smear-rose'
+        };
+        return map[type] || 'smear-cyan';
+    }
 
-    function renderCareerDeckCards() {
-        const runway = document.getElementById('career-deck-runway');
-        if (!runway) return;
-        runway.innerHTML = '';
+    // ═════════════════════════════════════════════════════════════
+    // 3D MUSEUM EXHIBIT PLAQUE GENERATOR WITH AUTHENTIC LOGOS
+    // ═════════════════════════════════════════════════════════════
+    function createPlaqueTexture(milestone, lvlNumber) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 256;
+        const ctx = canvas.getContext('2d');
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.anisotropy = 4;
 
-        careerMilestones.forEach((m, i) => {
-            const card = document.createElement('div');
-            card.className = 'career-deck-card glass-panel';
-            card.setAttribute('role', 'tabpanel');
-            card.setAttribute('data-index', i);
-            card.setAttribute('data-key', m.key);
+        function render(img) {
+            ctx.clearRect(0, 0, 512, 256);
 
-            let tagsHtml = '';
-            if (m.tags && m.tags.length > 0) {
-                tagsHtml = m.tags.map(t => `<span class="career-card-chip">${t}</span>`).join('');
-            } else if (m.isMystery) {
-                tagsHtml = `<span class="career-card-chip chip-classified"><span class="chip-dot"></span> SUB-SURFACE // CLASSIFIED</span>`;
+            // Plaque Card Body
+            const r = 24;
+            ctx.fillStyle = '#0a0f1d';
+            ctx.beginPath();
+            if (ctx.roundRect) {
+                ctx.roundRect(12, 12, 488, 232, r);
+            } else {
+                ctx.rect(12, 12, 488, 232);
+            }
+            ctx.fill();
+
+            // Subtle Glass Gradient Highlight
+            const grad = ctx.createLinearGradient(0, 0, 512, 256);
+            grad.addColorStop(0, 'rgba(255, 255, 255, 0.09)');
+            grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.02)');
+            grad.addColorStop(1, 'rgba(0, 0, 0, 0.55)');
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Rim Glow Accent
+            ctx.lineWidth = 6;
+            const hex = '#' + (milestone.color ? milestone.color.toString(16).padStart(6, '0') : '00f0ff');
+            ctx.strokeStyle = hex;
+            ctx.stroke();
+
+            // Header: Level Badge & Year
+            ctx.fillStyle = '#00f0ff';
+            ctx.font = 'bold 22px monospace';
+            ctx.fillText(`LVL ${String(lvlNumber).padStart(2, '0')}`, 32, 52);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '700 20px monospace';
+            ctx.textAlign = 'right';
+            ctx.fillText(milestone.year || '', 480, 52);
+            ctx.textAlign = 'left';
+
+            // Hairline Divider
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(32, 66);
+            ctx.lineTo(480, 66);
+            ctx.stroke();
+
+            // Logo in Center (Fitted with aspect ratio)
+            if (img && img.width > 0 && img.height > 0) {
+                const maxW = 380;
+                const maxH = 96;
+                const scale = Math.min(maxW / img.width, maxH / img.height, 1);
+                const w = img.width * scale;
+                const h = img.height * scale;
+                const x = 256 - w / 2;
+                const y = 132 - h / 2;
+
+                // Crisp White Enamel Insert Plate for high-contrast branding
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                if (ctx.roundRect) {
+                    ctx.roundRect(x - 12, y - 8, w + 24, h + 16, 12);
+                } else {
+                    ctx.rect(x - 12, y - 8, w + 24, h + 16);
+                }
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                ctx.drawImage(img, x, y, w, h);
+            } else {
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 30px "Segoe UI", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(milestone.company, 256, 136);
+                ctx.textAlign = 'left';
             }
 
+            // Subtitle Footer
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = '600 17px "Segoe UI", sans-serif';
+            ctx.textAlign = 'center';
+            const roleShort = (milestone.role && milestone.role.length > 34) ? milestone.role.substring(0, 32) + '…' : milestone.role;
+            ctx.fillText(roleShort, 256, 218);
+            ctx.textAlign = 'left';
+
+            texture.needsUpdate = true;
+        }
+
+        render(null);
+
+        if (milestone.logoImg) {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = () => render(img);
+            img.src = milestone.logoImg;
+        }
+
+        return texture;
+    }
+
+    function createStagePlaque(milestone, lvlNumber) {
+        const plaqueGroup = new THREE.Group();
+        plaqueGroup.name = 'stagePlaque';
+
+        // Plinth Base (Sits on mahogany pedestal)
+        const baseGeo = new THREE.BoxGeometry(2.6, 0.16, 0.6);
+        const baseMat = new THREE.MeshStandardMaterial({
+            color: 0x0b1120,
+            roughness: 0.5,
+            metalness: 0.8
+        });
+        const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+        baseMesh.position.set(0, 0.72, 3.75);
+        baseMesh.castShadow = true;
+        plaqueGroup.add(baseMesh);
+
+        // Angled Display Easel Stand Group (tilted back ~24° towards camera view)
+        const easelGroup = new THREE.Group();
+        easelGroup.position.set(0, 0.8, 3.75);
+        easelGroup.rotation.x = -0.42;
+
+        // Twin Brass Mounting Struts
+        const strutGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.95, 8);
+        const strutMat = new THREE.MeshStandardMaterial({
+            color: 0xd4af37,
+            metalness: 0.95,
+            roughness: 0.15
+        });
+        const s1 = new THREE.Mesh(strutGeo, strutMat);
+        s1.position.set(-0.8, 0.45, -0.04);
+        easelGroup.add(s1);
+
+        const s2 = s1.clone();
+        s2.position.x = 0.8;
+        easelGroup.add(s2);
+
+        // Plaque Backboard
+        const boardGeo = new THREE.BoxGeometry(2.55, 1.38, 0.08);
+        const boardMat = new THREE.MeshStandardMaterial({
+            color: 0x1a1208,
+            roughness: 0.4,
+            metalness: 0.5
+        });
+        const board = new THREE.Mesh(boardGeo, boardMat);
+        board.position.set(0, 0.95, 0.04);
+        board.castShadow = true;
+        easelGroup.add(board);
+
+        // Plaque Face with Canvas Texture
+        const texture = createPlaqueTexture(milestone, lvlNumber);
+        const faceGeo = new THREE.PlaneGeometry(2.45, 1.28);
+        const faceMat = new THREE.MeshBasicMaterial({
+            map: texture,
+            transparent: true
+        });
+        const face = new THREE.Mesh(faceGeo, faceMat);
+        face.position.set(0, 0.95, 0.09);
+        easelGroup.add(face);
+
+        // Gold Bezel Trim
+        const trimGeo = new THREE.BoxGeometry(2.59, 1.42, 0.04);
+        const trimMat = new THREE.MeshStandardMaterial({
+            color: 0xfacc15,
+            roughness: 0.2,
+            metalness: 0.9
+        });
+        const trim = new THREE.Mesh(trimGeo, trimMat);
+        trim.position.set(0, 0.95, 0.06);
+        easelGroup.add(trim);
+
+        plaqueGroup.add(easelGroup);
+        return plaqueGroup;
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // HIGH-CRAFT BESPOKE 3D LANDMARK PROP BUILDS
+    // ═════════════════════════════════════════════════════════════
+    function createBespokeMountainProp(milestone) {
+        const propGroup = new THREE.Group();
+
+        switch (milestone.meshType) {
+            case 'uni': {
+                // Level 01: Staffordshire University - Collegiate Clocktower & Graduation Honors
+                const brickMat = new THREE.MeshStandardMaterial({ color: 0x881337, roughness: 0.7, metalness: 0.1 });
+                const stoneMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.5, metalness: 0.2 });
+                const slateMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.35, metalness: 0.4 });
+                const warmLampMat = new THREE.MeshBasicMaterial({ color: 0xfde047 });
+                const goldMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.95, roughness: 0.1 });
+
+                // Ground Portico & Archway
+                const portico = new THREE.Mesh(new THREE.BoxGeometry(2.0, 1.8, 1.8), brickMat);
+                portico.position.y = 0.9;
+                portico.castShadow = true;
+                propGroup.add(portico);
+
+                // Arch Entrance Cavity
+                const arch = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.8, 12, 1, false, 0, Math.PI), stoneMat);
+                arch.rotation.z = Math.PI / 2;
+                arch.position.set(0, 0.6, 0.92);
+                propGroup.add(arch);
+
+                const door = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.1, 0.2), warmLampMat);
+                door.position.set(0, 0.55, 0.85);
+                propGroup.add(door);
+
+                // Clocktower Shaft
+                const tower = new THREE.Mesh(new THREE.BoxGeometry(1.4, 2.2, 1.4), brickMat);
+                tower.position.y = 2.5;
+                tower.castShadow = true;
+                propGroup.add(tower);
+
+                // Lancet Windows
+                const win1 = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.65, 0.1), warmLampMat);
+                win1.position.set(-0.35, 2.4, 0.72);
+                propGroup.add(win1);
+                const win2 = win1.clone();
+                win2.position.x = 0.35;
+                propGroup.add(win2);
+
+                // Clock Face Stage
+                const clockTrim = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.7, 1.55), stoneMat);
+                clockTrim.position.y = 3.8;
+                propGroup.add(clockTrim);
+
+                const clockFace = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 0.08, 16), warmLampMat);
+                clockFace.rotation.x = Math.PI / 2;
+                clockFace.position.set(0, 3.8, 0.8);
+                propGroup.add(clockFace);
+
+                // Belfry with Open Arches & Bell
+                const belfry = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.9, 1.2), stoneMat);
+                belfry.position.y = 4.45;
+                propGroup.add(belfry);
+
+                const bell = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.32, 12), goldMat);
+                bell.rotation.x = Math.PI;
+                bell.position.set(0, 4.4, 0);
+                bell.name = 'rotatingProp';
+                propGroup.add(bell);
+
+                // Octagonal Slate Spire
+                const spire = new THREE.Mesh(new THREE.ConeGeometry(0.95, 2.0, 8), slateMat);
+                spire.position.y = 5.7;
+                spire.castShadow = true;
+                propGroup.add(spire);
+
+                // Golden Weathervane Finial
+                const finial = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.6, 8), goldMat);
+                finial.position.y = 6.8;
+                propGroup.add(finial);
+
+                // Graduation Monument: Pedestal + Mortarboard Cap + Tassel
+                const capPedestal = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.55, 0.6, 8), stoneMat);
+                capPedestal.position.set(1.4, 0.3, 0.7);
+                propGroup.add(capPedestal);
+
+                const capSquare = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.08, 1.1), slateMat);
+                capSquare.position.set(1.4, 0.85, 0.7);
+                capSquare.rotation.y = Math.PI / 4;
+                capSquare.rotation.z = -0.15;
+                capSquare.name = 'floatingCap';
+                propGroup.add(capSquare);
+
+                const capSkull = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.38, 0.25, 12), slateMat);
+                capSkull.position.set(1.4, 0.7, 0.7);
+                propGroup.add(capSkull);
+
+                const tassel = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.06, 0.45, 8), goldMat);
+                tassel.position.set(1.85, 0.65, 0.7);
+                propGroup.add(tassel);
+                break;
+            }
+
+            case 'ticket': {
+                // Level 02: Ticketmaster / LiveNation - Concert VIP Gateway & Lighting Truss
+                const steelMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.85, roughness: 0.25 });
+                const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x00f0ff, transmission: 0.85, transparent: true, opacity: 0.7 });
+                const brassMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.1 });
+                const velvetMat = new THREE.MeshStandardMaterial({ color: 0x991b1b, roughness: 0.8 });
+                const neonBlueMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+
+                // Turnstile Pylons
+                const p1 = new THREE.Mesh(new THREE.BoxGeometry(0.4, 1.4, 1.2), steelMat);
+                p1.position.set(-1.1, 0.7, 0);
+                p1.castShadow = true;
+                propGroup.add(p1);
+
+                const p2 = p1.clone();
+                p2.position.x = 1.1;
+                propGroup.add(p2);
+
+                // Glass Gate Paddles
+                const g1 = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.9, 0.08), glassMat);
+                g1.position.set(-0.45, 0.75, 0);
+                g1.rotation.y = 0.2;
+                propGroup.add(g1);
+
+                const g2 = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.9, 0.08), glassMat);
+                g2.position.set(0.45, 0.75, 0);
+                g2.rotation.y = -0.2;
+                propGroup.add(g2);
+
+                // Overhead Concert Truss Arch
+                const trussMat = new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.9, roughness: 0.2 });
+                const postL = new THREE.Mesh(new THREE.BoxGeometry(0.18, 3.2, 0.18), trussMat);
+                postL.position.set(-1.5, 1.6, 0);
+                propGroup.add(postL);
+
+                const postR = postL.clone();
+                postR.position.x = 1.5;
+                propGroup.add(postR);
+
+                const crossBeam = new THREE.Mesh(new THREE.BoxGeometry(3.3, 0.25, 0.25), trussMat);
+                crossBeam.position.set(0, 3.1, 0);
+                propGroup.add(crossBeam);
+
+                // VIP Neon Sign
+                const sign = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.45, 0.1), neonBlueMat);
+                sign.position.set(0, 3.5, 0);
+                propGroup.add(sign);
+
+                // Stage Spotlights with Volumetric Cones
+                const spot1 = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.22, 0.4, 12), steelMat);
+                spot1.position.set(-0.9, 2.9, 0);
+                spot1.rotation.z = -0.35;
+                propGroup.add(spot1);
+
+                const coneGeo = new THREE.ConeGeometry(0.75, 2.2, 16, 1, true);
+                const coneMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.25, depthWrite: false });
+                const cone1 = new THREE.Mesh(coneGeo, coneMat);
+                cone1.position.set(-0.55, 1.7, 0);
+                cone1.rotation.z = -0.35;
+                propGroup.add(cone1);
+
+                // Crowd Stanchions with Velvet Rope
+                const stanch1 = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.1, 1.1, 8), brassMat);
+                stanch1.position.set(-1.6, 0.55, 1.3);
+                propGroup.add(stanch1);
+
+                const stanch2 = stanch1.clone();
+                stanch2.position.set(-0.7, 0.55, 1.5);
+                propGroup.add(stanch2);
+
+                const ropeCurve = new THREE.QuadraticBezierCurve3(
+                    new THREE.Vector3(-1.6, 0.95, 1.3),
+                    new THREE.Vector3(-1.15, 0.72, 1.4),
+                    new THREE.Vector3(-0.7, 0.95, 1.5)
+                );
+                const ropeGeo = new THREE.TubeGeometry(ropeCurve, 12, 0.04, 8, false);
+                const ropeMesh = new THREE.Mesh(ropeGeo, velvetMat);
+                propGroup.add(ropeMesh);
+                break;
+            }
+
+            case 'cube': {
+                // Level 03: Tinderstone & Syscom - 3D Sculpting Hologram Lab
+                const studioMat = new THREE.MeshStandardMaterial({ color: 0x090d16, roughness: 0.4, metalness: 0.8 });
+                const cyanMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+                const holoMat = new THREE.MeshPhysicalMaterial({ color: 0x0284c7, transmission: 0.85, transparent: true, opacity: 0.75, roughness: 0.1 });
+
+                // Projector Base Turntable
+                const turntable = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.9, 0.45, 16), studioMat);
+                turntable.position.y = 0.22;
+                propGroup.add(turntable);
+
+                // Concentric Neon Rings
+                const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.04, 8, 24), cyanMat);
+                ring1.rotateX(Math.PI / 2);
+                ring1.position.y = 0.46;
+                propGroup.add(ring1);
+
+                // Holographic Polyhedron (Suzanne / Icosahedron)
+                const icoGeo = new THREE.IcosahedronGeometry(0.85, 0);
+                const icoMesh = new THREE.Mesh(icoGeo, holoMat);
+                icoMesh.position.y = 1.85;
+                icoMesh.name = 'rotatingProp';
+
+                // Wireframe Overlay
+                const wire = new THREE.LineSegments(new THREE.WireframeGeometry(icoGeo), new THREE.LineBasicMaterial({ color: 0x00f0ff, linewidth: 2 }));
+                icoMesh.add(wire);
+
+                // Rotating Dual-Gimbal Bounding Cage
+                const cage1 = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.03, 8, 24), cyanMat);
+                cage1.name = 'rotatingRing';
+                icoMesh.add(cage1);
+
+                const cage2 = new THREE.Mesh(new THREE.TorusGeometry(1.35, 0.03, 8, 24), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
+                cage2.rotateX(Math.PI / 2);
+                icoMesh.add(cage2);
+
+                propGroup.add(icoMesh);
+
+                // 3D XYZ Gizmo Axis arrows
+                const gizmoGroup = new THREE.Group();
+                gizmoGroup.position.set(0, 1.85, 0);
+                const axX = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.6), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
+                axX.rotation.z = Math.PI / 2;
+                axX.position.x = 0.3;
+                gizmoGroup.add(axX);
+
+                const axY = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.6), new THREE.MeshBasicMaterial({ color: 0x10b981 }));
+                axY.position.y = 0.3;
+                gizmoGroup.add(axY);
+
+                const axZ = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.6), new THREE.MeshBasicMaterial({ color: 0x3b82f6 }));
+                axZ.rotation.x = Math.PI / 2;
+                axZ.position.z = 0.3;
+                gizmoGroup.add(axZ);
+                propGroup.add(gizmoGroup);
+
+                // Drafting Desk with Ultrawide Curved Display
+                const desk = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.7, 0.8), studioMat);
+                desk.position.set(-1.4, 0.35, -0.6);
+                propGroup.add(desk);
+
+                const monitor = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.55, 0.06), new THREE.MeshBasicMaterial({ color: 0x00f0ff }));
+                monitor.position.set(-1.4, 0.95, -0.55);
+                monitor.rotation.y = 0.35;
+                propGroup.add(monitor);
+                break;
+            }
+
+            case 'dragtree': {
+                // Level 04: Zynga / NaturalMotion - CSR Racing Staging Lane
+                const tarmacMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.95 });
+                const steelMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.5, metalness: 0.8 });
+                const chromeMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, metalness: 0.95, roughness: 0.1 });
+                const amberMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b });
+                const greenMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+                const blueMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+
+                // Drag Strip Tarmac Slab
+                const tarmac = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.15, 2.8), tarmacMat);
+                tarmac.position.y = 0.08;
+                propGroup.add(tarmac);
+
+                // Yellow Staging Lines
+                const yellowLine = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.02, 2.6), amberMat);
+                yellowLine.position.set(0.3, 0.16, 0);
+                propGroup.add(yellowLine);
+
+                // NHRA Christmas Tree Staging Light Pole
+                const treePole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.12, 3.4, 8), steelMat);
+                treePole.position.set(-1.4, 1.7, 0);
+                propGroup.add(treePole);
+
+                // Pre-stage / Stage dual blue LEDs
+                [-0.2, 0.2].forEach(ox => {
+                    const b = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), blueMat);
+                    b.position.set(-1.4 + ox, 3.2, 0);
+                    propGroup.add(b);
+                });
+
+                // 3 Amber Countdown Tiers
+                for (let i = 0; i < 3; i++) {
+                    [-0.3, 0.3].forEach(ox => {
+                        const l = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 8), amberMat);
+                        l.position.set(-1.4 + ox, 2.7 - i * 0.45, 0);
+                        l.name = `stagingAmber${i}`;
+                        propGroup.add(l);
+                    });
+                }
+
+                // Green Launch Bulb
+                [-0.3, 0.3].forEach(ox => {
+                    const g = new THREE.Mesh(new THREE.SphereGeometry(0.15, 8, 8), greenMat);
+                    g.position.set(-1.4 + ox, 1.35, 0);
+                    propGroup.add(g);
+                });
+
+                // Roaring V8 Dragster Engine Block
+                const engineBlock = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.9, 1.1), steelMat);
+                engineBlock.position.set(0.8, 0.6, 0);
+                engineBlock.castShadow = true;
+                propGroup.add(engineBlock);
+
+                // 8 Velocity Intake Trumpets
+                for (let r = 0; r < 2; r++) {
+                    for (let c = 0; c < 4; c++) {
+                        const stack = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.05, 0.35, 8), chromeMat);
+                        stack.position.set(0.5 + c * 0.22, 1.2, -0.25 + r * 0.5);
+                        propGroup.add(stack);
+                    }
+                }
+
+                // Upward Swept 4-Pipe Zoomie Exhaust Headers
+                for (let c = 0; c < 4; c++) {
+                    const pipe = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.6, 8), chromeMat);
+                    pipe.position.set(0.5 + c * 0.22, 0.8, 0.65);
+                    pipe.rotation.x = 0.6;
+                    propGroup.add(pipe);
+
+                    // Glowing combustion exhaust tip
+                    const fire = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.25, 8), new THREE.MeshBasicMaterial({ color: 0xff6600 }));
+                    fire.position.set(0.5 + c * 0.22, 1.15, 0.82);
+                    fire.rotation.x = 0.6;
+                    propGroup.add(fire);
+                }
+                break;
+            }
+
+            case 'cloud': {
+                // Level 05: Silver Lining QA - Ethereal QA Cloud Kingdom & Heraldic Shield
+                const cloudMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.35, metalness: 0.05 });
+                const goldMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.95, roughness: 0.15 });
+                const emeraldMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+                const cyanOrbMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+
+                // 9-part Volumetric Cumulus Cloud Cluster
+                const cloudCenter = new THREE.Group();
+                cloudCenter.position.set(0, 1.2, 0);
+
+                const spheres = [
+                    { x: 0, y: 0, z: 0, r: 1.1 },
+                    { x: -0.9, y: -0.15, z: 0.2, r: 0.85 },
+                    { x: 0.9, y: -0.15, z: -0.1, r: 0.9 },
+                    { x: -0.45, y: 0.6, z: 0.1, r: 0.8 },
+                    { x: 0.45, y: 0.55, z: 0.15, r: 0.75 },
+                    { x: 0, y: 0.8, z: -0.2, r: 0.65 },
+                    { x: -1.4, y: -0.3, z: 0, r: 0.6 },
+                    { x: 1.4, y: -0.3, z: 0.1, r: 0.65 },
+                    { x: 0, y: -0.4, z: 0.6, r: 0.7 }
+                ];
+
+                spheres.forEach(s => {
+                    const sp = new THREE.Mesh(new THREE.SphereGeometry(s.r, 14, 14), cloudMat);
+                    sp.position.set(s.x, s.y, s.z);
+                    sp.castShadow = true;
+                    cloudCenter.add(sp);
+                });
+                propGroup.add(cloudCenter);
+
+                // Floating Heraldic QA Shield
+                const shieldGroup = new THREE.Group();
+                shieldGroup.position.set(0, 2.7, 0.4);
+                shieldGroup.name = 'rotatingProp';
+
+                const shieldGeo = new THREE.BoxGeometry(1.1, 1.3, 0.12);
+                const shieldMesh = new THREE.Mesh(shieldGeo, goldMat);
+                shieldGroup.add(shieldMesh);
+
+                // Emerald QA Pass Checkmark ✓
+                const checkL = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.45, 0.14), emeraldMat);
+                checkL.position.set(-0.16, -0.05, 0.08);
+                checkL.rotation.z = -0.7;
+                shieldGroup.add(checkL);
+
+                const checkR = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.8, 0.14), emeraldMat);
+                checkR.position.set(0.14, 0.1, 0.08);
+                checkR.rotation.z = 0.6;
+                shieldGroup.add(checkR);
+                propGroup.add(shieldGroup);
+
+                // Floating Diamond Star Sparkles
+                [-1.6, 1.6].forEach((ox, idx) => {
+                    const spark = new THREE.Mesh(new THREE.OctahedronGeometry(0.22, 0), cyanOrbMat);
+                    spark.position.set(ox, 2.2 + idx * 0.4, 0.5);
+                    spark.name = 'floatingCap';
+                    propGroup.add(spark);
+                });
+                break;
+            }
+
+            case 'stamp': {
+                // Level 06: Adactus / Pizza Hut Rewards - Brick Pizzeria Oven & Pepperoni Pizza
+                const brickMat = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.85, metalness: 0.1 });
+                const fireMat = new THREE.MeshBasicMaterial({ color: 0xff6b00 });
+                const woodMat = new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.65 });
+                const crustMat = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.6 });
+                const cheeseMat = new THREE.MeshStandardMaterial({ color: 0xfef08a, roughness: 0.4 });
+                const pepMat = new THREE.MeshStandardMaterial({ color: 0x991b1b, roughness: 0.5 });
+
+                // Masonry Dome Oven
+                const ovenBase = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.7, 0.8, 16), brickMat);
+                ovenBase.position.set(-0.6, 0.4, -0.2);
+                ovenBase.castShadow = true;
+                propGroup.add(ovenBase);
+
+                const ovenDome = new THREE.Mesh(new THREE.SphereGeometry(1.4, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2), brickMat);
+                ovenDome.position.set(-0.6, 0.8, -0.2);
+                ovenDome.castShadow = true;
+                propGroup.add(ovenDome);
+
+                // Glowing Fire Oven Mouth
+                const mouth = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.65, 0.5, 12, 1, false, 0, Math.PI), brickMat);
+                mouth.rotation.z = Math.PI / 2;
+                mouth.position.set(-0.6, 0.65, 0.95);
+                propGroup.add(mouth);
+
+                const fire = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.45, 0.4), fireMat);
+                fire.position.set(-0.6, 0.5, 0.85);
+                propGroup.add(fire);
+
+                // Chimney with Smoke Puff
+                const chimney = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 1.1, 8), brickMat);
+                chimney.position.set(-0.6, 2.2, 0.4);
+                propGroup.add(chimney);
+
+                const smoke = new THREE.Mesh(new THREE.SphereGeometry(0.35, 8, 8), new THREE.MeshBasicMaterial({ color: 0xe2e8f0, transparent: true, opacity: 0.7 }));
+                smoke.position.set(-0.6, 2.9, 0.4);
+                smoke.name = 'floatingCap';
+                propGroup.add(smoke);
+
+                // Baker's Peel Paddle
+                const peelStick = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.4, 8), woodMat);
+                peelStick.rotation.x = Math.PI / 2.3;
+                peelStick.position.set(0.9, 0.75, 0.5);
+                propGroup.add(peelStick);
+
+                const peelHead = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 0.05, 16), woodMat);
+                peelHead.position.set(0.9, 0.58, 1.4);
+                propGroup.add(peelHead);
+
+                // 8-Slice Pepperoni Pizza
+                const crust = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.65, 0.06, 16), crustMat);
+                crust.position.set(0.9, 0.62, 1.4);
+                propGroup.add(crust);
+
+                const cheese = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.07, 16), cheeseMat);
+                cheese.position.set(0.9, 0.63, 1.4);
+                propGroup.add(cheese);
+
+                // Pepperoni discs
+                for (let i = 0; i < 6; i++) {
+                    const a = (i / 6) * Math.PI * 2;
+                    const pep = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.08, 8), pepMat);
+                    pep.position.set(0.9 + Math.cos(a) * 0.32, 0.64, 1.4 + Math.sin(a) * 0.32);
+                    propGroup.add(pep);
+                }
+                break;
+            }
+
+            case 'beacon': {
+                // Level 07: ndevr Ltd - Satellite Telecommunications Ground Station
+                const mastMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.85, roughness: 0.3 });
+                const dishMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.3, roughness: 0.2 });
+                const solarMat = new THREE.MeshStandardMaterial({ color: 0x1d4ed8, metalness: 0.85, roughness: 0.2 });
+                const purpleWaveMat = new THREE.MeshBasicMaterial({ color: 0xc084fc, transparent: true, opacity: 0.7 });
+
+                // Ground Telemetry Hub
+                const hub = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.8, 0.5, 8), mastMat);
+                hub.position.y = 0.25;
+                propGroup.add(hub);
+
+                // Steerable Satellite Dish Gimbal
+                const dishGroup = new THREE.Group();
+                dishGroup.position.set(-0.5, 1.6, 0);
+                dishGroup.name = 'rotatingProp';
+
+                const dish = new THREE.Mesh(new THREE.SphereGeometry(1.25, 16, 10, 0, Math.PI), dishMat);
+                dish.rotation.x = -Math.PI / 3;
+                dishGroup.add(dish);
+
+                const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.08, 0.8, 8), mastMat);
+                horn.position.set(0, 0.45, 0.5);
+                horn.rotation.x = 0.5;
+                dishGroup.add(horn);
+                propGroup.add(dishGroup);
+
+                // Twin Photovoltaic Solar Wings
+                [-1.4, 1.4].forEach(ox => {
+                    const panel = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.5, 0.06), solarMat);
+                    panel.position.set(ox, 1.2, -0.6);
+                    panel.rotation.x = 0.45;
+                    propGroup.add(panel);
+                });
+
+                // Telecom Spire & Pulsing Broadcast Wavefronts
+                const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.18, 3.8, 8), mastMat);
+                spire.position.set(1.1, 1.9, 0.4);
+                propGroup.add(spire);
+
+                const beaconBulb = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 8), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
+                beaconBulb.position.set(1.1, 3.8, 0.4);
+                propGroup.add(beaconBulb);
+
+                // Concentric Wavefront Arcs
+                [0.6, 1.1, 1.6].forEach(r => {
+                    const wave = new THREE.Mesh(new THREE.TorusGeometry(r, 0.04, 8, 24, Math.PI), purpleWaveMat);
+                    wave.position.set(1.1, 3.8, 0.4);
+                    wave.rotation.z = Math.PI / 2;
+                    wave.name = 'floatingCap';
+                    propGroup.add(wave);
+                });
+                break;
+            }
+
+            case 'ecu': {
+                // Level 08: Connect Group - Jaguar Land Rover Connected Vehicle
+                const carGreenMat = new THREE.MeshStandardMaterial({ color: 0x064e3b, roughness: 0.25, metalness: 0.75 });
+                const wheelMat = new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.3, metalness: 0.9 });
+                const neonWireMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+                const glassMat = new THREE.MeshPhysicalMaterial({ color: 0xdde5ed, transmission: 0.9, transparent: true });
+
+                // Dyno Rolling Road Rollers
+                const roller1 = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 2.6, 12), wheelMat);
+                roller1.rotation.z = Math.PI / 2;
+                roller1.position.set(0, 0.15, -0.7);
+                propGroup.add(roller1);
+
+                const roller2 = roller1.clone();
+                roller2.position.z = 0.7;
+                propGroup.add(roller2);
+
+                // Concept Vehicle Chassis Tub
+                const carBody = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.55, 2.9), carGreenMat);
+                carBody.position.set(0, 0.55, 0);
+                carBody.castShadow = true;
+                propGroup.add(carBody);
+
+                const cockpit = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.45, 1.4), glassMat);
+                cockpit.position.set(0, 0.95, -0.1);
+                propGroup.add(cockpit);
+
+                // 4 Wheels
+                [[-0.9, -0.7], [0.9, -0.7], [-0.9, 0.7], [0.9, 0.7]].forEach(([wx, wz]) => {
+                    const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.25, 16), wheelMat);
+                    wheel.rotation.z = Math.PI / 2;
+                    wheel.position.set(wx, 0.4, wz);
+                    propGroup.add(wheel);
+                });
+
+                // Glowing CAN-Bus Fiber-Optic Wiring Loom
+                const loom = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 2.6), neonWireMat);
+                loom.position.set(0, 0.85, 0);
+                propGroup.add(loom);
+
+                // Floating Diagnostic HUD
+                const hud = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 0.65), new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.8, side: THREE.DoubleSide }));
+                hud.position.set(0, 1.6, 0.4);
+                hud.rotation.x = -0.2;
+                propGroup.add(hud);
+                break;
+            }
+
+            case 'sega': {
+                // Level 09: SEGA Hardlight - Green Hill Zone High-Craft Diorama (Blender GLB)
+                const fallbackMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.4 });
+                const placeholder = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.28, 16, 32), fallbackMat);
+                placeholder.position.y = 1.4;
+                propGroup.add(placeholder);
+
+                if (typeof THREE.GLTFLoader !== 'undefined') {
+                    const loader = new THREE.GLTFLoader();
+                    loader.load(
+                        'assets/models/sega_diorama.glb',
+                        (gltf) => {
+                            const model = gltf.scene;
+                            model.scale.set(0.82, 0.82, 0.82);
+                            model.position.set(0, -0.4, 0);
+                            // Orient diorama front corner directly towards camera sightline
+                            model.rotation.y = Math.PI * 0.72;
+
+                            // Find and animate the golden ring
+                            model.traverse((child) => {
+                                if (child.isMesh) {
+                                    child.castShadow = true;
+                                    child.receiveShadow = true;
+                                    if (child.name && child.name.includes('GiantSonicGoldRing')) {
+                                        child.name = 'rotatingProp';
+                                    }
+                                }
+                            });
+
+                            // Clear placeholder and mount bespoke model
+                            while (propGroup.children.length > 0) {
+                                propGroup.remove(propGroup.children[0]);
+                            }
+                            propGroup.add(model);
+
+                            // Hide the generic terrace plaque in favor of the bespoke model's museum plaque
+                            if (propGroup.parent) {
+                                const tp = propGroup.parent.getObjectByName('terracePlaque');
+                                if (tp) tp.visible = false;
+                            }
+                        },
+                        undefined,
+                        (err) => {
+                            console.warn('[Diorama] Could not load sega_diorama.glb, fallback kept:', err);
+                        }
+                    );
+                }
+                break;
+            }
+
+            case 'laser': {
+                // Level 10: Malvern Panalytical - Precision Laser Diffraction Optical Bench
+                const benchMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.3, metalness: 0.85 });
+                const anodizedMat = new THREE.MeshStandardMaterial({ color: 0x090d16, roughness: 0.2, metalness: 0.95 });
+                const laserRubyMat = new THREE.MeshBasicMaterial({ color: 0xff0044 });
+                const quartzMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.95, transparent: true, opacity: 0.9, roughness: 0.05, ior: 1.5 });
+                const brassMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.2 });
+
+                // Optical Breadboard Table
+                const bench = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.3, 1.8), benchMat);
+                bench.position.set(0, 0.4, 0);
+                bench.castShadow = true;
+                propGroup.add(bench);
+
+                // HeNe Laser Cylinder Housing
+                const laserTube = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 1.8, 16), anodizedMat);
+                laserTube.rotation.z = Math.PI / 2;
+                laserTube.position.set(-1.1, 1.1, 0);
+                propGroup.add(laserTube);
+
+                // Brass Micrometer Adjustment Thumbscrews
+                const screw = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.3, 8), brassMat);
+                screw.position.set(-1.6, 1.5, 0);
+                propGroup.add(screw);
+
+                // Quartz Cuvette Sample Chamber
+                const cuvette = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.2, 0.7), quartzMat);
+                cuvette.position.set(0.1, 1.1, 0);
+                propGroup.add(cuvette);
+
+                // Micro-particles in suspension
+                for (let i = 0; i < 8; i++) {
+                    const p = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 6), new THREE.MeshBasicMaterial({ color: 0x00f0ff }));
+                    p.position.set(0.1 + (Math.random() - 0.5) * 0.4, 0.8 + Math.random() * 0.6, (Math.random() - 0.5) * 0.4);
+                    propGroup.add(p);
+                }
+
+                // Collimated Ruby Laser Beam
+                const beamIn = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.0, 8), laserRubyMat);
+                beamIn.rotation.z = Math.PI / 2;
+                beamIn.position.set(-0.5, 1.1, 0);
+                propGroup.add(beamIn);
+
+                // Scattered Diffraction Conical Fan
+                const fanGeo = new THREE.ConeGeometry(0.85, 1.4, 16, 1, true);
+                fanGeo.rotateZ(-Math.PI / 2);
+                const fanMat = new THREE.MeshBasicMaterial({ color: 0xf43f5e, transparent: true, opacity: 0.35, depthWrite: false });
+                const fan = new THREE.Mesh(fanGeo, fanMat);
+                fan.position.set(0.85, 1.1, 0);
+                propGroup.add(fan);
+
+                // Circular Photodiode Detector Array
+                const detector = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.12, 12, 24), anodizedMat);
+                detector.rotation.y = Math.PI / 2;
+                detector.position.set(1.5, 1.1, 0);
+                detector.name = 'rotatingProp';
+                propGroup.add(detector);
+                break;
+            }
+
+            case 'synopsys': {
+                // Level 11: Synopsys & Ansys - HPC Supersonic Wind Tunnel & Blade Server Racks
+                const rackMat = new THREE.MeshStandardMaterial({ color: 0x090d16, roughness: 0.35, metalness: 0.85 });
+                const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x00f0ff, transmission: 0.85, transparent: true, opacity: 0.7 });
+                const wingMat = new THREE.MeshStandardMaterial({ color: 0xdde5ed, roughness: 0.2, metalness: 0.9 });
+                const streamCyan = new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.85 });
+                const streamGold = new THREE.MeshBasicMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.85 });
+
+                // Dual Enterprise Blade Server Racks
+                [-1.4, 1.4].forEach(ox => {
+                    const rack = new THREE.Mesh(new THREE.BoxGeometry(0.8, 3.2, 1.4), rackMat);
+                    rack.position.set(ox, 1.6, 0);
+                    rack.castShadow = true;
+                    propGroup.add(rack);
+
+                    // LED status array
+                    for (let r = 0; r < 5; r++) {
+                        const led = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 0.16), (r % 2 === 0 ? streamCyan : streamGold));
+                        led.position.set(ox + (ox > 0 ? -0.42 : 0.42), 0.8 + r * 0.45, 0.3);
+                        propGroup.add(led);
+                    }
+                });
+
+                // Wind Tunnel Transparent Chamber Tube
+                const chamber = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 2.0, 16), glassMat);
+                chamber.rotation.z = Math.PI / 2;
+                chamber.position.set(0, 1.6, 0);
+                propGroup.add(chamber);
+
+                // Supersonic Swept Delta-Wing Aircraft Model
+                const wingGeo = new THREE.ConeGeometry(0.55, 1.4, 4);
+                wingGeo.rotateZ(Math.PI / 2);
+                wingGeo.scale(1, 0.15, 1.8);
+                const wing = new THREE.Mesh(wingGeo, wingMat);
+                wing.position.set(0, 1.6, 0);
+                propGroup.add(wing);
+
+                // CFD Aerodynamic Streamline Ribbons
+                [-0.3, 0, 0.3].forEach((oz, idx) => {
+                    const ribbonGeo = new THREE.TubeGeometry(
+                        new THREE.CatmullRomCurve3([
+                            new THREE.Vector3(-0.9, 1.55 + Math.sin(idx) * 0.2, oz),
+                            new THREE.Vector3(-0.2, 1.8 + Math.cos(idx) * 0.15, oz),
+                            new THREE.Vector3(0.4, 1.65 - Math.sin(idx) * 0.2, oz),
+                            new THREE.Vector3(0.9, 1.5 + Math.cos(idx) * 0.15, oz)
+                        ]),
+                        16, 0.025, 6, false
+                    );
+                    const ribbon = new THREE.Mesh(ribbonGeo, (idx === 1 ? streamGold : streamCyan));
+                    ribbon.name = 'floatingCap';
+                    propGroup.add(ribbon);
+                });
+                break;
+            }
+
+            case 'radar': {
+                // Level 12: [CLASSIFIED] UK Defence - Covert Subterranean Command Node
+                const bunkerMat = new THREE.MeshStandardMaterial({ color: 0x0b1120, roughness: 0.6, metalness: 0.5 });
+                const steelMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.3, metalness: 0.85 });
+                const laserRedMat = new THREE.MeshBasicMaterial({ color: 0xef4444 });
+                const emeraldMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+
+                // Hardened Geodesic Bunker Dome
+                const dome = new THREE.Mesh(new THREE.SphereGeometry(1.8, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), bunkerMat);
+                dome.position.set(0, 0.2, 0);
+                dome.castShadow = true;
+                propGroup.add(dome);
+
+                // Titanium Blast Door Portal
+                const door = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.3, 0.4), steelMat);
+                door.position.set(0, 0.75, 1.6);
+                propGroup.add(door);
+
+                // Rotating 3D Phased-Array Radar Antenna (AESA)
+                const radarGroup = new THREE.Group();
+                radarGroup.position.set(0, 2.1, 0);
+                radarGroup.name = 'rotatingProp';
+
+                const aesaPlate = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.0, 0.15), steelMat);
+                aesaPlate.rotation.x = -0.25;
+                radarGroup.add(aesaPlate);
+
+                // Radar Feed Matrix
+                const feed = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.8, 0.05), emeraldMat);
+                feed.position.set(0, 0, 0.09);
+                feed.rotation.x = -0.25;
+                radarGroup.add(feed);
+                propGroup.add(radarGroup);
+
+                // Clearance Beacon
+                const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 8), laserRedMat);
+                beacon.position.set(0, 3.2, 0);
+                propGroup.add(beacon);
+
+                // Perimeter Security Surveillance Pylons
+                [[-1.5, -1.2], [1.5, -1.2], [-1.5, 1.2], [1.5, 1.2]].forEach(([px, pz]) => {
+                    const pylon = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.12, 1.4, 8), steelMat);
+                    pylon.position.set(px, 0.7, pz);
+                    propGroup.add(pylon);
+
+                    const scanner = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), emeraldMat);
+                    scanner.position.set(px, 1.4, pz);
+                    propGroup.add(scanner);
+                });
+                break;
+            }
+
+            default: {
+                const defMesh = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.5, 1.5), new THREE.MeshStandardMaterial({ color: milestone.color }));
+                propGroup.add(defMesh);
+                break;
+            }
+        }
+
+        return propGroup;
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 12. HIGH-CRAFT 3D LEVEL SELECT DIORAMA CONTROLLER
+    // ═════════════════════════════════════════════════════════════
+
+    // Build the Isolated 3D Stage Diorama (Molding Pedestal, Underside Rock, Plaque, Hero Props)
+    function buildStageDiorama(milestone, lvlNumber, arrayIdx) {
+        const dioramaGroup = new THREE.Group();
+        dioramaGroup.userData = { milestone, lvlNumber, arrayIdx };
+
+        // ── 1. Pedestal Base: Underside Floating Asteroid Rock Core ──
+        const rockGeo = new THREE.CylinderGeometry(5.0, 0.6, 3.6, 7);
+        const rockMat = new THREE.MeshStandardMaterial({
+            color: 0x090d16,
+            roughness: 0.95,
+            metalness: 0.1,
+            flatShading: true
+        });
+        const rockMesh = new THREE.Mesh(rockGeo, rockMat);
+        rockMesh.position.y = -1.8;
+        rockMesh.receiveShadow = true;
+        dioramaGroup.add(rockMesh);
+
+        // Small floating rock satellite clusters
+        [[-3.8, -2.4, 2.2, 0.45], [4.1, -2.1, -1.8, 0.55], [-2.2, -2.8, -3.4, 0.4]].forEach(([rx, ry, rz, s]) => {
+            const sat = new THREE.Mesh(new THREE.DodecahedronGeometry(s, 0), rockMat);
+            sat.position.set(rx, ry, rz);
+            sat.name = 'floatingCap';
+            dioramaGroup.add(sat);
+        });
+
+        // ── 2. Pedestal Plinth: Dark Carved Mahogany / Obsidian Museum Base ──
+        const plinthGeo = new THREE.CylinderGeometry(5.6, 6.0, 1.2, 36);
+        const plinthMat = new THREE.MeshStandardMaterial({
+            color: 0x121724,
+            roughness: 0.4,
+            metalness: 0.25
+        });
+        const plinthMesh = new THREE.Mesh(plinthGeo, plinthMat);
+        plinthMesh.position.y = 0.6;
+        plinthMesh.castShadow = true;
+        plinthMesh.receiveShadow = true;
+        dioramaGroup.add(plinthMesh);
+
+        // Molded Upper Chamfer Step
+        const chamferGeo = new THREE.CylinderGeometry(5.3, 5.6, 0.22, 36);
+        const chamferMat = new THREE.MeshStandardMaterial({
+            color: 0x1a2133,
+            roughness: 0.35,
+            metalness: 0.3
+        });
+        const chamferMesh = new THREE.Mesh(chamferGeo, chamferMat);
+        chamferMesh.position.y = 1.25;
+        dioramaGroup.add(chamferMesh);
+
+        // Polished Museum Stage Floor Disc
+        const floorGeo = new THREE.CylinderGeometry(5.1, 5.1, 0.08, 36);
+        const floorMat = new THREE.MeshStandardMaterial({
+            color: 0x0a0f1d,
+            roughness: 0.2,
+            metalness: 0.55
+        });
+        const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+        floorMesh.position.y = 1.38;
+        floorMesh.receiveShadow = true;
+        dioramaGroup.add(floorMesh);
+
+        // Glowing Stage Neon Trim Ring
+        const ringGeo = new THREE.TorusGeometry(5.25, 0.07, 8, 48);
+        ringGeo.rotateX(Math.PI / 2);
+        const ringMat = new THREE.MeshBasicMaterial({
+            color: milestone.color || 0x00f0ff,
+            transparent: true,
+            opacity: 0.85
+        });
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.position.y = 1.36;
+        ringMesh.name = 'trimRing';
+        dioramaGroup.add(ringMesh);
+
+        // Under-pedestal accent ring
+        const underRingGeo = new THREE.TorusGeometry(3.2, 0.06, 8, 32);
+        underRingGeo.rotateX(Math.PI / 2);
+        const underRingMat = new THREE.MeshBasicMaterial({
+            color: milestone.color || 0x00f0ff,
+            transparent: true,
+            opacity: 0.45
+        });
+        const underRing = new THREE.Mesh(underRingGeo, underRingMat);
+        underRing.position.y = -1.2;
+        dioramaGroup.add(underRing);
+
+        // ── 3. Front Easel Museum Plaque ──
+        const plaque = createStagePlaque(milestone, lvlNumber);
+        plaque.position.set(0, 0.65, 5.2);
+        plaque.rotation.x = -0.16; // Tilted back comfortably toward camera
+        dioramaGroup.add(plaque);
+
+        // ── 4. Bespoke Prop Group / GLTF Hero ──
+        const propContainer = new THREE.Group();
+        propContainer.position.y = 1.42;
+        propContainer.name = 'stageHeroProps';
+
+        // Add high-craft Three.js procedural prop
+        const proceduralProp = createBespokeMountainProp(milestone);
+        proceduralProp.name = 'proceduralProp';
+        propContainer.add(proceduralProp);
+
+        // If SEGA stage (or future ComfyUI GLB assets), attempt async glTF load
+        if (milestone.key === 'sega') {
+            const LoaderClass = (typeof THREE.GLTFLoader !== 'undefined') ? THREE.GLTFLoader : (typeof GLTFLoader !== 'undefined' ? GLTFLoader : null);
+            if (LoaderClass) {
+                const loader = new LoaderClass();
+                loader.load(
+                    'assets/models/sega_diorama.glb',
+                    (gltf) => {
+                        const glbScene = gltf.scene;
+                        glbScene.name = 'comfyGlbModel';
+                        glbScene.position.set(0, 0, 0);
+                        glbScene.scale.set(1.45, 1.45, 1.45);
+                        glbScene.traverse(child => {
+                            if (child.isMesh) {
+                                child.castShadow = true;
+                                child.receiveShadow = true;
+                            }
+                        });
+                        propContainer.add(glbScene);
+                        // Once high-craft GLTF is rendered, hide fallback
+                        proceduralProp.visible = false;
+                    },
+                    undefined,
+                    (err) => {
+                        console.log('[Diorama] sega_diorama.glb loading fallback:', err);
+                    }
+                );
+            }
+        }
+
+        dioramaGroup.add(propContainer);
+        return dioramaGroup;
+    }
+
+    // Load Diorama for a specific Level Index with Spring Bounce Transition
+    function loadDioramaForLevel(arrayIdx, animate = true) {
+        if (arrayIdx < 0 || arrayIdx >= careerMilestones.length) return;
+        if (!dioramaScene) return;
+
+        careerIndex = arrayIdx;
+        const m = careerMilestones[arrayIdx];
+        const lvlNumber = 12 - arrayIdx;
+
+        // Retrieve or build diorama
+        let nextDiorama = dioramaCache[arrayIdx];
+        if (!nextDiorama) {
+            nextDiorama = buildStageDiorama(m, lvlNumber, arrayIdx);
+            dioramaCache[arrayIdx] = nextDiorama;
+        }
+
+        if (animate && currentDioramaMesh && currentDioramaMesh !== nextDiorama) {
+            const outgoing = currentDioramaMesh;
+            const incoming = nextDiorama;
+            isTransitioningDiorama = true;
+
+            DioramaAudio.playHop();
+
+            // Phase 1: Scale down outgoing diorama
+            const startTime = performance.now();
+            const phase1Duration = 140; // ms
+            const phase2Duration = 280; // ms
+
+            function animateTransition(now) {
+                const elapsed = now - startTime;
+                if (elapsed < phase1Duration) {
+                    const p = elapsed / phase1Duration;
+                    const s = Math.max(0, 1 - p * p);
+                    outgoing.scale.set(s, s, s);
+                    outgoing.position.y = -p * 1.5;
+                    requestAnimationFrame(animateTransition);
+                } else {
+                    // Switch meshes in scene
+                    dioramaScene.remove(outgoing);
+                    outgoing.scale.set(1, 1, 1);
+                    outgoing.position.y = 0;
+
+                    incoming.scale.set(0.01, 0.01, 0.01);
+                    incoming.position.y = -1.2;
+                    dioramaScene.add(incoming);
+                    currentDioramaMesh = incoming;
+
+                    DioramaAudio.playArrival();
+
+                    // Phase 2: Spring bounce scale incoming diorama
+                    const phase2Start = performance.now();
+                    function animateIncoming(now2) {
+                        const elapsed2 = now2 - phase2Start;
+                        const p2 = Math.min(1, elapsed2 / phase2Duration);
+                        // Spring physics with overshoot
+                        const bounce = 1 + Math.sin(p2 * Math.PI) * 0.18 * (1 - p2);
+                        const s = p2 * bounce;
+                        incoming.scale.set(s, s, s);
+                        incoming.position.y = (1 - p2) * -1.2;
+
+                        if (p2 < 1) {
+                            requestAnimationFrame(animateIncoming);
+                        } else {
+                            incoming.scale.set(1, 1, 1);
+                            incoming.position.y = 0;
+                            isTransitioningDiorama = false;
+                        }
+                    }
+                    requestAnimationFrame(animateIncoming);
+                }
+            }
+            requestAnimationFrame(animateTransition);
+        } else {
+            if (currentDioramaMesh && currentDioramaMesh !== nextDiorama) {
+                dioramaScene.remove(currentDioramaMesh);
+            }
+            nextDiorama.scale.set(1, 1, 1);
+            nextDiorama.position.y = 0;
+            dioramaScene.add(nextDiorama);
+            currentDioramaMesh = nextDiorama;
+        }
+
+        updateLevelDossierUI(arrayIdx);
+        updateLevelRibbonActive(arrayIdx);
+        updateLevelGridActive(arrayIdx);
+    }
+
+    // Synchronize Dossier Bar & Top Controls
+    function updateLevelDossierUI(arrayIdx) {
+        const m = careerMilestones[arrayIdx];
+        if (!m) return;
+        const lvlNumber = 12 - arrayIdx;
+
+        const counter = document.getElementById('career-level-counter');
+        const numPill = document.getElementById('level-num-pill');
+        const periodPill = document.getElementById('level-period-pill');
+        const nodeKey = document.getElementById('level-node-key');
+        const logoBadge = document.getElementById('level-logo-badge');
+        const roleTitle = document.getElementById('level-role-title');
+        const tagsLine = document.getElementById('level-tags-line');
+        const quoteDesc = document.getElementById('level-quote-desc');
+        const toyLabel = document.getElementById('level-toy-label');
+        const toyBtn = document.getElementById('level-toy-btn');
+        const glowEl = document.getElementById('narrative-watercolor-glow');
+
+        if (counter) counter.textContent = `LVL ${String(lvlNumber).padStart(2, '0')} / 12`;
+        if (numPill) numPill.textContent = `LVL ${String(lvlNumber).padStart(2, '0')}`;
+        if (periodPill) periodPill.textContent = m.date;
+        if (nodeKey) {
+            const tagStatus = (lvlNumber === 12) ? 'SUMMIT' : (lvlNumber === 1 ? 'BASE CAMP' : 'CAREER MILESTONE');
+            nodeKey.textContent = `STAGE ${String(lvlNumber).padStart(2, '0')} // ${tagStatus}`;
+        }
+        if (logoBadge) {
+            if (m.logoImg) {
+                logoBadge.innerHTML = `<img src="${m.logoImg}" alt="${m.company} Logo" class="dossier-brand-img" />`;
+            } else {
+                logoBadge.innerHTML = m.companyLogoSvg || `<span class="company-name">${m.company}</span>`;
+            }
+        }
+        if (roleTitle) roleTitle.textContent = m.role;
+        if (tagsLine) tagsLine.textContent = (m.tags && m.tags.length > 0) ? m.tags.join(' • ') : 'Mission-Critical Architecture';
+        if (quoteDesc) quoteDesc.textContent = `"${m.narrative}"`;
+        if (toyLabel) toyLabel.textContent = m.toyName || 'Test Prop';
+        if (toyBtn) {
+            const iconSpan = toyBtn.querySelector('.toy-icon');
+            if (iconSpan) iconSpan.textContent = getIconForType(m.meshType);
+        }
+
+        // Stepper button disabled states
+        const prevBtn = document.getElementById('career-prev-lvl-btn');
+        const nextBtn = document.getElementById('career-next-lvl-btn');
+        if (prevBtn) prevBtn.disabled = (lvlNumber === 1);
+        if (nextBtn) nextBtn.disabled = (lvlNumber === 12);
+
+        // Watercolor thematic glow
+        const themeClass = getThemeClassForType(m.meshType);
+        if (glowEl) glowEl.className = `narrative-watercolor-glow ${themeClass}`;
+
+        // Pilot HUD
+        const pilotSub = document.getElementById('pilot-level-sub');
+        const pilotBubble = document.getElementById('pilot-speech-bubble');
+        if (pilotSub) pilotSub.textContent = `STAGE ${String(lvlNumber).padStart(2, '0')}`;
+        if (pilotBubble) {
+            const speechMap = {
+                uni: 'Graduation honors achieved! MEng Game Design 🎓',
+                ticket: 'Concert gates clear! VIP backstage pass active 🎟️',
+                cube: 'Retopology complete: 0 ngons, clean quad topology! 📐',
+                dragtree: 'RPM pinned to 9,000! Perfect green light reaction 🏎️',
+                cloud: 'Co-founded Silver Lining! 100% QA pass rate ☁️',
+                stamp: 'Pizza Hut mobile stack & loyalty pipeline validated! 🍕',
+                beacon: 'IoT telemetry feed locked & transmitting! 📡',
+                ecu: 'Connected vehicle CAN-bus telemetry synced! 🚗',
+                sega: 'Gotta go fast! Speed-testing Sonic loop tracks 🌀',
+                laser: 'Laser diffraction beam aligned at sub-micron precision 🔬',
+                synopsys: 'Scaling supersonic cloud compute clusters & HPC digital twins ⚡',
+                radar: 'Classified defence systems online. Official sensitive clearance 🛡️'
+            };
+            pilotBubble.textContent = speechMap[m.meshType] || `Surveying Stage ${lvlNumber} // ${m.company} 🚀`;
+        }
+    }
+
+    // Render Ribbon Track (Stage 01 to Stage 12, left to right)
+    function renderLevelRibbonTrack() {
+        const track = document.getElementById('level-ribbon-track');
+        if (!track) return;
+        track.innerHTML = '';
+
+        for (let k = 0; k < 12; k++) {
+            const arrayIdx = 11 - k; // k=0 -> Base (Staffs Uni, idx 11); k=11 -> Summit (Classified, idx 0)
+            const lvlNumber = k + 1;
+            const m = careerMilestones[arrayIdx];
+            const isClassified = (m.meshType === 'radar');
+
+            const pill = document.createElement('button');
+            pill.type = 'button';
+            pill.className = `level-ribbon-pill ${arrayIdx === careerIndex ? 'is-active' : ''} ${isClassified ? 'is-classified' : ''}`;
+            pill.id = `ribbon-pill-${arrayIdx}`;
+            pill.innerHTML = `
+                <span class="pill-lvl-num">LVL ${String(lvlNumber).padStart(2, '0')}</span>
+                <span class="pill-status-dot"></span>
+                <span class="pill-company-name">${m.company}</span>
+                <span class="pill-year-badge">${m.year || ''}</span>
+            `;
+            pill.onclick = () => setCareerLevel(arrayIdx);
+            track.appendChild(pill);
+        }
+
+        scrollActiveRibbonPillIntoView();
+    }
+
+    function updateLevelRibbonActive(activeIdx) {
+        const track = document.getElementById('level-ribbon-track');
+        if (!track) return;
+        const pills = track.querySelectorAll('.level-ribbon-pill');
+        pills.forEach(pill => pill.classList.remove('is-active'));
+        const activePill = document.getElementById(`ribbon-pill-${activeIdx}`);
+        if (activePill) activePill.classList.add('is-active');
+        scrollActiveRibbonPillIntoView();
+    }
+
+    function scrollActiveRibbonPillIntoView() {
+        const container = document.getElementById('level-ribbon-container');
+        const activePill = document.getElementById(`ribbon-pill-${careerIndex}`);
+        if (!container || !activePill) return;
+
+        const containerRect = container.getBoundingClientRect();
+        const pillRect = activePill.getBoundingClientRect();
+        const scrollOffset = (pillRect.left + pillRect.width / 2) - (containerRect.left + containerRect.width / 2);
+        container.scrollBy({ left: scrollOffset, behavior: 'smooth' });
+    }
+
+    // Render Expandable Bento Matrix Grid Drawer
+    function renderLevelGridMatrix() {
+        const grid = document.getElementById('level-grid-matrix');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        for (let k = 0; k < 12; k++) {
+            const arrayIdx = 11 - k;
+            const lvlNumber = k + 1;
+            const m = careerMilestones[arrayIdx];
+
+            const card = document.createElement('div');
+            card.className = `level-grid-card ${arrayIdx === careerIndex ? 'is-active' : ''}`;
+            card.id = `grid-card-${arrayIdx}`;
             card.innerHTML = `
-                <div class="career-card-header">
-                    <span class="career-card-period">${m.date.toUpperCase()}</span>
-                    <span class="career-card-index">${String(i + 1).padStart(2, '0')} / ${String(careerMilestones.length).padStart(2, '0')}</span>
+                <div class="grid-card-thumb">
+                    <img src="${m.conceptImg || 'assets/models/diorama_concept_synopsys.jpg'}" alt="${m.company} Concept" class="grid-card-img" onerror="this.src='assets/commercial/covers/sonicforces_landscape.jpg'" />
+                    <span class="grid-card-lvl-badge">STAGE ${String(lvlNumber).padStart(2, '0')}</span>
+                    <span class="grid-card-year">${m.year || ''}</span>
                 </div>
-                <div class="career-card-body">
-                    <h3 class="career-card-role">${m.role}</h3>
-                    <h4 class="career-card-company">${m.company}</h4>
-                    <div class="career-card-tags">${tagsHtml}</div>
+                <div class="grid-card-body">
+                    <div class="grid-card-company">${m.company}</div>
+                    <div class="grid-card-role">${m.role}</div>
                 </div>
-                <div class="career-card-inspect-hint">
-                    <span>Tap to inspect full engineering scope</span>
-                    <span class="hint-arrow">&rarr;</span>
+            `;
+            card.onclick = () => {
+                setCareerLevel(arrayIdx);
+                toggleLevelGridMatrix(false);
+            };
+            grid.appendChild(card);
+        }
+    }
+
+    function updateLevelGridActive(activeIdx) {
+        const grid = document.getElementById('level-grid-matrix');
+        if (!grid) return;
+        const cards = grid.querySelectorAll('.level-grid-card');
+        cards.forEach(card => card.classList.remove('is-active'));
+        const activeCard = document.getElementById(`grid-card-${activeIdx}`);
+        if (activeCard) activeCard.classList.add('is-active');
+    }
+
+    // Step Level: Prev (-1, lower level number = higher arrayIdx) or Next (+1, higher level number = lower arrayIdx)
+    window.stepCareerLevel = function(dir) {
+        let next = careerIndex - dir;
+        if (next < 0) next = 0;
+        if (next >= careerMilestones.length) next = careerMilestones.length - 1;
+        loadDioramaForLevel(next, true);
+    };
+
+    window.setCareerLevel = function(arrayIdx) {
+        loadDioramaForLevel(arrayIdx, true);
+    };
+
+    window.toggleLevelGridMatrix = function(forceState) {
+        const drawer = document.getElementById('level-grid-matrix-drawer');
+        const toggleBtn = document.getElementById('career-grid-toggle-btn');
+        const iconSpan = document.getElementById('grid-toggle-icon');
+        const textSpan = document.getElementById('grid-toggle-text');
+        if (!drawer) return;
+
+        const isOpen = (typeof forceState === 'boolean') ? forceState : !drawer.classList.contains('is-open');
+        drawer.classList.toggle('is-open', isOpen);
+        if (toggleBtn) toggleBtn.classList.toggle('active', isOpen);
+        if (iconSpan) iconSpan.textContent = isOpen ? '✕' : '⊞';
+        if (textSpan) textSpan.textContent = isOpen ? 'Close Matrix' : 'All Stages';
+
+        DioramaAudio.play('shimmer');
+    };
+
+    window.resetDioramaOrbit = function() {
+        if (!dioramaCamera || !dioramaControls) return;
+        DioramaAudio.play('shimmer');
+        dioramaControls.reset();
+        dioramaCamera.position.set(0, 7.0, 14.5);
+        dioramaControls.target.set(0, 1.2, 0);
+    };
+
+    window.triggerDioramaToy = function() {
+        const m = careerMilestones[careerIndex];
+        if (!m) return;
+        DioramaAudio.play(m.sfx);
+
+        if (currentDioramaMesh) {
+            const propGroup = currentDioramaMesh.getObjectByName('stageHeroProps');
+            const target = propGroup || currentDioramaMesh;
+            const startTime = performance.now();
+            function bounce(now) {
+                const p = (now - startTime) / 360;
+                if (p <= 1) {
+                    const s = 1 + Math.sin(p * Math.PI) * 0.28;
+                    target.scale.set(s, s, s);
+                    requestAnimationFrame(bounce);
+                } else {
+                    target.scale.set(1, 1, 1);
+                }
+            }
+            requestAnimationFrame(bounce);
+        }
+
+        const toast = document.getElementById('level-toy-toast');
+        if (toast) {
+            toast.textContent = m.toyAction;
+            toast.classList.add('is-visible');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.classList.remove('is-visible');
+            }, 2500);
+        }
+    };
+
+    window.openActiveLevelModal = function() {
+        const m = careerMilestones[careerIndex];
+        if (m && typeof openModal === 'function') {
+            openModal(m.key);
+        }
+    };
+
+    window.toggleDioramaAudio = function() {
+        const isMuted = DioramaAudio.toggleMute();
+        const icon = document.getElementById('diorama-audio-icon');
+        if (icon) icon.textContent = isMuted ? '🔇' : '🔊';
+    };
+
+    window.triggerLevelPilotGreeting = function() {
+        DioramaAudio.play('shimmer');
+        const bubble = document.getElementById('pilot-speech-bubble');
+        if (!bubble) return;
+        const m = careerMilestones[careerIndex];
+        const lvlNumber = 12 - careerIndex;
+        const greetings = [
+            `Howdo! Station Pilot Tom here. Surveying Stage ${String(lvlNumber).padStart(2, '0')} // ${m.company}! 👋`,
+            `Systems nominal! Drag to inspect 360° or tap the toy button for telemetry! 🚀`,
+            `Diorama rendered at 60fps WebGL with studio Three.js lighting! ✨`,
+            `Tap "Inspect Scope" to open the deep-dive mission dossier! 🎮`
+        ];
+        const pick = greetings[Math.floor(Math.random() * greetings.length)];
+        bubble.textContent = pick;
+        bubble.style.opacity = '1';
+        bubble.style.transform = 'translateY(0) scale(1.05)';
+        setTimeout(() => {
+            bubble.style.transform = 'translateY(0) scale(1)';
+        }, 220);
+    };
+
+    // Legacy backwards-compatible aliases
+    window.focusMountainLevel = function(idx, anim) { loadDioramaForLevel(idx, anim); };
+    window.stepMountainLevel = function(dir) { stepCareerLevel(dir); };
+    window.resetMountainOrbit = function() { resetDioramaOrbit(); };
+    window.triggerMountainToy = function() { triggerDioramaToy(); };
+    window.openActiveMountainModal = function() { openActiveLevelModal(); };
+    window.toggleOverworldAudio = function() { toggleDioramaAudio(); };
+    window.triggerMountainPilotGreeting = function() { triggerLevelPilotGreeting(); };
+    window.getCareerIndex = function() { return careerIndex; };
+
+    // Canvas Resize Handler
+    function onDioramaResize() {
+        const container = document.getElementById('level-canvas-container');
+        if (!container || !dioramaRenderer || !dioramaCamera) return;
+        const width = container.clientWidth;
+        const height = container.clientHeight || 520;
+        if (width <= 0 || height <= 0) return;
+
+        dioramaCamera.aspect = width / height;
+        dioramaCamera.updateProjectionMatrix();
+        dioramaRenderer.setSize(width, height);
+        dioramaRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    }
+    window.onDioramaResize = onDioramaResize;
+    window.onMountainWindowResize = onDioramaResize;
+
+    // Interactive Raycasting on Canvas
+    function setupDioramaRaycasting(canvas) {
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const tooltip = document.getElementById('level-hover-tooltip');
+
+        canvas.addEventListener('pointerdown', (e) => {
+            if (e.button !== 0) return; // Left click only
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, dioramaCamera);
+            if (currentDioramaMesh) {
+                const intersects = raycaster.intersectObjects([currentDioramaMesh], true);
+                if (intersects.length > 0) {
+                    // Check if clicked plaque or prop
+                    let obj = intersects[0].object;
+                    let isPlaque = false;
+                    while (obj && obj !== currentDioramaMesh) {
+                        if (obj.name === 'stagePlaque' || obj.name === 'easelGroup') {
+                            isPlaque = true;
+                            break;
+                        }
+                        obj = obj.parent;
+                    }
+                    if (isPlaque) {
+                        openActiveLevelModal();
+                    } else {
+                        triggerDioramaToy();
+                    }
+                }
+            }
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, dioramaCamera);
+            if (currentDioramaMesh) {
+                const intersects = raycaster.intersectObjects([currentDioramaMesh], true);
+                if (intersects.length > 0 && tooltip) {
+                    const m = careerMilestones[careerIndex];
+                    const lvl = 12 - careerIndex;
+                    tooltip.textContent = `LVL ${String(lvl).padStart(2, '0')} // ${m.company} • Tap to interact`;
+                    tooltip.style.left = `${e.clientX - rect.left}px`;
+                    tooltip.style.top = `${e.clientY - rect.top}px`;
+                    tooltip.style.display = 'block';
+                    canvas.style.cursor = 'pointer';
+                    return;
+                }
+            }
+            if (tooltip) tooltip.style.display = 'none';
+            canvas.style.cursor = 'grab';
+        });
+
+        // Mobile touch swipe gestures
+        let touchStartX = 0;
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+            }
+        }, { passive: true });
+
+        canvas.addEventListener('touchend', (e) => {
+            if (e.changedTouches.length === 1) {
+                const diffX = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(diffX) > 60) {
+                    if (diffX > 0) {
+                        stepCareerLevel(-1); // Swipe right -> previous stage
+                    } else {
+                        stepCareerLevel(1);  // Swipe left -> next stage
+                    }
+                }
+            }
+        }, { passive: true });
+    }
+
+    // Initialize 3D Level Select Studio Scene
+    function initCareerLevelSelect() {
+        if (isDioramaInitialized) return;
+        if (typeof THREE === 'undefined') {
+            setTimeout(initCareerLevelSelect, 100);
+            return;
+        }
+
+        const container = document.getElementById('level-canvas-container');
+        const canvas = document.getElementById('career-level-canvas');
+        if (!container || !canvas) return;
+
+        const width = container.clientWidth || 800;
+        const height = container.clientHeight || 520;
+
+        // 1. Scene
+        dioramaScene = new THREE.Scene();
+
+        // 2. Camera (Perspective Studio View)
+        dioramaCamera = new THREE.PerspectiveCamera(40, width / height, 0.5, 200);
+        dioramaCamera.position.set(0, 7.0, 14.5);
+
+        dioramaClock = new THREE.Clock();
+
+        // 3. Renderer
+        dioramaRenderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+        });
+        dioramaRenderer.setSize(width, height);
+        dioramaRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        dioramaRenderer.shadowMap.enabled = true;
+        dioramaRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        // 4. OrbitControls
+        dioramaControls = new THREE.OrbitControls(dioramaCamera, canvas);
+        dioramaControls.enableDamping = true;
+        dioramaControls.dampingFactor = 0.06;
+        dioramaControls.maxPolarAngle = Math.PI / 2 - 0.05; // clamp above floor
+        dioramaControls.minPolarAngle = 0.2;
+        dioramaControls.minDistance = 8.0;
+        dioramaControls.maxDistance = 25.0;
+        dioramaControls.target.set(0, 1.2, 0);
+
+        // 5. Studio Lighting
+        const ambLight = new THREE.AmbientLight(0xffffff, 0.75);
+        dioramaScene.add(ambLight);
+
+        // Key Warm Studio Spotlight
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
+        keyLight.position.set(12, 18, 14);
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.width = 1024;
+        keyLight.shadow.mapSize.height = 1024;
+        keyLight.shadow.camera.near = 5;
+        keyLight.shadow.camera.far = 60;
+        keyLight.shadow.camera.left = -10;
+        keyLight.shadow.camera.right = 10;
+        keyLight.shadow.camera.top = 10;
+        keyLight.shadow.camera.bottom = -10;
+        keyLight.shadow.bias = -0.001;
+        dioramaScene.add(keyLight);
+
+        // Cyan Rim / Back Light
+        const cyanRim = new THREE.DirectionalLight(0x00f0ff, 0.85);
+        cyanRim.position.set(-14, 12, -12);
+        dioramaScene.add(cyanRim);
+
+        // Under-pedestal Upward Point Light
+        const underPoint = new THREE.PointLight(0x00f0ff, 1.8, 14);
+        underPoint.position.set(0, -1.0, 0);
+        dioramaScene.add(underPoint);
+
+        // 6. Contact Shadow Disc at Floor Level
+        const shadowDiscGeo = new THREE.CircleGeometry(7.5, 36);
+        shadowDiscGeo.rotateX(-Math.PI / 2);
+        const shadowDiscMat = new THREE.MeshBasicMaterial({
+            color: 0x030610,
+            transparent: true,
+            opacity: 0.55
+        });
+        const shadowDisc = new THREE.Mesh(shadowDiscGeo, shadowDiscMat);
+        shadowDisc.position.y = -3.8;
+        dioramaScene.add(shadowDisc);
+
+        // 7. Ambient Floating Dust Particles
+        const pCount = 70;
+        const pGeom = new THREE.BufferGeometry();
+        const pPos = new Float32Array(pCount * 3);
+        for (let i = 0; i < pCount * 3; i += 3) {
+            pPos[i] = (Math.random() - 0.5) * 28;
+            pPos[i + 1] = Math.random() * 14 - 3;
+            pPos[i + 2] = (Math.random() - 0.5) * 28;
+        }
+        pGeom.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+        const pMat = new THREE.PointsMaterial({
+            color: 0x00f0ff,
+            size: 0.35,
+            transparent: true,
+            opacity: 0.45
+        });
+        const dustPoints = new THREE.Points(pGeom, pMat);
+        dioramaScene.add(dustPoints);
+
+        // 8. Event Listeners & Raycasting
+        window.addEventListener('resize', onDioramaResize);
+        setupDioramaRaycasting(canvas);
+
+        // 9. Initial Build: Ribbon, Grid Matrix, and Initial Diorama
+        renderLevelRibbonTrack();
+        renderLevelGridMatrix();
+        loadDioramaForLevel(careerIndex, false);
+
+        // 10. Animation Loop
+        function animateDiorama() {
+            requestAnimationFrame(animateDiorama);
+            const delta = dioramaClock ? dioramaClock.getDelta() : 0.016;
+
+            // Slowly rotate dust points
+            dustPoints.rotation.y += delta * 0.04;
+
+            // Rotate animated stage props
+            if (currentDioramaMesh) {
+                const rotProp = currentDioramaMesh.getObjectByName('rotatingProp');
+                if (rotProp) rotProp.rotation.y += delta * 1.5;
+
+                const rotRing = currentDioramaMesh.getObjectByName('rotatingRing');
+                if (rotRing) {
+                    rotRing.rotation.x += delta * 2.0;
+                    rotRing.rotation.y += delta * 1.2;
+                }
+
+                const floatCap = currentDioramaMesh.getObjectByName('floatingCap');
+                if (floatCap) floatCap.rotation.y += delta * 0.8;
+            }
+
+            dioramaControls.update();
+            dioramaRenderer.render(dioramaScene, dioramaCamera);
+        }
+        animateDiorama();
+
+        isDioramaInitialized = true;
+    }
+    window.initCareerLevelSelect = initCareerLevelSelect;
+    window.initCareerSpiralMountain = initCareerLevelSelect; // Backwards compatibility alias
+
+    // ═════════════════════════════════════════════════════════════
+    // 12. CYBERNETIC WAVE STRIP CAREER DIORAMA CONTROLLER
+    // ═════════════════════════════════════════════════════════════
+    // Sinuous continuous wave strip coordinates (2500px x 480px)
+    // Inverted order: Left = Present ('26 Defence), Right = Beginning ('07 Staffs Uni)
+    const waveNodeCoords = [
+        { lvl: 12, arrayIdx: 0,  x: 140,  y: 170, stem: 'down', title: "Classified Defence" },
+        { lvl: 11, arrayIdx: 1,  x: 350,  y: 310, stem: 'up',   title: "Synopsys & Ansys" },
+        { lvl: 10, arrayIdx: 2,  x: 560,  y: 170, stem: 'down', title: "Malvern Panalytical" },
+        { lvl: 9,  arrayIdx: 3,  x: 770,  y: 310, stem: 'up',   title: "SEGA Hardlight" },
+        { lvl: 8,  arrayIdx: 4,  x: 980,  y: 170, stem: 'down', title: "Connect Group / JLR" },
+        { lvl: 7,  arrayIdx: 5,  x: 1190, y: 310, stem: 'up',   title: "ndevr Ltd" },
+        { lvl: 6,  arrayIdx: 6,  x: 1400, y: 170, stem: 'down', title: "Adactus & Pizza Hut" },
+        { lvl: 5,  arrayIdx: 7,  x: 1610, y: 310, stem: 'up',   title: "Silver Lining QA" },
+        { lvl: 4,  arrayIdx: 8,  x: 1820, y: 170, stem: 'down', title: "Zynga / NaturalMotion" },
+        { lvl: 3,  arrayIdx: 9,  x: 2030, y: 310, stem: 'up',   title: "Tinderstone & Syscom" },
+        { lvl: 2,  arrayIdx: 10, x: 2240, y: 170, stem: 'down', title: "Ticketmaster" },
+        { lvl: 1,  arrayIdx: 11, x: 2420, y: 280, stem: 'up',   title: "Staffordshire University" }
+    ];
+
+    let currentWaveStage = 11; // Default to Stage 11 (Synopsys & Ansys)
+    const waveFallbackImg = 'assets/commercial/covers/sonicforces_landscape.jpg';
+
+    function initCareerWaveStrip() {
+        const layer = document.getElementById('career-wave-nodes-layer');
+        if (!layer) return;
+        layer.innerHTML = '';
+
+        waveNodeCoords.forEach(node => {
+            const m = careerMilestones[node.arrayIdx];
+            if (!m) return;
+
+            const el = document.createElement('div');
+            el.className = `career-wave-node stem-${node.stem} ${node.lvl === currentWaveStage ? 'is-active' : ''}`;
+            el.style.left = `${node.x}px`;
+            el.style.top = `${node.y}px`;
+            el.id = `wave-node-${node.lvl}`;
+
+            const imgSrc = m.conceptImg || waveFallbackImg;
+
+            el.innerHTML = `
+                <div class="wave-node-dot" title="Stage ${node.lvl}: ${m.company}">
+                    <span>${String(node.lvl).padStart(2, '0')}</span>
+                    <div class="sonar-ring"></div>
+                </div>
+                <div class="wave-connector-stem"></div>
+                <div class="wave-diorama-card" title="Inspect ${m.company}">
+                    <img src="${imgSrc}" alt="${m.company}" onerror="this.src='${waveFallbackImg}';" loading="lazy" />
+                    <div class="wave-card-meta">
+                        <div class="wave-card-header">
+                            <span class="wave-card-company">${m.company}</span>
+                            <span class="wave-card-year">${m.year || ''}</span>
+                        </div>
+                        <span class="wave-card-role">${m.role}</span>
+                    </div>
                 </div>
             `;
 
-            card.onclick = (e) => {
-                if (e) e.stopPropagation();
-                // Prevent synthetic clicks right after a touch swipe
-                if (Date.now() - lastCareerSwipeTime < 350) return;
-                if (i === careerIndex) {
-                    // Active card click opens the deep-dive modal
-                    openModal(m.key);
-                } else {
-                    // Clicking faded side card advances/reverses timeline to that card
-                    careerIndex = i;
-                    updateCareerDeck();
-                }
-            };
-
-            runway.appendChild(card);
+            el.onclick = () => openWaveInlineInspector(node.lvl);
+            layer.appendChild(el);
         });
+
+        setupWaveDragScroll();
+        updateWaveAvatarPosition(currentWaveStage, false);
+        updateWaveDock(currentWaveStage);
+        updateWaveControls(currentWaveStage);
+        setTimeout(centerWaveActiveNode, 180);
     }
 
-    function updateCareerDeck() {
-        const runway = document.getElementById('career-deck-runway');
-        if (!runway) return;
+    function selectWaveStage(lvl, animate = true) {
+        if (lvl < 1) lvl = 1;
+        if (lvl > 12) lvl = 12;
+        currentWaveStage = lvl;
 
-        const cards = runway.querySelectorAll('.career-deck-card');
-        cards.forEach((card, i) => {
-            const diff = i - careerIndex;
-            card.classList.remove('is-active', 'is-next', 'is-next-2', 'is-prev', 'is-prev-2', 'is-distant');
+        const node = waveNodeCoords.find(n => n.lvl === lvl);
+        if (!node) return;
 
-            if (diff === 0) {
-                card.classList.add('is-active');
-                card.setAttribute('aria-hidden', 'false');
-                card.setAttribute('tabindex', '0');
-            } else if (diff === 1) {
-                card.classList.add('is-next');
-                card.setAttribute('aria-hidden', 'false');
-                card.setAttribute('tabindex', '0');
-            } else if (diff === 2) {
-                card.classList.add('is-next-2');
-                card.setAttribute('aria-hidden', 'true');
-                card.setAttribute('tabindex', '-1');
-            } else if (diff === -1) {
-                card.classList.add('is-prev');
-                card.setAttribute('aria-hidden', 'false');
-                card.setAttribute('tabindex', '0');
-            } else if (diff === -2) {
-                card.classList.add('is-prev-2');
-                card.setAttribute('aria-hidden', 'true');
-                card.setAttribute('tabindex', '-1');
-            } else {
-                card.classList.add('is-distant');
-                card.setAttribute('aria-hidden', 'true');
-                card.setAttribute('tabindex', '-1');
-            }
-        });
+        careerIndex = node.arrayIdx; // sync internal careerIndex
 
-        // Update horizontal scrubber rail nodes
-        const rail = document.getElementById('career-scrubber-rail');
-        const railWrapper = document.getElementById('career-scrubber-rail-wrapper');
-        if (rail) {
-            const nodes = rail.querySelectorAll('.career-era-node');
-            nodes.forEach((node, i) => {
-                const isActive = (i === careerIndex);
-                node.classList.toggle('active', isActive);
-                node.setAttribute('aria-selected', isActive ? 'true' : 'false');
-                if (isActive && railWrapper) {
-                    const targetScroll = node.offsetLeft - (railWrapper.clientWidth / 2) + (node.clientWidth / 2);
-                    railWrapper.scrollTo({ left: Math.max(0, targetScroll), behavior: 'smooth' });
-                }
+        // Audio feedback
+        const sfxType = lvl === 12 || lvl === 10 ? 'shimmer' : (lvl === 9 ? 'ring' : (lvl === 4 ? 'launch' : 'hop'));
+        DioramaAudio.play(sfxType);
+
+        // Update active node styling
+        document.querySelectorAll('.career-wave-node').forEach(n => n.classList.remove('is-active'));
+        const activeNodeEl = document.getElementById(`wave-node-${lvl}`);
+        if (activeNodeEl) activeNodeEl.classList.add('is-active');
+
+        updateWaveAvatarPosition(lvl, animate);
+        updateWaveDock(lvl);
+        updateWaveControls(lvl);
+
+        // If inline inspector is currently active, refresh its content smoothly
+        const inspector = document.getElementById('career-wave-inline-inspector');
+        if (inspector && inspector.classList.contains('active')) {
+            updateWaveInlineInspector(lvl);
+            centerWaveActiveNode();
+        }
+    }
+
+    function openWaveInlineInspector(lvl) {
+        selectWaveStage(lvl, true);
+
+        const node = waveNodeCoords.find(n => n.lvl === lvl);
+        if (!node) return;
+
+        updateWaveInlineInspector(lvl);
+
+        // Dim track and show inline inspector
+        const track = document.getElementById('career-wave-track');
+        const inspector = document.getElementById('career-wave-inline-inspector');
+        if (track) track.classList.add('is-dimmed');
+        if (inspector) inspector.classList.add('active');
+
+        centerWaveActiveNode();
+        DioramaAudio.play('shimmer');
+    }
+
+    function updateWaveInlineInspector(lvl) {
+        const node = waveNodeCoords.find(n => n.lvl === lvl);
+        if (!node) return;
+        const m = careerMilestones[node.arrayIdx];
+        if (!m) return;
+        const data = experienceData[m.key];
+
+        // Left Panel (Diorama & Narrative)
+        const stagePill = document.getElementById('inline-stage-pill');
+        const periodPill = document.getElementById('inline-period-pill');
+        const dioramaImg = document.getElementById('inline-diorama-img');
+        const dioramaCompany = document.getElementById('inline-diorama-company');
+        const dioramaRole = document.getElementById('inline-diorama-role');
+        const dioramaNarrative = document.getElementById('inline-diorama-narrative');
+        const dioramaTags = document.getElementById('inline-diorama-tags');
+        const toyIcon = document.getElementById('inline-toy-icon');
+        const toyLabel = document.getElementById('inline-toy-label');
+
+        if (stagePill) stagePill.textContent = `STAGE ${String(node.lvl).padStart(2, '0')}`;
+        if (periodPill) periodPill.textContent = m.date;
+        if (dioramaImg) {
+            dioramaImg.src = m.conceptImg || waveFallbackImg;
+            dioramaImg.onerror = function() { this.src = waveFallbackImg; };
+        }
+        if (dioramaCompany) dioramaCompany.textContent = m.company;
+        if (dioramaRole) dioramaRole.textContent = m.role;
+        if (dioramaNarrative) dioramaNarrative.textContent = `"${m.narrative}"`;
+        if (toyIcon) toyIcon.textContent = getIconForType(m.meshType);
+        if (toyLabel) toyLabel.textContent = m.toyName || 'Test Prop';
+
+        if (dioramaTags) {
+            dioramaTags.innerHTML = '';
+            (m.tags || []).forEach(t => {
+                const span = document.createElement('span');
+                span.className = 'inline-tag-chip';
+                span.textContent = t;
+                dioramaTags.appendChild(span);
             });
         }
 
-        // Update stationary navigation arrow states
-        const prevBtn = document.getElementById('career-prev');
-        const nextBtn = document.getElementById('career-next');
-        if (prevBtn) prevBtn.disabled = (careerIndex === 0);
-        if (nextBtn) nextBtn.disabled = (careerIndex === careerMilestones.length - 1);
+        // Right Panel (Job Dossier)
+        const dossierTitle = document.getElementById('inline-dossier-title');
+        const dossierCompany = document.getElementById('inline-dossier-company');
+        const dossierPeriod = document.getElementById('inline-dossier-period');
+        const dossierLocation = document.getElementById('inline-dossier-location');
+        const dossierBullets = document.getElementById('inline-dossier-bullets');
+        const dossierSkills = document.getElementById('inline-dossier-skills');
 
-        // Update counter and timeline metadata
-        const m = careerMilestones[careerIndex];
-        const counterEl = document.getElementById('career-deck-counter');
-        if (counterEl) {
-            counterEl.textContent = `${String(careerIndex + 1).padStart(2, '0')} / ${String(careerMilestones.length).padStart(2, '0')}`;
+        const titleText = data ? data.title : m.role;
+        const companyText = (data ? data.company : m.company).toUpperCase();
+        const periodText = (data ? data.period : m.date).toUpperCase();
+        const locationText = (data ? data.location : 'UK').toUpperCase();
+
+        if (dossierTitle) dossierTitle.textContent = titleText;
+        if (dossierCompany) dossierCompany.textContent = companyText;
+        if (dossierPeriod) dossierPeriod.textContent = periodText;
+        if (dossierLocation) dossierLocation.textContent = locationText;
+
+        if (dossierBullets) {
+            dossierBullets.innerHTML = '';
+            const bullets = (data && data.bullets) ? data.bullets : [m.narrative];
+            bullets.forEach(b => {
+                const li = document.createElement('li');
+                li.textContent = b;
+                dossierBullets.appendChild(li);
+            });
         }
-        const spanEl = document.getElementById('career-deck-timeline-span');
-        if (spanEl && m) {
-            spanEl.innerHTML = `${m.date} &bull; ${m.company}`;
+
+        if (dossierSkills) {
+            dossierSkills.innerHTML = '';
+            const skills = (data && data.skills && data.skills.length > 0) ? data.skills : (m.tags || []);
+            skills.forEach(s => {
+                const span = document.createElement('span');
+                span.className = 'inline-skill-chip';
+                span.textContent = s;
+                dossierSkills.appendChild(span);
+            });
         }
     }
 
-    // Touch Swipe Gestures for Career Runway (Mobile)
-    (function initCareerSwipe() {
-        const stage = document.getElementById('career-deck-stage');
-        if (!stage) return;
+    function closeWaveInlineInspector() {
+        const inspector = document.getElementById('career-wave-inline-inspector');
+        const track = document.getElementById('career-wave-track');
+        if (inspector) inspector.classList.remove('active');
+        if (track) track.classList.remove('is-dimmed');
+        centerWaveActiveNode();
+    }
 
+    function closeWaveInlineInspectorOnBackdrop(event) {
+        const inspector = document.getElementById('career-wave-inline-inspector');
+        if (event.target === inspector) {
+            closeWaveInlineInspector();
+        }
+    }
+
+    function triggerInlineToy() {
+        const node = waveNodeCoords.find(n => n.lvl === currentWaveStage);
+        if (!node) return;
+        const m = careerMilestones[node.arrayIdx];
+        if (!m) return;
+        DioramaAudio.play(m.sfx || 'shimmer');
+
+        const btn = document.getElementById('btn-inline-toy');
+        if (btn) {
+            btn.style.transform = 'scale(1.14)';
+            setTimeout(() => { btn.style.transform = ''; }, 200);
+        }
+    }
+
+    function updateWaveControls(lvl) {
+        const node = waveNodeCoords.find(n => n.lvl === lvl);
+        if (!node) return;
+        const m = careerMilestones[node.arrayIdx];
+        if (!m) return;
+
+        const stageBadge = document.getElementById('wave-active-stage-badge');
+        const dateRange = document.getElementById('wave-active-date-range');
+        if (stageBadge) stageBadge.textContent = `STAGE ${String(node.lvl).padStart(2, '0')} // ${(m.company).toUpperCase()}`;
+        if (dateRange) dateRange.textContent = m.date;
+    }
+
+    function updateWaveDock(lvl) {
+        const node = waveNodeCoords.find(n => n.lvl === lvl);
+        if (!node) return;
+        const m = careerMilestones[node.arrayIdx];
+        if (!m) return;
+
+        const thumb = document.getElementById('wave-dock-thumb');
+        const stageLabel = document.getElementById('wave-dock-stage-label');
+        const company = document.getElementById('wave-dock-company');
+        const role = document.getElementById('wave-dock-role');
+
+        if (thumb) {
+            thumb.src = m.conceptImg || waveFallbackImg;
+            thumb.onerror = function() { this.src = waveFallbackImg; };
+        }
+        if (stageLabel) stageLabel.textContent = `STAGE ${String(node.lvl).padStart(2, '0')} // ${m.stamp || 'MILESTONE'}`;
+        if (company) company.textContent = m.company;
+        if (role) role.textContent = m.role;
+    }
+
+    function updateWaveAvatarPosition(lvl, animate = true) {
+        const node = waveNodeCoords.find(n => n.lvl === lvl);
+        const avatar = document.getElementById('career-wave-avatar');
+        if (!node || !avatar) return;
+
+        avatar.style.left = `${node.x}px`;
+        avatar.style.top = `${node.y}px`;
+    }
+
+    function centerWaveActiveNode() {
+        const node = waveNodeCoords.find(n => n.lvl === currentWaveStage);
+        const viewport = document.getElementById('career-wave-viewport');
+        if (!node || !viewport) return;
+
+        const targetScroll = node.x - viewport.clientWidth / 2;
+        viewport.scrollTo({ left: targetScroll, behavior: 'smooth' });
+    }
+
+    function stepWaveStage(dir) {
+        const currIdx = waveNodeCoords.findIndex(n => n.lvl === currentWaveStage);
+        let nextIdx = (currIdx !== -1 ? currIdx : 0) + dir;
+        if (nextIdx < 0) nextIdx = waveNodeCoords.length - 1;
+        if (nextIdx >= waveNodeCoords.length) nextIdx = 0;
+
+        const targetNode = waveNodeCoords[nextIdx];
+        if (!targetNode) return;
+
+        const inspector = document.getElementById('career-wave-inline-inspector');
+        if (inspector && inspector.classList.contains('active')) {
+            openWaveInlineInspector(targetNode.lvl);
+        } else {
+            selectWaveStage(targetNode.lvl, true);
+            centerWaveActiveNode();
+        }
+    }
+
+    function openActiveStageInspect() {
+        openWaveInlineInspector(currentWaveStage);
+    }
+
+    function setupWaveDragScroll() {
+        const slider = document.getElementById('career-wave-viewport');
+        if (!slider || slider._dragInitialized) return;
+        slider._dragInitialized = true;
+
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.career-wave-node') || e.target.closest('button') || e.target.closest('#career-wave-inline-inspector')) return;
+            isDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+
+        slider.addEventListener('mouseleave', () => { isDown = false; });
+        slider.addEventListener('mouseup', () => { isDown = false; });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 1.6;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
+        // Touch drag
         let touchStartX = 0;
-        let touchStartY = 0;
-        let touchEndX = 0;
-        let touchEndY = 0;
-        const SWIPE_THRESHOLD = 40;
-
-        stage.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-
-        stage.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            touchEndY = e.changedTouches[0].screenY;
-
-            const deltaX = touchEndX - touchStartX;
-            const deltaY = touchEndY - touchStartY;
-
-            if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
-                lastCareerSwipeTime = Date.now();
-                if (deltaX < 0) {
-                    stepCareer(1); // Swipe left → advance forward in time
-                } else {
-                    stepCareer(-1); // Swipe right → step back
-                }
+        let touchScrollLeft = 0;
+        slider.addEventListener('touchstart', (e) => {
+            if (e.target.closest('#career-wave-inline-inspector')) return;
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].pageX;
+                touchScrollLeft = slider.scrollLeft;
             }
         }, { passive: true });
-    })();
 
-    window.stepCareer = function(dir) {
-        const total = careerMilestones.length;
-        careerIndex = Math.max(0, Math.min(total - 1, careerIndex + dir));
-        updateCareerDeck();
+        slider.addEventListener('touchmove', (e) => {
+            if (e.target.closest('#career-wave-inline-inspector')) return;
+            if (e.touches.length === 1) {
+                const diff = (e.touches[0].pageX - touchStartX) * 1.4;
+                slider.scrollLeft = touchScrollLeft - diff;
+            }
+        }, { passive: true });
+    }
+
+    // Window bindings & Aliases for backwards compatibility
+    window.initCareerWaveStrip = initCareerWaveStrip;
+    window.selectWaveStage = selectWaveStage;
+    window.stepWaveStage = stepWaveStage;
+    window.centerWaveActiveNode = centerWaveActiveNode;
+    window.openActiveStageInspect = openActiveStageInspect;
+    window.openWaveInlineInspector = openWaveInlineInspector;
+    window.closeWaveInlineInspector = closeWaveInlineInspector;
+    window.closeWaveInlineInspectorOnBackdrop = closeWaveInlineInspectorOnBackdrop;
+    window.triggerInlineToy = triggerInlineToy;
+
+    // Saga / legacy aliases
+    window.initSagaMap = initCareerWaveStrip;
+    window.selectSagaStage = selectWaveStage;
+    window.stepSagaStage = stepWaveStage;
+    window.centerSagaActiveNode = centerWaveActiveNode;
+    window.closeSagaJobModal = closeWaveInlineInspector;
+    window.openActiveMilestoneFullModal = function() {
+        openWaveInlineInspector(currentWaveStage);
+    };
+    window.triggerModalToy = triggerInlineToy;
+
+    window.toggleAudio = function() {
+        const isMuted = DioramaAudio.toggleMute();
+        const icon = document.getElementById('wave-sound-icon');
+        if (icon) icon.textContent = isMuted ? '🔇' : '🔊';
+        return isMuted;
     };
 
-    window.openActiveMilestoneModal = function() {
-        const m = careerMilestones[careerIndex];
-        if (m) openModal(m.key);
-    };
+    // Keyboard navigation (Arrow keys + Escape)
+    window.addEventListener('keydown', (e) => {
+        const aboutTab = document.getElementById('subpage-about');
+        if (!aboutTab || !aboutTab.classList.contains('active')) return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-    renderCareerScrubber();
-    renderCareerDeckCards();
-    updateCareerDeck();
-    selectProject('noblegnomes');
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            stepWaveStage(1); // rightwards towards the beginning
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            stepWaveStage(-1); // leftwards towards present
+        } else if (e.key === 'Escape') {
+            closeWaveInlineInspector();
+        }
+    });
+
+    // Initialize Wave Strip
+    initCareerWaveStrip();
 
     // Hash routing or default to Hero Home
     const initialHash = window.location.hash.replace('#', '');
-    if (['about', 'projects', 'contact'].includes(initialHash)) {
-        switchTab(initialHash);
-    } else if (initialHash.includes('soundtrack') || initialHash.includes('track')) {
-        // Stay on home and preserve soundtrack deep link
-        if (appContainer) {
-            appContainer.classList.remove('state-subpage-active');
-            subpages.forEach(page => page.classList.remove('active'));
-            navButtons.forEach(btn => btn.classList.remove('active'));
-        }
-    } else {
-        goHome();
+    if (['about', 'career', 'contact'].includes(initialHash)) {
+        setTimeout(() => switchTab(initialHash), 180);
     }
 
     // 13. 3-Block Interests Interactive Selector (Square -> Rectangular)
@@ -1850,6 +4498,16 @@ document.addEventListener('DOMContentLoaded', () => {
             urlEl.style.opacity = '0';
             setTimeout(() => {
                 urlEl.textContent = data.url;
+                if (urlEl.tagName === 'A') {
+                    urlEl.href = data.href;
+                    if (data.href.startsWith('mailto:')) {
+                        urlEl.removeAttribute('target');
+                        urlEl.removeAttribute('rel');
+                    } else {
+                        urlEl.setAttribute('target', '_blank');
+                        urlEl.setAttribute('rel', 'noopener noreferrer');
+                    }
+                }
                 urlEl.style.opacity = '1';
             }, 100);
         }

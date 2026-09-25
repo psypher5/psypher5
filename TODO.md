@@ -15,10 +15,15 @@
   - Verify app squircle grid tap target spacing (minimum 48px hit areas).
   - Ensure the dossier panel below the phone flows seamlessly when stacked vertically.
 
-- [ ] **3D Game Shelf (Touch Interactions)**
-  - Optimize 3D box rotation perspective on mobile devices.
-  - Test touch/tap responsiveness for 3D box selection vs swipe events.
-  - Adjust physical shelf ledge width and glowing strip for vertical viewport heights.
+- [x] **3D Game Shelf & Spawn.co Partner Studio**
+  - [x] Official Spawn.co partner creator badge & direct links to profile and Discord hub.
+  - [x] 3D physical shelf with overhead industrial pendant lamp and electric blue LED underglow.
+  - [x] Spawn Den Easter eggs: pixel penguin wizard mascot on brass plaque, sprout, candle, mug, and live stats.
+  - [x] 5 Live 3D game boxes (Noble Gnomes, Starbloom, Void Warden, Star Sanctuary, Aegis of Ages) with interactive mouseover 3D tilt & gloss sheen.
+  - [x] Spawn-styled detail modal with synopsis, "What's in the Box" features, changelog, community reviews, full-res screenshots, like counter, and instant new-tab browser play.
+  - [x] Spacebar shortcut to launch active game, Escape to dismiss, outside-click handling.
+  - [x] Integrated navigation into Hero nav dock and bottom floating dock with custom controller icons.
+  - [x] Responsive layout with touch momentum scrolling on mobile devices (< 640px).
 
 - [x] **Career Wave Timeline**
   - [x] Serpentine SVG wave timeline with staggered milestone nodes.

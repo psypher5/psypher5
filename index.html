@@ -38,6 +38,11 @@
                             <span class="hero-nav-label">About</span>
                         </button>
                         
+                        <button class="hero-nav-btn" onclick="scrollToSection('section-game-shelf')" aria-label="Game Shelf">
+                            <svg class="hero-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m7-2h.01m3 0h.01"/></svg>
+                            <span class="hero-nav-label">Games</span>
+                        </button>
+
                         <button class="hero-nav-btn" onclick="scrollToSection('career-wave-strip-wrapper')" aria-label="Career Timeline">
                             <svg class="hero-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2.5" fill="currentColor"/><circle cx="16" cy="12" r="2.5" fill="currentColor"/><circle cx="10" cy="18" r="2.5" fill="currentColor"/></svg>
                             <span class="hero-nav-label">Career</span>
@@ -171,6 +176,207 @@
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+
+                        <!-- ═══ SECTION: INDIE GAME SHELF // SPAWN PARTNER STUDIO ═══ -->
+                        <div class="open-section" id="section-game-shelf">
+                            <div class="shelf-section-header">
+                                <div class="shelf-header-left">
+                                    <div class="shelf-partner-badge">
+                                        <span class="partner-star">★</span>
+                                        <span class="partner-text">OFFICIAL SPAWN.CO PARTNER CREATOR</span>
+                                        <span class="sonar-ring-small"></span>
+                                    </div>
+                                    <h2 class="open-section-label shelf-title">Indie Game Shelf</h2>
+                                    <p class="section-sub-label">Playable WebGL 3D games engineered for instant browser play — mouse over any box to inspect &amp; launch</p>
+                                </div>
+                                <div class="shelf-header-actions">
+                                    <a href="https://www.spawn.co/@psypher5" target="_blank" rel="noopener noreferrer" class="shelf-ext-btn spawn-btn" title="View @psypher5 Den on Spawn.co">
+                                        <span class="btn-sparkle">✨</span> Spawn Profile ↗
+                                    </a>
+                                    <a href="https://discord.gg/starsanctuary" target="_blank" rel="noopener noreferrer" class="shelf-ext-btn discord-btn" title="Join Star Sanctuary Community Discord">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                                        Discord Hub ↗
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- The 3D Shelf Stage -->
+                            <div class="shelf-stage" id="shelf-stage">
+                                <!-- Overhead Industrial Pendant Lamp with Warm Lighting Cone -->
+                                <div class="shelf-lamp-rig" aria-hidden="true">
+                                    <div class="shelf-lamp-cord"></div>
+                                    <div class="shelf-lamp-shade"></div>
+                                    <div class="shelf-lamp-bulb"></div>
+                                    <div class="shelf-lamp-cone"></div>
+                                </div>
+
+                                <!-- Upper Shelf (Den Collectibles & Mascot) -->
+                                <div class="shelf-upper-level">
+                                    <div class="shelf-den-decor-items">
+                                        <!-- Wizard Mascot -->
+                                        <div class="den-prop prop-mascot" title="Psypher5 — Wizard of the Den">
+                                            <img src="assets/spawn_penguin.webp" alt="Psypher5 Mascot" class="mascot-sprite">
+                                            <span class="mascot-plaque">PSYPHER5</span>
+                                        </div>
+                                        <!-- Potted Sprout -->
+                                        <div class="den-prop prop-plant" title="A tiny sanctuary sprout">
+                                            <div class="pixel-sprout">🌱</div>
+                                        </div>
+                                        <!-- Flickering Candle -->
+                                        <div class="den-prop prop-candle" title="Homage to Wick">
+                                            <div class="pixel-candle">
+                                                <div class="candle-flame"></div>
+                                                <span class="candle-emoji">🕯️</span>
+                                            </div>
+                                        </div>
+                                        <!-- Steaming Mug -->
+                                        <div class="den-prop prop-mug" title="Hot brew for late-night game dev">
+                                            <div class="steam-vapors"><span></span><span></span></div>
+                                            <span class="mug-emoji">☕</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Den Stats Readout -->
+                                    <div class="shelf-stats-readout">
+                                        <span class="stat-pill"><span class="stat-icon">🎮</span> 5 Titles</span>
+                                        <span class="stat-pill"><span class="stat-icon">❤️</span> 11 Likes</span>
+                                        <span class="stat-pill live-pill"><span class="pulse-dot"></span> WebGL Live</span>
+                                    </div>
+
+                                    <!-- Upper Shelf Plank -->
+                                    <div class="shelf-upper-plank"></div>
+                                </div>
+
+                                <!-- Main Shelf: 5 3D Game Boxes -->
+                                <div class="shelf-main-level" id="shelf-boxes-row">
+                                    <!-- Box 1: Noble Gnomes -->
+                                    <div class="game-box-item" data-game-key="noble-gnomes" onclick="openGameShelfModal('noble-gnomes')" onmousemove="handleBox3DTilt(event, this)" onmouseleave="resetBox3DTilt(this)">
+                                        <div class="box-3d-wrap">
+                                            <div class="box-face box-front">
+                                                <img src="assets/box_noble_gnomes.webp" alt="Noble Gnomes Box Art" class="box-cover-img" loading="lazy">
+                                                <div class="box-shine-layer"></div>
+                                                <div class="box-badge-corner">Adventure</div>
+                                            </div>
+                                            <div class="box-face box-spine">
+                                                <span class="box-spine-title">Noble Gnomes</span>
+                                                <span class="box-spine-logo">P5</span>
+                                            </div>
+                                            <div class="box-face box-top"></div>
+                                            <div class="box-shelf-shadow"></div>
+                                        </div>
+                                        <div class="box-pedestal-label">
+                                            <span class="pedestal-title">Noble Gnomes</span>
+                                            <span class="pedestal-tag">Multiplayer Co-op</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Box 2: Starbloom -->
+                                    <div class="game-box-item" data-game-key="starbloom" onclick="openGameShelfModal('starbloom')" onmousemove="handleBox3DTilt(event, this)" onmouseleave="resetBox3DTilt(this)">
+                                        <div class="box-3d-wrap">
+                                            <div class="box-face box-front">
+                                                <img src="assets/box_starbloom.webp" alt="Starbloom Box Art" class="box-cover-img" loading="lazy">
+                                                <div class="box-shine-layer"></div>
+                                                <div class="box-badge-corner">Cozy</div>
+                                            </div>
+                                            <div class="box-face box-spine">
+                                                <span class="box-spine-title">Starbloom</span>
+                                                <span class="box-spine-logo">P5</span>
+                                            </div>
+                                            <div class="box-face box-top"></div>
+                                            <div class="box-shelf-shadow"></div>
+                                        </div>
+                                        <div class="box-pedestal-label">
+                                            <span class="pedestal-title">Starbloom</span>
+                                            <span class="pedestal-tag">Crafting &amp; Sci-Fi</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Box 3: Void Warden -->
+                                    <div class="game-box-item" data-game-key="void-warden" onclick="openGameShelfModal('void-warden')" onmousemove="handleBox3DTilt(event, this)" onmouseleave="resetBox3DTilt(this)">
+                                        <div class="box-3d-wrap">
+                                            <div class="box-face box-front">
+                                                <img src="assets/box_void_warden.webp" alt="Void Warden Box Art" class="box-cover-img" loading="lazy">
+                                                <div class="box-shine-layer"></div>
+                                                <div class="box-badge-corner">Action</div>
+                                            </div>
+                                            <div class="box-face box-spine">
+                                                <span class="box-spine-title">Void Warden</span>
+                                                <span class="box-spine-logo">P5</span>
+                                            </div>
+                                            <div class="box-face box-top"></div>
+                                            <div class="box-shelf-shadow"></div>
+                                        </div>
+                                        <div class="box-pedestal-label">
+                                            <span class="pedestal-title">Void Warden</span>
+                                            <span class="pedestal-tag">Action &amp; Tactics</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Box 4: Star Sanctuary -->
+                                    <div class="game-box-item" data-game-key="star-sanctuary" onclick="openGameShelfModal('star-sanctuary')" onmousemove="handleBox3DTilt(event, this)" onmouseleave="resetBox3DTilt(this)">
+                                        <div class="box-3d-wrap">
+                                            <div class="box-face box-front">
+                                                <img src="assets/box_star_sanctuary.webp" alt="Star Sanctuary Box Art" class="box-cover-img" loading="lazy">
+                                                <div class="box-shine-layer"></div>
+                                                <div class="box-badge-corner">Hub</div>
+                                            </div>
+                                            <div class="box-face box-spine">
+                                                <span class="box-spine-title">Star Sanctuary</span>
+                                                <span class="box-spine-logo">P5</span>
+                                            </div>
+                                            <div class="box-face box-top"></div>
+                                            <div class="box-shelf-shadow"></div>
+                                        </div>
+                                        <div class="box-pedestal-label">
+                                            <span class="pedestal-title">Star Sanctuary</span>
+                                            <span class="pedestal-tag">Living Worlds Hub</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Box 5: Aegis of Ages -->
+                                    <div class="game-box-item" data-game-key="aegis-of-ages" onclick="openGameShelfModal('aegis-of-ages')" onmousemove="handleBox3DTilt(event, this)" onmouseleave="resetBox3DTilt(this)">
+                                        <div class="box-3d-wrap">
+                                            <div class="box-face box-front">
+                                                <img src="assets/box_aegis_of_ages.webp" alt="Aegis of Ages Box Art" class="box-cover-img" loading="lazy">
+                                                <div class="box-shine-layer"></div>
+                                                <div class="box-badge-corner">Strategy</div>
+                                            </div>
+                                            <div class="box-face box-spine">
+                                                <span class="box-spine-title">Aegis of Ages</span>
+                                                <span class="box-spine-logo">P5</span>
+                                            </div>
+                                            <div class="box-face box-top"></div>
+                                            <div class="box-shelf-shadow"></div>
+                                        </div>
+                                        <div class="box-pedestal-label">
+                                            <span class="pedestal-title">Aegis of Ages</span>
+                                            <span class="pedestal-tag">Siege Arcana</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Physical Shelf Ledge with Electric Blue LED Underglow -->
+                                <div class="shelf-plank-assembly">
+                                    <div class="shelf-surface-top"></div>
+                                    <div class="shelf-front-bevel">
+                                        <div class="shelf-led-strip"></div>
+                                    </div>
+                                    <div class="shelf-shadow-underneath"></div>
+                                </div>
+
+                                <!-- Shelf Footer Bar -->
+                                <div class="shelf-bottom-bar">
+                                    <div class="shelf-instruction">
+                                        <span class="instruction-icon">🖱️</span> Click any box to inspect &amp; launch • Mouse over for 3D tilt
+                                    </div>
+                                    <div class="shelf-quick-actions">
+                                        <button type="button" class="shelf-action-btn" onclick="launchRandomGame()" title="Open a random title!">
+                                            <span class="btn-dice">🎲</span> Surprise Me (Random Title)
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -535,6 +741,9 @@
                 <button class="nav-dock-btn" onclick="scrollToSection('content-container')" aria-label="About Tom" title="About">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </button>
+                <button class="nav-dock-btn" onclick="scrollToSection('section-game-shelf')" aria-label="Game Shelf" title="Indie Game Shelf">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m7-2h.01m3 0h.01"/></svg>
+                </button>
                 <button class="nav-dock-btn" onclick="scrollToSection('career-wave-strip-wrapper')" aria-label="Career Timeline" title="Career Timeline">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2.5" fill="currentColor"/><circle cx="16" cy="12" r="2.5" fill="currentColor"/><circle cx="10" cy="18" r="2.5" fill="currentColor"/></svg>
                 </button>
@@ -567,6 +776,115 @@
             </div>
             <div class="theater-footer">
                 <span id="theater-hint" class="theater-hint">Use Keyboard &amp; Mouse / Touch to play &bull; Press ESC to close</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spawn x Psypher5 Game Shelf Detail Modal -->
+    <div id="game-shelf-modal" class="modal-overlay" onclick="closeGameShelfModalOnOutsideClick(event)" role="dialog" aria-modal="true" aria-labelledby="shelf-modal-title">
+        <div class="shelf-modal-container glass-panel">
+            <button class="shelf-modal-close" onclick="closeGameShelfModal()" aria-label="Close Modal" title="Close (ESC)">&times;</button>
+            
+            <!-- Modal Header -->
+            <div class="shelf-modal-header">
+                <div class="modal-badge-row">
+                    <span class="modal-partner-chip">★ SPAWN PARTNER TITLE</span>
+                    <span id="shelf-modal-genre" class="modal-genre-chip">Action / Tactics</span>
+                    <span id="shelf-modal-players" class="modal-players-chip">1-4 Squad Co-op</span>
+                </div>
+                <h2 id="shelf-modal-title" class="shelf-modal-title">Void Warden</h2>
+                <div class="shelf-modal-subtitle">
+                    <span>Created by <strong class="author-highlight">@psypher5</strong></span>
+                    <span class="sub-sep">•</span>
+                    <span id="shelf-modal-headline" class="modal-headline">LAUNCH INTO ORBITAL COMBAT</span>
+                </div>
+            </div>
+
+            <!-- Modal 3-Column Core Grid (Responsive) -->
+            <div class="shelf-modal-grid">
+                <!-- Left Column: Synopsis, Features & Changelog -->
+                <div class="shelf-modal-col col-info">
+                    <div class="modal-section-card">
+                        <h3 class="col-card-title">Overview</h3>
+                        <p id="shelf-modal-desc" class="modal-synopsis"></p>
+                    </div>
+
+                    <div class="modal-section-card">
+                        <h3 class="col-card-title">What's in the Box</h3>
+                        <ul id="shelf-modal-features" class="modal-feature-list"></ul>
+                    </div>
+
+                    <div class="modal-section-card col-changelog-card">
+                        <h3 class="col-card-title">What Changed Lately</h3>
+                        <div id="shelf-modal-version" class="modal-version-tag"></div>
+                    </div>
+                </div>
+
+                <!-- Center Column: 3D Box Showcase & Direct Launch Action -->
+                <div class="shelf-modal-col col-hero">
+                    <div class="modal-box-stage">
+                        <div class="modal-box-3d" id="shelf-modal-3d-box">
+                            <img id="shelf-modal-box-img" src="" alt="Game Box Art" class="modal-box-front">
+                            <div class="modal-box-shine"></div>
+                        </div>
+                    </div>
+
+                    <!-- Launch Primary Button & Controls -->
+                    <div class="modal-launch-cta-block">
+                        <a id="shelf-modal-play-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-play-launch" title="Launch Game in New Browser Tab">
+                            <span class="play-icon">▶</span>
+                            <span class="play-text">Play in Browser</span>
+                            <span class="ext-arrow">↗</span>
+                        </a>
+                        <div class="play-shortcut-hint">
+                            <kbd>SPACE</kbd> to launch in new tab • <kbd>ESC</kbd> to close
+                        </div>
+                        
+                        <div class="modal-secondary-actions">
+                            <a id="shelf-modal-spawn-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-sub-action spawn-link" title="Open on Spawn.co">
+                                <span>Visit on Spawn.co ↗</span>
+                            </a>
+                            <button type="button" class="btn-sub-action like-btn" onclick="handleShelfGameLike(event)" title="Like this title">
+                                <span id="shelf-modal-like-heart">♡</span> Like
+                                <span class="like-counter" id="shelf-modal-likes">11</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Community Feedback & Screenshots -->
+                <div class="shelf-modal-col col-community">
+                    <div class="modal-section-card">
+                        <h3 class="col-card-title">What Players Think</h3>
+                        <div class="community-review-bubble">
+                            <div class="review-stars" id="shelf-modal-stars">★★★★★</div>
+                            <p id="shelf-modal-quote" class="review-quote"></p>
+                            <div class="review-author" id="shelf-modal-author"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-section-card">
+                        <h3 class="col-card-title">In-Game Capture</h3>
+                        <div class="modal-screenshot-wrap" onclick="inspectGameScreenshot()" title="Click to inspect full screenshot">
+                            <img id="shelf-modal-screenshot" src="" alt="Gameplay Screenshot" class="modal-screenshot-img">
+                            <div class="screenshot-hover-lens">🔍 View Full Screenshot</div>
+                        </div>
+                    </div>
+
+                    <!-- Star Sanctuary Discord & Community Callout -->
+                    <div class="modal-discord-callout">
+                        <div class="discord-callout-header">
+                            <span class="discord-icon-svg">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                            </span>
+                            <h4>Community Hub</h4>
+                        </div>
+                        <p>Hang out with players, share builds, and shape upcoming updates:</p>
+                        <a href="https://discord.gg/starsanctuary" target="_blank" rel="noopener noreferrer" class="btn-discord-join">
+                            Join Star Sanctuary Discord ↗
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

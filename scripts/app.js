@@ -328,6 +328,145 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // 2b. Spawn.co Official Partner Games Catalog
+    const spawnGames = {
+        'noble-gnomes': {
+            id: 'noble-gnomes',
+            slug: 'noble-gnomes-pond-to-pond',
+            title: 'Noble Gnomes: Pond to Pond',
+            headline: 'RING THE BELL, SAVE THE POND',
+            genre: 'Adventure / Multiplayer',
+            players: '1-4 Co-op Tug',
+            boxArt: 'assets/box_noble_gnomes.webp',
+            screenshot: 'assets/shot_noble_gnomes.webp',
+            playUrl: 'https://www.spawn.co/@psypher5/noble-gnomes-pond-to-pond/play',
+            spawnUrl: 'https://www.spawn.co/@psypher5/noble-gnomes-pond-to-pond',
+            tags: ['Adventure', 'Multiplayer', 'Co-op', 'Bullet-Hell'],
+            desc: 'Steer your steam tug through an overgrown garden pond, ring bells to clear evolving algae blooms, and rescue your stranded crew. Navigate aquatic hazards, survive a bullet-hell miniboss, and return the harvest safely to Port Bramble.',
+            features: [
+                'Ring brass bells to clear spreading algae growth across murky pond waters',
+                'Rescue five trapped gnomes before the colossal pond miniboss awakens',
+                'Pilot your steam tug through bullet-hell patterns and dodge incoming seed volleys',
+                'Live multiplayer co-op with friends or high-tension solo rescue sorties'
+            ],
+            review: {
+                quote: 'Such a charming and vibrant pond world! Maneuvering the steam tug while dodging algae bullets with friends is an absolute blast.',
+                author: 'PortBrambleCrew',
+                rating: '★★★★★'
+            },
+            version: 'v1.4 — Algae Bloom & Waterway Hazards',
+            likes: 11
+        },
+        'starbloom': {
+            id: 'starbloom',
+            slug: 'starbloom',
+            title: 'Starbloom',
+            headline: 'GROW ZERO-G GEMSTONES DAILY',
+            genre: 'Cozy / Crafting',
+            players: 'Solo Zen',
+            boxArt: 'assets/box_starbloom.webp',
+            screenshot: 'assets/shot_starbloom.webp',
+            playUrl: 'https://www.spawn.co/@psypher5/starbloom/play',
+            spawnUrl: 'https://www.spawn.co/@psypher5/starbloom',
+            tags: ['Cozy', 'Crafting', 'Sci-Fi', 'Relaxing'],
+            desc: 'Crush space ores, weave magic spells, and serve wandering aliens from your cosmic camper kitchen. Every shift brings new customers, new recipes, and new cosmic wonders.',
+            features: [
+                'Haul asteroid chunks using tactical sonar tractor beams',
+                'Hand-craft radiant amethyst, ruby, and peridot crystal recipes',
+                'Serve hungry space travelers before life-support tethers expire',
+                'Atmospheric zero-gravity sound design with relaxing ambient cosmic vibes'
+            ],
+            review: {
+                quote: 'The cosmic camper vibe is so relaxing and addictive! Crushing space gems and crafting alien recipes hits the perfect cozy game loop.',
+                author: 'CosmicWanderer',
+                rating: '★★★★★'
+            },
+            version: 'v2.1 — Alien Diner Recipe Expansion',
+            likes: 11
+        },
+        'void-warden': {
+            id: 'void-warden',
+            slug: 'void-warden',
+            title: 'Void Warden',
+            headline: 'LAUNCH INTO ORBITAL COMBAT',
+            genre: 'Action / Tactics',
+            players: '1-4 Squad Co-op',
+            boxArt: 'assets/box_void_warden.webp',
+            screenshot: 'assets/shot_void_warden.webp',
+            playUrl: 'https://www.spawn.co/@psypher5/void-warden/play',
+            spawnUrl: 'https://www.spawn.co/@psypher5/void-warden',
+            tags: ['Action', 'Tactics', 'Multiplayer', 'Sci-Fi'],
+            desc: 'You suit up as an armored penguin commando and launch from a volcanic sanctuary into a luminous slipstream battle. Destroy three machine relays, survive the drone onslaught, and extract alive.',
+            features: [
+                'Four combat doctrine suits engineered for solo or coordinated squad play',
+                'Infiltrate and obliterate three machine relays while evading lethal drone swarms',
+                'Tactile belly slides, slipstream speed boosts, and low-gravity space hop mechanics',
+                'Cooperative revive protocols and adrenaline-pumping extraction countdowns'
+            ],
+            review: {
+                quote: 'Void Warden is such a fun game! The belly slide and space hop are pretty cute xD. Fast-paced slipstream battles and awesome team mechanics!',
+                author: 'laurence1',
+                rating: '★★★★★'
+            },
+            version: 'v3538 — The Coastal Awakening',
+            likes: 11
+        },
+        'star-sanctuary': {
+            id: 'star-sanctuary',
+            slug: 'star-sanctuary',
+            title: 'Star Sanctuary',
+            headline: 'FIND YOUR QUIET PLACE AMONG STARS',
+            genre: 'Social Hub / Creative',
+            players: 'Massive Social Co-op',
+            boxArt: 'assets/box_star_sanctuary.webp',
+            screenshot: 'assets/shot_star_sanctuary.webp',
+            playUrl: 'https://www.spawn.co/@psypher5/star-sanctuary/play',
+            spawnUrl: 'https://www.spawn.co/@psypher5/star-sanctuary',
+            tags: ['Cozy', 'Exploration', 'Multiplayer', 'Peaceful'],
+            desc: 'Step into living snowglobes suspended in space and discover peaceful worlds crafted by other players. Meet friends, explore cosmic festivals, serene lakes, and enchanted woodlands, and share your own sanctuary with the cosmos.',
+            features: [
+                'Explore a vast shared cosmic hub featuring seasonal festivals, lakes, and woodlands',
+                'Sculpt, decorate, and share your own personal globe with visitors across the globe',
+                'No combat, no timers, no pressure—just tranquil discovery and genuine connection',
+                'Official community hub for Spawn creators, players, and world builders'
+            ],
+            review: {
+                quote: 'Truly a sanctuary among the stars. Stepping inside each miniature snowglobe feels magical and meditative. The community hub is wonderful.',
+                author: 'StarlitVoyager',
+                rating: '★★★★★'
+            },
+            version: 'v1260 — Celestial Globes & Festival Grounds',
+            likes: 11
+        },
+        'aegis-of-ages': {
+            id: 'aegis-of-ages',
+            slug: 'aegis-of-ages',
+            title: 'Aegis of Ages',
+            headline: 'KEEP THE KING ALIVE',
+            genre: 'Strategy / Tower Defense',
+            players: 'Tactical Defense',
+            boxArt: 'assets/box_aegis_of_ages.webp',
+            screenshot: 'assets/shot_aegis_of_ages.webp',
+            playUrl: 'https://www.spawn.co/@psypher5/aegis-of-ages/play',
+            spawnUrl: 'https://www.spawn.co/@psypher5/aegis-of-ages',
+            tags: ['Strategy', 'Tactics', 'Defense', 'Medieval Arcana'],
+            desc: 'You command a hilltop fortress under siege from every direction! Strategically place archers, barricades, and spikes between waves, aim the heavy ballista by hand, douse spreading structural fires, and hold the line until the king\'s keep stands unbroken.',
+            features: [
+                'Manual heavy ballista with tactile arc trajectory targeting and high-impact bolt physics',
+                'Twelve defensive fortress sectors to fortify, repair, and reinforce between onslaughts',
+                'Dynamic spreading fire simulation—manage cooldowns and douse flames before ramparts fall',
+                'Hold the line against escalating siege ramps, battering rams, and elite war golems'
+            ],
+            review: {
+                quote: 'The manual ballista aiming feels so satisfying, and the panic of fighting fires while placing emergency archers makes for intense siege defense!',
+                author: 'SiegeMaster_UK',
+                rating: '★★★★★'
+            },
+            version: 'v2.8 — Fire Propagation & Heavy Ballista Overhaul',
+            likes: 11
+        }
+    };
+
     // 3. Personal Indie Projects Database (Interactive Showcase Carousel)
     const indieBoxes = {
         'aegis': {
@@ -755,6 +894,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof closeModal === 'function') closeModal();
         if (typeof closeArtLightbox === 'function') closeArtLightbox();
         if (typeof closeGameTheater === 'function') closeGameTheater();
+        if (typeof closeGameShelfModal === 'function') closeGameShelfModal();
         if (typeof closeSagaJobModal === 'function') closeSagaJobModal();
         if (typeof closeWaveInlineInspector === 'function') closeWaveInlineInspector();
 
@@ -765,6 +905,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (tabId === 'about') {
             window.scrollToSection('content-container');
+        } else if (tabId === 'games') {
+            window.scrollToSection('section-game-shelf');
         } else if (tabId === 'career') {
             window.scrollToSection('career-wave-strip-wrapper');
         } else if (tabId === 'projects') {
@@ -787,6 +929,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof closeModal === 'function') closeModal();
         if (typeof closeArtLightbox === 'function') closeArtLightbox();
         if (typeof closeGameTheater === 'function') closeGameTheater();
+        if (typeof closeGameShelfModal === 'function') closeGameShelfModal();
         if (typeof closeSagaJobModal === 'function') closeSagaJobModal();
         if (typeof closeWaveInlineInspector === 'function') closeWaveInlineInspector();
 
@@ -1140,6 +1283,182 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // 7b. Spawn.co 3D Game Shelf & Detail Modal Engine
+    let activeShelfKey = 'void-warden';
+    const shelfLikesState = {};
+
+    window.openGameShelfModal = function(key) {
+        const game = spawnGames[key];
+        if (!game) return;
+        activeShelfKey = key;
+
+        const modal = document.getElementById('game-shelf-modal');
+        if (!modal) return;
+
+        // Populate elements
+        const titleEl = document.getElementById('shelf-modal-title');
+        const headlineEl = document.getElementById('shelf-modal-headline');
+        const genreEl = document.getElementById('shelf-modal-genre');
+        const playersEl = document.getElementById('shelf-modal-players');
+        const descEl = document.getElementById('shelf-modal-desc');
+        const featuresEl = document.getElementById('shelf-modal-features');
+        const versionEl = document.getElementById('shelf-modal-version');
+        const boxImg = document.getElementById('shelf-modal-box-img');
+        const playBtn = document.getElementById('shelf-modal-play-btn');
+        const spawnLink = document.getElementById('shelf-modal-spawn-link');
+        const starsEl = document.getElementById('shelf-modal-stars');
+        const quoteEl = document.getElementById('shelf-modal-quote');
+        const authorEl = document.getElementById('shelf-modal-author');
+        const screenshotEl = document.getElementById('shelf-modal-screenshot');
+        const likesEl = document.getElementById('shelf-modal-likes');
+
+        if (titleEl) titleEl.textContent = game.title;
+        if (headlineEl) headlineEl.textContent = game.headline;
+        if (genreEl) genreEl.textContent = game.genre;
+        if (playersEl) playersEl.textContent = game.players;
+        if (descEl) descEl.textContent = game.desc;
+        if (versionEl) versionEl.textContent = game.version;
+        if (boxImg) {
+            boxImg.src = game.boxArt;
+            boxImg.alt = `${game.title} Box Art`;
+        }
+        if (playBtn) {
+            playBtn.href = game.playUrl;
+            playBtn.setAttribute('data-url', game.playUrl);
+        }
+        if (spawnLink) spawnLink.href = game.spawnUrl;
+
+        // Features list
+        if (featuresEl) {
+            featuresEl.innerHTML = '';
+            game.features.forEach(feat => {
+                const li = document.createElement('li');
+                li.className = 'modal-feature-item';
+                li.textContent = feat;
+                featuresEl.appendChild(li);
+            });
+        }
+
+        // Reviews
+        if (starsEl) starsEl.textContent = game.review.rating;
+        if (quoteEl) quoteEl.textContent = `“${game.review.quote}”`;
+        if (authorEl) authorEl.textContent = `— ${game.review.author}`;
+
+        // In-game screenshot
+        if (screenshotEl) {
+            screenshotEl.src = game.screenshot;
+            screenshotEl.alt = `${game.title} In-game Screenshot`;
+        }
+
+        // Likes
+        const curLikes = shelfLikesState[key] !== undefined ? shelfLikesState[key] : game.likes;
+        if (likesEl) likesEl.textContent = curLikes;
+
+        const container = modal.querySelector('.shelf-modal-container');
+        if (container) container.scrollTop = 0;
+
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeGameShelfModal = function() {
+        const modal = document.getElementById('game-shelf-modal');
+        if (!modal) return;
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    };
+
+    window.closeGameShelfModalOnOutsideClick = function(e) {
+        const modal = document.getElementById('game-shelf-modal');
+        if (e.target === modal) {
+            closeGameShelfModal();
+        }
+    };
+
+    window.launchActiveShelfGame = function() {
+        const game = spawnGames[activeShelfKey];
+        if (game && game.playUrl) {
+            window.open(game.playUrl, '_blank', 'noopener,noreferrer');
+        }
+    };
+
+    window.launchRandomGame = function() {
+        const keys = Object.keys(spawnGames);
+        const randKey = keys[Math.floor(Math.random() * keys.length)];
+        openGameShelfModal(randKey);
+    };
+
+    window.inspectGameScreenshot = function() {
+        const game = spawnGames[activeShelfKey];
+        if (game && game.screenshot && typeof openArtLightbox === 'function') {
+            openArtLightbox(game.screenshot, `${game.title} // In-Game Capture`, game.headline);
+        }
+    };
+
+    window.handleShelfGameLike = function(e) {
+        if (e) e.stopPropagation();
+        const game = spawnGames[activeShelfKey];
+        if (!game) return;
+
+        if (!shelfLikesState[activeShelfKey]) {
+            shelfLikesState[activeShelfKey] = game.likes + 1;
+        } else {
+            shelfLikesState[activeShelfKey] += 1;
+        }
+
+        const likesEl = document.getElementById('shelf-modal-likes');
+        const heartEl = document.getElementById('shelf-modal-like-heart');
+        if (likesEl) {
+            likesEl.textContent = shelfLikesState[activeShelfKey];
+            likesEl.classList.add('pop');
+            setTimeout(() => likesEl.classList.remove('pop'), 400);
+        }
+        if (heartEl) {
+            heartEl.textContent = '❤️';
+        }
+    };
+
+    // 3D Shelf Box Tilt Mechanics
+    let boxTiltRaf = null;
+    window.handleBox3DTilt = function(e, boxEl) {
+        if (!boxEl) return;
+        const boxWrap = boxEl.querySelector('.box-3d-wrap');
+        const shine = boxEl.querySelector('.box-shine-layer');
+        if (!boxWrap) return;
+
+        const rect = boxEl.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        const rotY = (x * 22).toFixed(1);
+        const rotX = (-y * 18).toFixed(1);
+
+        if (boxTiltRaf) cancelAnimationFrame(boxTiltRaf);
+        boxTiltRaf = requestAnimationFrame(() => {
+            boxWrap.style.transform = `translateY(-14px) rotateY(${rotY}deg) rotateX(${rotX}deg) scale(1.04)`;
+            if (shine) {
+                const shineX = (x + 0.5) * 100;
+                const shineY = (y + 0.5) * 100;
+                shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 50%, transparent 80%)`;
+                shine.style.opacity = '1';
+            }
+        });
+    };
+
+    window.resetBox3DTilt = function(boxEl) {
+        if (!boxEl) return;
+        const boxWrap = boxEl.querySelector('.box-3d-wrap');
+        const shine = boxEl.querySelector('.box-shine-layer');
+        if (boxTiltRaf) cancelAnimationFrame(boxTiltRaf);
+
+        if (boxWrap) {
+            boxWrap.style.transform = `translateY(0) rotateY(-8deg) rotateX(2deg) scale(1)`;
+        }
+        if (shine) {
+            shine.style.opacity = '0';
+        }
+    };
+
     // Copy Email to Clipboard helper
     window.copyEmailToClipboard = function(e) {
         if (e) e.preventDefault();
@@ -1482,13 +1801,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1500);
     };
 
-    // Global Keyboard Listeners (Escape, Arrow Navigation)
+    // Global Keyboard Listeners (Escape, Arrow Navigation, Shelf Hotkeys)
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeModal();
             closeArtLightbox();
             closeGameTheater();
+            closeGameShelfModal();
             phoneNavBack();
+        } else if (e.code === 'Space') {
+            const shelfModal = document.getElementById('game-shelf-modal');
+            if (shelfModal && shelfModal.classList.contains('show')) {
+                // Avoid accidental launch if focused on an input or textarea
+                const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+                if (activeTag !== 'input' && activeTag !== 'textarea') {
+                    e.preventDefault();
+                    launchActiveShelfGame();
+                }
+            }
         } else if (artLightbox && artLightbox.classList.contains('show')) {
             if (e.key === 'ArrowLeft') {
                 stepLightboxImage(-1);
